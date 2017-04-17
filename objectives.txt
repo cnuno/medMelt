@@ -1,0 +1,23 @@
+Objectives
+
+-Create menu for character selection.
+	-This menu should include parameters to pass life count to each respective level.
+	-This menu should also limit the number of players summoned in the level. 
+		-This also means that players (1-4) need to have functionality to interact
+		with the menu.
+		-If player presses start, then create player instance.
+		-Allow this menu to choose prefered color scheme for the desired player
+-Create menu for level slection.
+-Enable Death and Respawn Cycle
+-Generate death sequence
+-Develop parameters for death
+	-Left: if (player.body.center.x < (-scrn->width/4 * 3))
+	-Right: if (player.body.center.x > (scrn->width + scrn->width/4 * 3))
+	-Top: if (player.body.center.x < (-scrn->height/4 * 3))
+	-Bottom: if (player.body.center.x > (scrn->height + scrn->height/4 * 3))
+	-Render an arrow that indicates where the character is when off screen
+-Develop more complex levels
+-Develop more players
+	-use pill class that is already defined as body (for one character)
+-Implement health and life count defined in Stats class (already a member of player)
+-Make the player class polymophic

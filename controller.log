@@ -1,0 +1,24 @@
+========XBOX360========
+Button 0:  A
+Button 1:  B
+Button 2:  X
+Button 3:  Y
+Button 4:  LB
+Button 5:  RB
+Button 6:  BACK
+Button 7:  START
+Button 8:  XBOX_CENTER
+Button 9:  L3
+Button 10: R3
+Button 11: D_LEFT
+Button 12: D_RIGHT
+Button 13: D_UP
+Button 14: D_DOWN
+
+Analog Sticks
+LEFT:	AXIS_0	AXIS_1
+RIGHT:	AXIS_3	AXIS_4
+
+Triggers
+L2:	AXIS_2
+R2:	AXIS_5

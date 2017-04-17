@@ -1,0 +1,4 @@
+This text document is a space to write down ideas that have not yet been implemented.
+
+1. render non-interactible background objects
+2. allow multiple sounds to be played without interference
