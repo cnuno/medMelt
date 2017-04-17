@@ -23,12 +23,12 @@ I worked at total of 5 hours.
 
 using namespace std;
 #define GRAVITY .1
-#define MAX_PARTICLE 8
-#define MAX_PLAYER 4
 #define x_rnd() (rand() % 11) - 5 
 #define y_rnd() (rand() % 11)  
 #define rnd() (float)rand() / (float)RAND_MAX
 #define MAX_STAR 50
+#define MAX_PARTICLE 50
+#define MAX_PLAYER 4
 extern Screen* scrn;
 extern Joystick joystick1;
 extern Joystick joystick2;
@@ -52,8 +52,24 @@ extern float A,B,C,D;
 extern int done; 
 extern void resetMain(Game *game);
 
+Level::Level()
+{
+    Color colors;
+    for (int i = 0; i < MAX_PARTICLE; i++) {
+	//set dimensions of particles
+	bloodStream[i].s.width = 4;
+	bloodStream[i].s.height = bloodStream[i].s.width;
+
+	//set color of particles
+	for (int j = 0; j < 3; j++) {
+	    bloodStream[i].color[j] = colors.bloodred[j];
+	}
+    }
+}
+
 Field_Level::Field_Level() 
 {
+    Level();
 	//floor
 	platform[0].center.x = scrn->width/2;
 	// For Level2 
@@ -181,6 +197,8 @@ void Field_Level::render()
 
 Starynight_Level::Starynight_Level() 
 {
+    Level();
+
 	//floor
 	platform[0].center.x = scrn->width/2;
 	platform[0].width = scrn->width-250;

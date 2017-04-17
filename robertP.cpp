@@ -34,7 +34,7 @@ are called in each level handler.
 #include <iostream>
 #include </usr/include/AL/alut.h>
 #define GRAVITY .1
-#define MAX_PARTICLE 8
+#define MAX_PARTICLE 50
 #define x_rnd() (rand() % 11) - 5 
 #define y_rnd() (rand() % 11)  
 
@@ -511,9 +511,8 @@ void Level::deathCheck(Player *player)
 	}
 }
 
+//50 particles to work with
 void deathAnimation(int x, int y) {
-	//need a render
-	//declare blood particles here
 }
 
 void deathPhysics() {

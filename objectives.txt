@@ -21,3 +21,5 @@ Objectives
 	-use pill class that is already defined as body (for one character)
 -Implement health and life count defined in Stats class (already a member of player)
 -Make the player class polymophic
+
+-High Scores, most damage inflicted, most damage acquired
