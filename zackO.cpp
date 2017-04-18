@@ -54,6 +54,7 @@ extern void resetMain(Game *game);
 
 Level::Level()
 {
+    /*
     Color colors;
     for (int i = 0; i < MAX_PARTICLE; i++) {
 	//set dimensions of particles
@@ -65,6 +66,7 @@ Level::Level()
 	    bloodStream[i].color[j] = colors.bloodred[j];
 	}
     }
+    */
 }
 
 Field_Level::Field_Level() 
@@ -81,60 +83,7 @@ Field_Level::Field_Level()
 	//handling shading
 	widthPartition = scrn->width/7;
 	heightPartition = scrn->height/7;
-
-	//==================ERICK's CODE====================
-	//life assignment, health assignment
-	//Temporary color assignment until character select is up and running
-	Color colors;
-	int evenCount = 0;
-	int oddCount = 0;
-
-	for (int i = 0; i < MAX_PLAYER; i++) {
-		player[i].status.health = 0;
-		player[i].status.lifeCount = 5;
-		player[i].status.lifeState = ALIVE;
-
-		if (i % 2 == 0) {
-			if (evenCount % 2 == 0) {
-				player[i].body.center.y = scrn->height/5;
-			} else {
-				player[i].body.center.y = 3 * scrn->height/5;
-			}
-			player[i].body.center.x = scrn->width/5;
-			player[i].direction = RIGHT;
-			evenCount++;
-		} else {
-			if (oddCount % 2 == 0) {
-				player[i].body.center.y = scrn->height/5;
-			} else {
-				player[i].body.center.y = 3 * scrn->height/5;
-			}
-			player[i].body.center.x = 4 * scrn->width/5;
-			player[i].direction = LEFT;
-			oddCount++;
-		}
-		switch(i) {
-			case 0:
-				for (int j = 0; j < 3; j++)
-					player[i].color[j] = colors.red[j];
-				break;
-			case 1:
-				for (int j = 0; j < 3; j++)
-					player[i].color[j] = colors.pink[j];
-				break;
-			case 2:
-				for (int j = 0; j < 3; j++)
-					player[i].color[j] = colors.darkblue[j];
-				break;
-			case 3:
-				for (int j = 0; j < 3; j++)
-					player[i].color[j] = colors.darkgreen[j];
-				break;
-			default: 
-				break;
-		}
-	}
-	//================END ERICK's CODE====================
+	erick_init();
 }
 
 void field(Game *game)
@@ -149,6 +98,9 @@ void field(Game *game)
 		game->level2.player[i].check_controller(&game->level2.player[i], game->level2.controller.joystick[i]);
 		game->level2.player[i].render();
 		game->level2.deathCheck(&game->level2.player[i]);
+		//if player[i] is dead for an instance start timer
+		//render particles for 5 seconds
+		//then resawn
 	}
 
 	game->level2.statDisplay.render();
@@ -231,61 +183,8 @@ Starynight_Level::Starynight_Level()
 	moon.center.y = scrn->height; 
 	moon.radius = scrn->height/2; 
 	etBox.center.x = moon.center.x;
-	etBox.center.y = moon.center.y; 
-
-	//==================ERICK's CODE====================
-	//life assignment, health assignment
-	//Temporary color assignment until character select is up and running
-	
-	
-	Color colors;
-	int evenCount = 0;
-	int oddCount = 0;
-	for (int i = 0; i < MAX_PLAYER; i++) {
-		player[i].status.health = 0;
-		player[i].status.lifeCount = 5;
-		if (i % 2 == 0) {
-			if (evenCount % 2 == 0) {
-				player[i].body.center.y = scrn->height/5;
-			} else {
-				player[i].body.center.y = 3 * scrn->height/5;
-			}
-			player[i].body.center.x = scrn->width/5;
-			player[i].direction = RIGHT;
-			evenCount++;
-		} else {
-			if (oddCount % 2 == 0) {
-				player[i].body.center.y = scrn->height/5;
-			} else {
-				player[i].body.center.y = 3 * scrn->height/5;
-			}
-			player[i].body.center.x = 4 * scrn->width/5;
-			player[i].direction = LEFT;
-			oddCount++;
-		}
-
-		switch(i) {
-			case 0:
-				for (int j = 0; j < 3; j++)
-					player[i].color[j] = colors.red[j];
-				break;
-			case 1:
-				for (int j = 0; j < 3; j++)
-					player[i].color[j] = colors.pink[j];
-				break;
-			case 2:
-				for (int j = 0; j < 3; j++)
-					player[i].color[j] = colors.blue[j];
-				break;
-			case 3:
-				for (int j = 0; j < 3; j++)
-					player[i].color[j] = colors.green[j];
-				break;
-			default: 
-				break;
-		}
-	}
-	//================END ERICK's CODE====================
+	etBox.center.y = moon.center.y;
+       erick_init();	
 }
 
 void starynight(Game *game)

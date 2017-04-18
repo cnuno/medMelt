@@ -464,7 +464,7 @@ void Level::deathCheck(Player *player)
 		//call death animation on the left edge @ player->body.center.y
 		//if lives available, respawn
 		//Pass (x,y) to render particles at
-		deathAnimation(-scrn->width/2, player->body.center.x);
+		//deathAnimation(-scrn->width/2, player->body.center.x);
 		player->status.lifeState = DEAD;
 	}
 	else if (player->body.center.x 
@@ -472,16 +472,16 @@ void Level::deathCheck(Player *player)
 		//call death animation on the right edge @ player->body.center.y
 		//if lives available, respawn
 		//Pass (x,y) to render particles at
-		deathAnimation(scrn->width + scrn->width/2,
-				player->body.center.y);
+		//deathAnimation(scrn->width + scrn->width/2,
+		//		player->body.center.y);
 		player->status.lifeState = DEAD;
 	}
 	else if (player->body.center.y < (-scrn->height/4 * 3)) {
 		//call death animation on the Top edge @ player->body.center.x
 		//if lives available, respawn
 		//Pass (x,y) to render particles at
-		deathAnimation(player->body.center.x, 
-				-scrn->height/2);
+		//deathAnimation(player->body.center.x, 
+		//		-scrn->height/2);
 		player->status.lifeState = DEAD;
 	}
 	else if (player->body.center.y 
@@ -489,50 +489,54 @@ void Level::deathCheck(Player *player)
 		//call death animation on the top edge @ player->body.center.x
 		//if lives available, respawn
 		//Pass (x,y) to render particles at
-		deathAnimation(player->body.center.x, 
-				scrn->height + scrn->height/2);
+		//deathAnimation(player->body.center.x, 
+		//		scrn->height + scrn->height/2);
 		player->status.lifeState = DEAD;
 	}
 
-	//Respawn Handling
+	//---------------Respawn Handling----------------------
+	//There are lives available
 	if (player->status.lifeState == DEAD 
 			&& player->status.lifeCount > 0) {
-		//There are lives available
-		respawn(player);
+	    respawn(player);
 	}
 	else if (player->status.lifeState == DEAD 
-			&& player->status.lifeCount < 0) {
-		player->body.center.x = -scrn->width;
-		player->body.center.y = -scrn->height;
-		player->delta.x = 0.0;
-		player->delta.y = 0.0;
-		//No lives left
-		//Draw a red 'X' over status box
+		&& player->status.lifeCount < 0) {
+	    player->body.center.x = -scrn->width;
+	    player->body.center.y = -scrn->height;
+	    player->delta.x = 0.0;
+	    player->delta.y = 0.0;
+	    //No lives left
+	    //Draw a red 'X' over status box
 	}
 }
 
+void Level::respawn(Player *player)
+{
+    //wait 5 seconds
+    player->status.lifeState = ALIVE;
+    player->action = PASSIVE;
+    --player->status.lifeCount;
+    player->body.center.x = scrn->width/2;
+    player->body.center.y = scrn->height;
+    player->delta.x = 0.0;
+    player->delta.y = 0.0;
+    player->jumpCount = 0;
+    player->status.health = 0;
+}
+
+/*
 //50 particles to work with
 void deathAnimation(int x, int y) {
 }
 
 void deathPhysics() {
-	//conduct physics for particles here
+    //conduct physics for particles here
 }
 
 void deathRender() {
-	//render particles here
+    //render particles here
 }
+*/
 
-void Level::respawn(Player *player)
-{
-	//wait 5 seconds
-	player->status.lifeState = ALIVE;
-	player->action = PASSIVE;
-	--player->status.lifeCount;
-	player->body.center.x = scrn->width/2;
-	player->body.center.y = scrn->height;
-	player->delta.x = 0.0;
-	player->delta.y = 0.0;
-	player->jumpCount = 0;
-	player->status.health = 0;
-}
+

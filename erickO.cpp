@@ -207,6 +207,20 @@ Player::Player()
     jumpCount = 0;
     action = PASSIVE;
     dashStrength = 10.0f;
+
+    Color colors;
+    for (int i = 0; i < MAX_PARTICLE; i++) {
+	//set dimensions of particles
+	bloodStream[i].s.width = 4;
+	bloodStream[i].s.height = bloodStream[i].s.width;
+
+	//set color of particles
+	for (int j = 0; j < 3; j++) {
+	    bloodStream[i].color[j] = colors.bloodred[j];
+	}
+    }
+
+
 }
 
 //Game Pad constructor
@@ -221,132 +235,144 @@ Gpad::Gpad()
 //Render Function for Player "Kirby"
 void Player::render()
 {
-    float radius = body.radius;
-    float x = body.center.x;
-    float y = body.center.y;
-    int triangleNum = 25;
-    float twicePI = 2.0 * M_PI;
+    if (status.lifeState == ALIVE) {
+	float radius = body.radius;
+	float x = body.center.x;
+	float y = body.center.y;
+	int triangleNum = 25;
+	float twicePI = 2.0 * M_PI;
 
-    if (jumpCount == 2) 
-	radius = body.radius - 5;
-    else if (jumpCount == 3) 
-	radius = body.radius - 10;
-    else if (jumpCount == 4) 
-	radius = body.radius - 15;
+	if (jumpCount == 2) 
+	    radius = body.radius - 5;
+	else if (jumpCount == 3) 
+	    radius = body.radius - 10;
+	else if (jumpCount == 4) 
+	    radius = body.radius - 15;
 
-    //black circle
-    glPushMatrix();
-    glColor4ub(0,0,0,255);
-    glEnable (GL_BLEND); 
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glBegin(GL_TRIANGLE_FAN);
-    glVertex2f(x,y);
-    for(int i = 0; i < 120; i++) {
-	glVertex2f(x + (radius * cos(i * twicePI / triangleNum)),
-		y + (radius * sin(i * twicePI / triangleNum)));
-    }
-    glEnd();
-
-    //Large Color Circle
-    radius -= 3;
-    glPushMatrix();
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glBegin(GL_TRIANGLE_FAN);
-    glColor4ub(color[0],color[1],color[2],255);
-    glVertex2f(x,y);
-    for(int i = 0; i < 120; i++) {
-	glVertex2f(x + (radius * cos(i * twicePI / triangleNum)),
-		y + (radius * sin(i * twicePI / triangleNum)));
-    }
-    glEnd();
-
-    for (int i = 0; i < 3; i++) { 
-	if (color[i] == 150) { 
-	    color[i] += 30;
-	} else if (color[i] == 75) {
-	    color[i] += 55;
+	//black circle
+	glPushMatrix();
+	glColor4ub(0,0,0,255);
+	glEnable (GL_BLEND); 
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBegin(GL_TRIANGLE_FAN);
+	glVertex2f(x,y);
+	for(int i = 0; i < 120; i++) {
+	    glVertex2f(x + (radius * cos(i * twicePI / triangleNum)),
+		    y + (radius * sin(i * twicePI / triangleNum)));
 	}
-    }
+	glEnd();
 
-    //smaller color circle
-    radius = radius - radius/4;
-    glPushMatrix();
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glBegin(GL_TRIANGLE_FAN);
-    int x1;
-    int y1 = y + sqrt(radius);
-
-    float OldMax, OldMin, OldValue;
-    float NewMax, NewMin, offset;
-
-    //if character is in the middle of the level
-    if (body.center.x == scrn->width/2) {
-	x1 = x;
-    } else if (body.center.x < scrn->width/2) {
-	//take the width resolution and scale the entire thing down to 7
-	//controls shading of round character
-	OldValue = x;
-	OldMin = 0;
-	OldMax = scrn->width/2;
-	NewMin = 0;
-	NewMax = sqrt(radius - 10);
-	offset = (OldValue - OldMin) * (NewMax - NewMin);
-	offset /= (OldMax - OldMin);
-	offset += NewMin;
-	offset -= sqrt(radius - 10);
-	offset = abs(offset);
-	x1 = x + offset; 
-    } else {
-	OldValue = x;
-	OldMin = scrn->width/2;
-	OldMax = scrn->width;
-	NewMin = 0;
-	NewMax = sqrt(radius);
-	offset = (OldValue - OldMin) * (NewMax - NewMin);
-	offset /= OldMax - OldMin; 
-	offset += NewMin;
-	x1 = x - offset; 
-    }
-
-    glColor3ub(color[0],color[1],color[2]);
-    glVertex2f(x1,y1);
-    for(int i = 0; i < 120; i++) {
-	glVertex2f(x1 + (radius * cos(i * twicePI / triangleNum)),
-		y1 + (radius * sin(i * twicePI / triangleNum)));
-    }
-    glEnd();
-
-    //(Eye or Dot) Position
-    int y2,x2;
-    radius = 6;
-    glPushMatrix();
-    glColor4f(0.0,0.0,0.0, 1.0);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glBegin(GL_TRIANGLE_FAN);
-    if (direction == RIGHT) {
-	x2 = x + 3.5 * radius;
-	y2 = y + 2 * radius;
-    } else {
-	x2 = x - 3.5 * radius;
-	y2 = y + 2 * radius;
-    }
-    glVertex2f(x2,y2);
-    for(int i = 0; i < 120; i++) {
-	glVertex2f(x2 + (radius * cos(i * twicePI / triangleNum)),
-		y2 + (radius * sin(i * twicePI / triangleNum)));
-    }
-    glEnd();
-    glDisable(GL_BLEND);
-
-    //reset color
-    for (int i = 0; i < 3; i++) { 
-	if (color[i] == 180) { 
-	    color[i] -= 30;
-	} else if (color[i] == 130) {
-	    color[i] -= 55;
+	//Large Color Circle
+	radius -= 3;
+	glPushMatrix();
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBegin(GL_TRIANGLE_FAN);
+	glColor4ub(color[0],color[1],color[2],255);
+	glVertex2f(x,y);
+	for(int i = 0; i < 120; i++) {
+	    glVertex2f(x + (radius * cos(i * twicePI / triangleNum)),
+		    y + (radius * sin(i * twicePI / triangleNum)));
 	}
-    }
+	glEnd();
 
+	for (int i = 0; i < 3; i++) { 
+	    if (color[i] == 150) { 
+		color[i] += 30;
+	    } else if (color[i] == 75) {
+		color[i] += 55;
+	    }
+	}
+
+	//smaller color circle
+	radius = radius - radius/4;
+	glPushMatrix();
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBegin(GL_TRIANGLE_FAN);
+	int x1;
+	int y1 = y + sqrt(radius);
+
+	float OldMax, OldMin, OldValue;
+	float NewMax, NewMin, offset;
+
+	//if character is in the middle of the level
+	if (body.center.x == scrn->width/2) {
+	    x1 = x;
+	} else if (body.center.x < scrn->width/2) {
+	    //take the width resolution and scale the entire thing down to 7
+	    //controls shading of round character
+	    OldValue = x;
+	    OldMin = 0;
+	    OldMax = scrn->width/2;
+	    NewMin = 0;
+	    NewMax = sqrt(radius - 10);
+	    offset = (OldValue - OldMin) * (NewMax - NewMin);
+	    offset /= (OldMax - OldMin);
+	    offset += NewMin;
+	    offset -= sqrt(radius - 10);
+	    offset = abs(offset);
+	    x1 = x + offset; 
+	} else {
+	    OldValue = x;
+	    OldMin = scrn->width/2;
+	    OldMax = scrn->width;
+	    NewMin = 0;
+	    NewMax = sqrt(radius);
+	    offset = (OldValue - OldMin) * (NewMax - NewMin);
+	    offset /= OldMax - OldMin; 
+	    offset += NewMin;
+	    x1 = x - offset; 
+	}
+
+	glColor3ub(color[0],color[1],color[2]);
+	glVertex2f(x1,y1);
+	for(int i = 0; i < 120; i++) {
+	    glVertex2f(x1 + (radius * cos(i * twicePI / triangleNum)),
+		    y1 + (radius * sin(i * twicePI / triangleNum)));
+	}
+	glEnd();
+
+	//(Eye or Dot) Position
+	int y2,x2;
+	radius = 6;
+	glPushMatrix();
+	glColor4f(0.0,0.0,0.0, 1.0);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBegin(GL_TRIANGLE_FAN);
+	if (direction == RIGHT) {
+	    x2 = x + 3.5 * radius;
+	    y2 = y + 2 * radius;
+	} else {
+	    x2 = x - 3.5 * radius;
+	    y2 = y + 2 * radius;
+	}
+	glVertex2f(x2,y2);
+	for(int i = 0; i < 120; i++) {
+	    glVertex2f(x2 + (radius * cos(i * twicePI / triangleNum)),
+		    y2 + (radius * sin(i * twicePI / triangleNum)));
+	}
+	glEnd();
+	glDisable(GL_BLEND);
+
+	//reset color
+	for (int i = 0; i < 3; i++) { 
+	    if (color[i] == 180) { 
+		color[i] -= 30;
+	    } else if (color[i] == 130) {
+		color[i] -= 55;
+	    }
+	}
+    } 
+    else if (status.lifeState == DEAD) {
+	//DEATH ANIMATION
+	glColor3ub(0,255,0); 
+	glPushMatrix(); 
+	glBegin(GL_QUADS); 
+	glVertex2i(scrn->width/2,scrn->height/2);
+	glVertex2i(scrn->width/3, scrn->height);
+	glVertex2i(0,0);
+	glVertex2i(50,200);
+	glEnd(); 
+    }
 }
 
 //Pill Constructor
@@ -833,4 +859,116 @@ onGround = false;
 //}
 }
 */
+void Field_Level::erick_init()
+{
+    //==================ERICK's CODE====================
+    //life assignment, health assignment
+    //Temporary color assignment until character select is up and running
+    Color colors;
+    int evenCount = 0;
+    int oddCount = 0;
 
+    for (int i = 0; i < MAX_PLAYER; i++) {
+	player[i].status.health = 0;
+	player[i].status.lifeCount = 5;
+	player[i].status.lifeState = ALIVE;
+
+	if (i % 2 == 0) {
+	    if (evenCount % 2 == 0) {
+		player[i].body.center.y = scrn->height/5;
+	    } else {
+		player[i].body.center.y = 3 * scrn->height/5;
+	    }
+	    player[i].body.center.x = scrn->width/5;
+	    player[i].direction = RIGHT;
+	    evenCount++;
+	} else {
+	    if (oddCount % 2 == 0) {
+		player[i].body.center.y = scrn->height/5;
+	    } else {
+		player[i].body.center.y = 3 * scrn->height/5;
+	    }
+	    player[i].body.center.x = 4 * scrn->width/5;
+	    player[i].direction = LEFT;
+	    oddCount++;
+	}
+	switch(i) {
+	    case 0:
+		for (int j = 0; j < 3; j++)
+		    player[i].color[j] = colors.red[j];
+		break;
+	    case 1:
+		for (int j = 0; j < 3; j++)
+		    player[i].color[j] = colors.pink[j];
+		break;
+	    case 2:
+		for (int j = 0; j < 3; j++)
+		    player[i].color[j] = colors.darkblue[j];
+		break;
+	    case 3:
+		for (int j = 0; j < 3; j++)
+		    player[i].color[j] = colors.darkgreen[j];
+		break;
+	    default:
+		break;
+	}
+    }
+    //================END ERICK's CODE====================
+}
+
+void Starynight_Level::erick_init()
+{
+    //==================ERICK's CODE====================
+    //life assignment, health assignment
+    //Temporary color assignment until character select is up and running
+
+
+    Color colors;
+    int evenCount = 0;
+    int oddCount = 0;
+    for (int i = 0; i < MAX_PLAYER; i++) {
+	player[i].status.health = 0;
+	player[i].status.lifeCount = 5;
+	if (i % 2 == 0) {
+	    if (evenCount % 2 == 0) {
+		player[i].body.center.y = scrn->height/5;
+	    } else {
+		player[i].body.center.y = 3 * scrn->height/5;
+	    }
+	    player[i].body.center.x = scrn->width/5;
+	    player[i].direction = RIGHT;
+	    evenCount++;
+	} else {
+	    if (oddCount % 2 == 0) {
+		player[i].body.center.y = scrn->height/5;
+	    } else {
+		player[i].body.center.y = 3 * scrn->height/5;
+	    }
+	    player[i].body.center.x = 4 * scrn->width/5;
+	    player[i].direction = LEFT;
+	    oddCount++;
+	}
+
+	switch(i) {
+	    case 0:
+		for (int j = 0; j < 3; j++)
+		    player[i].color[j] = colors.red[j];
+		break;
+	    case 1:
+		for (int j = 0; j < 3; j++)
+		    player[i].color[j] = colors.pink[j];
+		break;
+	    case 2:
+		for (int j = 0; j < 3; j++)
+		    player[i].color[j] = colors.blue[j];
+		break;
+	    case 3:
+		for (int j = 0; j < 3; j++)
+		    player[i].color[j] = colors.green[j];
+		break;
+	    default:
+		break;
+	}
+    }
+    //================END ERICK's CODE====================
+}

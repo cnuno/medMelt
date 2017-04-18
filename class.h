@@ -33,30 +33,37 @@ class Shape {
 };
 
 class Stat {
-	public:
-		int health;
-		int lifeCount;
-		PlayerState lifeState;
+    public:
+	int health;
+	int lifeCount;
+	PlayerState lifeState;
 };
 
 class Gpad {
-	public:
-		char location[MAX_PLAYER][15];
-		Joystick *joystick[MAX_PLAYER];
-		Gpad();
+    public:
+	char location[MAX_PLAYER][15];
+	Joystick *joystick[MAX_PLAYER];
+	Gpad();
 };
 
 class Color {
-	public:
-		int pink[3];
-		int blue[3];
-		int green[3];
-		int red[3];
-		int bloodred[3];
-		int darkblue[3];
-		int darkgreen[3];
-		int hotpink[3];
-		Color();
+    public:
+	int pink[3];
+	int blue[3];
+	int green[3];
+	int red[3];
+	int bloodred[3];
+	int darkblue[3];
+	int darkgreen[3];
+	int hotpink[3];
+	Color();
+};
+
+class Particle {
+    public:
+	Shape s;
+	Vec velocity;
+	int color[3];
 };
 
 class Level;
@@ -77,6 +84,7 @@ class Player {
 	void collision(Shape platform[]);
 	void check_controller(Player *player, Joystick *joystick);
 	void render();
+	Particle bloodStream[MAX_PARTICLE];
 	Player();
 };
 
@@ -106,13 +114,6 @@ class Pill {
 	Shape body[2];
 	Shape end[2];
 	Pill();
-};
-
-class Particle {
-    public:
-	Shape s;
-	Vec velocity;
-	int color[3];
 };
 
 class Menu {
@@ -152,11 +153,11 @@ class Test {
 	int yScale;
 };
 
+
 class Level {
     public:
 	Player player[MAX_PLAYER];
 	Shape platform[MAX_PLAT];
-	Particle bloodStream[MAX_PARTICLE];
 	Gpad controller;
 	StatDisplay statDisplay;
 
@@ -172,10 +173,11 @@ class Level {
 class Starynight_Level:public Level {
     public:
 	float starP[MAX_STAR];
+	void erick_init();	
 	void render();
 	Starynight_Level();
 	Shape moon; 	
-	Shape etBox; 	
+	Shape etBox;
 	void physics (Player *player) 
 	{
 	    Level::physics(player);
@@ -193,6 +195,7 @@ class Starynight_Level:public Level {
 class Field_Level: public Level {
     public:
 	void render();
+	void erick_init();
 	Field_Level();
 	void physics(Player *player) 
 	{

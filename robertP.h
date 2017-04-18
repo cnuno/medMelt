@@ -8,7 +8,7 @@ void playSound(float pitch, bool loop);
 void endSound();
 void closeSoundDevice();
 void loadImages();
-void deathAnimation(int x, int y);
+//void deathAnimation(int x, int y);
 void deathPhysics();
 void deathRender();
 void respawn(Player *player);
