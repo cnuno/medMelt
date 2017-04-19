@@ -73,6 +73,10 @@ Level::Level()
 Field_Level::Field_Level() 
 {
     Level();
+	Kerby p3;
+	Kerby p4;
+	player[2] = p3;
+	player[3] = p4;
 	//floor
 	platform[0].center.x = scrn->width/2;
 	// For Level2 
@@ -179,6 +183,10 @@ void Field_Level::render()
 Starynight_Level::Starynight_Level() 
 {
 	Level();
+	Kerby p3;
+	Kerby p4;
+	player[2] = p3;
+	player[3] = p4;
 
 	//floor
 	platform[0].center.x = scrn->width/2;

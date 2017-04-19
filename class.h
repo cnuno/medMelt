@@ -104,7 +104,7 @@ class Kerby:public Player {
 		Shape eye;
 		int color[3];
 		float dashStrength;
-		void render();
+		void render() {Player::render();}
 };
 
 class StatDisplay {
@@ -163,7 +163,7 @@ class Test {
 
 class Level {
 	public:
-		Player player[MAX_PLAYER];
+		Player player[4];
 		Shape platform[MAX_PLAT];
 		Gpad controller;
 		StatDisplay statDisplay;
