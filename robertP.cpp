@@ -83,6 +83,7 @@ extern unsigned char *buildAlphaData(Ppmimage *img);
 extern ALuint alSource;  
 extern ALuint alBuffer;
 
+
 extern Ppmimage *etIcon;
 extern GLuint etTexture; 
 
@@ -494,35 +495,29 @@ void Level::deathCheck(Player *player)
 		player->status.lifeState = DEAD;
 	}
 
-	//---------------Respawn Handling----------------------
-	//There are lives available
-	if (player->status.lifeState == DEAD 
-			&& player->status.lifeCount > 0) {
-	    respawn(player);
-	}
-	else if (player->status.lifeState == DEAD 
-		&& player->status.lifeCount < 0) {
-	    player->body.center.x = -scrn->width;
-	    player->body.center.y = -scrn->height;
-	    player->delta.x = 0.0;
-	    player->delta.y = 0.0;
-	    //No lives left
-	    //Draw a red 'X' over status box
-	}
+
 }
 
 void Level::respawn(Player *player)
 {
-    //wait 5 seconds
-    player->status.lifeState = ALIVE;
-    player->action = PASSIVE;
-    --player->status.lifeCount;
-    player->body.center.x = scrn->width/2;
-    player->body.center.y = scrn->height;
-    player->delta.x = 0.0;
-    player->delta.y = 0.0;
-    player->jumpCount = 0;
-    player->status.health = 0;
+	//wait 5 seconds
+
+	player->status.lifeState = ALIVE;
+	player->action = PASSIVE;
+	--player->status.lifeCount;
+	player->body.center.x = scrn->width/2;
+	player->body.center.y = scrn->height;
+	player->delta.x = 0.0;
+	player->delta.y = 0.0;
+	player->jumpCount = 0;
+	player->status.health = 0;
+}
+
+double Player::timeDiff(struct timespec *start, struct timespec *end)
+{
+	double oobillion = 1.0/1e9;
+	return (double)(end->tv_sec - start->tv_sec ) +
+		(double)(end->tv_nsec - start->tv_nsec) * oobillion;
 }
 
 /*
@@ -531,12 +526,12 @@ void deathAnimation(int x, int y) {
 }
 
 void deathPhysics() {
-    //conduct physics for particles here
+//conduct physics for particles here
 }
 
 void deathRender() {
-    //render particles here
+//render particles here
 }
-*/
+ */
 
 

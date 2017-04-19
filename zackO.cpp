@@ -52,6 +52,7 @@ extern float A,B,C,D;
 extern int done; 
 extern void resetMain(Game *game);
 
+
 Level::Level()
 {
     /*
@@ -96,11 +97,39 @@ void field(Game *game)
 	for (int i = 0; i < MAX_PLAYER; i++) {
 		game->level2.physics(&game->level2.player[i]);
 		game->level2.player[i].check_controller(&game->level2.player[i], game->level2.controller.joystick[i]);
-		game->level2.player[i].render();
 		game->level2.deathCheck(&game->level2.player[i]);
-		//if player[i] is dead for an instance start timer
-		//render particles for 5 seconds
-		//then resawn
+
+		if (game->level2.player[i].status.lifeState == ALIVE) 
+		{
+			game->level2.player[i].render();
+		} 
+		else if (game->level2.player[i].status.lifeState == DEAD && game->level2.player[i].status.initDeath == false) 
+		{
+			clock_gettime(CLOCK_REALTIME, &game->level2.player[i].timeStart);
+			game->level2.player[i].status.initDeath = true;
+		}
+		else if (game->level2.player[i].status.lifeState == DEAD && game->level2.player[i].status.initDeath == true) 
+		{
+			clock_gettime(CLOCK_REALTIME, &game->level2.player[i].timeCurrent);
+			//game->level2.player[i].deathRender();
+			game->level2.player[i].timeSpan = game->level2.player[i].timeDiff(&game->level2.player[i].timeStart, &game->level2.player[i].timeCurrent);
+			if (game->level2.player[i].timeSpan >= 5 && game->level2.player[i].status.lifeCount > 0)
+			{
+				game->level2.player[i].status.initDeath = false;
+				game->level2.respawn(&game->level2.player[i]);
+			}
+			else if (game->level2.player[i].status.lifeCount < 0) {
+				game->level2.player[i].delta.x = 0.0;
+				game->level2.player[i].delta.y = 0.0;
+				//No lives left
+				//Draw a red 'X' over status box
+			}
+		}	
+
+		/*
+		//No lives left
+		//Draw a red 'X' over status box
+		 */
 	}
 
 	game->level2.statDisplay.render();
@@ -149,7 +178,7 @@ void Field_Level::render()
 
 Starynight_Level::Starynight_Level() 
 {
-    Level();
+	Level();
 
 	//floor
 	platform[0].center.x = scrn->width/2;
@@ -184,7 +213,7 @@ Starynight_Level::Starynight_Level()
 	moon.radius = scrn->height/2; 
 	etBox.center.x = moon.center.x;
 	etBox.center.y = moon.center.y;
-       erick_init();	
+	erick_init();	
 }
 
 void starynight(Game *game)

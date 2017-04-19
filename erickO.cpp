@@ -220,6 +220,7 @@ Player::Player()
 	}
     }
 
+	status.initDeath = false;
 
 }
 
@@ -861,114 +862,110 @@ onGround = false;
 */
 void Field_Level::erick_init()
 {
-    //==================ERICK's CODE====================
-    //life assignment, health assignment
-    //Temporary color assignment until character select is up and running
-    Color colors;
-    int evenCount = 0;
-    int oddCount = 0;
+	//==================ERICK's CODE====================
+	//life assignment, health assignment
+	//Temporary color assignment until character select is up and running
+	Color colors;
+	int evenCount = 0;
+	int oddCount = 0;
 
-    for (int i = 0; i < MAX_PLAYER; i++) {
-	player[i].status.health = 0;
-	player[i].status.lifeCount = 5;
-	player[i].status.lifeState = ALIVE;
+	for (int i = 0; i < MAX_PLAYER; i++) {
+		player[i].status.health = 0;
+		player[i].status.lifeCount = 5;
+		player[i].status.lifeState = ALIVE;
 
-	if (i % 2 == 0) {
-	    if (evenCount % 2 == 0) {
-		player[i].body.center.y = scrn->height/5;
-	    } else {
-		player[i].body.center.y = 3 * scrn->height/5;
-	    }
-	    player[i].body.center.x = scrn->width/5;
-	    player[i].direction = RIGHT;
-	    evenCount++;
-	} else {
-	    if (oddCount % 2 == 0) {
-		player[i].body.center.y = scrn->height/5;
-	    } else {
-		player[i].body.center.y = 3 * scrn->height/5;
-	    }
-	    player[i].body.center.x = 4 * scrn->width/5;
-	    player[i].direction = LEFT;
-	    oddCount++;
+		if (i % 2 == 0) {
+			if (evenCount % 2 == 0) {
+				player[i].body.center.y = scrn->height/5;
+			} else {
+				player[i].body.center.y = 3 * scrn->height/5;
+			}
+			player[i].body.center.x = scrn->width/5;
+			player[i].direction = RIGHT;
+			evenCount++;
+		} else {
+			if (oddCount % 2 == 0) {
+				player[i].body.center.y = scrn->height/5;
+			} else {
+				player[i].body.center.y = 3 * scrn->height/5;
+			}
+			player[i].body.center.x = 4 * scrn->width/5;
+			player[i].direction = LEFT;
+			oddCount++;
+		}
+		switch(i) {
+			case 0:
+				for (int j = 0; j < 3; j++)
+					player[i].color[j] = colors.red[j];
+				break;
+			case 1:
+				for (int j = 0; j < 3; j++)
+					player[i].color[j] = colors.pink[j];
+				break;
+			case 2:
+				for (int j = 0; j < 3; j++)
+					player[i].color[j] = colors.darkblue[j];
+				break;
+			case 3:
+				for (int j = 0; j < 3; j++)
+					player[i].color[j] = colors.darkgreen[j];
+				break;
+			default:
+				break;
+		}
 	}
-	switch(i) {
-	    case 0:
-		for (int j = 0; j < 3; j++)
-		    player[i].color[j] = colors.red[j];
-		break;
-	    case 1:
-		for (int j = 0; j < 3; j++)
-		    player[i].color[j] = colors.pink[j];
-		break;
-	    case 2:
-		for (int j = 0; j < 3; j++)
-		    player[i].color[j] = colors.darkblue[j];
-		break;
-	    case 3:
-		for (int j = 0; j < 3; j++)
-		    player[i].color[j] = colors.darkgreen[j];
-		break;
-	    default:
-		break;
-	}
-    }
-    //================END ERICK's CODE====================
+	//================END ERICK's CODE====================
 }
 
 void Starynight_Level::erick_init()
 {
-    //==================ERICK's CODE====================
-    //life assignment, health assignment
-    //Temporary color assignment until character select is up and running
+	//==================ERICK's CODE====================
+	Color colors;
+	int evenCount = 0;
+	int oddCount = 0;
+	for (int i = 0; i < MAX_PLAYER; i++) {
+		player[i].status.health = 0;
+		player[i].status.lifeCount = 5;
+		if (i % 2 == 0) {
+			if (evenCount % 2 == 0) {
+				player[i].body.center.y = scrn->height/5;
+			} else {
+				player[i].body.center.y = 3 * scrn->height/5;
+			}
+			player[i].body.center.x = scrn->width/5;
+			player[i].direction = RIGHT;
+			evenCount++;
+		} else {
+			if (oddCount % 2 == 0) {
+				player[i].body.center.y = scrn->height/5;
+			} else {
+				player[i].body.center.y = 3 * scrn->height/5;
+			}
+			player[i].body.center.x = 4 * scrn->width/5;
+			player[i].direction = LEFT;
+			oddCount++;
+		}
 
-
-    Color colors;
-    int evenCount = 0;
-    int oddCount = 0;
-    for (int i = 0; i < MAX_PLAYER; i++) {
-	player[i].status.health = 0;
-	player[i].status.lifeCount = 5;
-	if (i % 2 == 0) {
-	    if (evenCount % 2 == 0) {
-		player[i].body.center.y = scrn->height/5;
-	    } else {
-		player[i].body.center.y = 3 * scrn->height/5;
-	    }
-	    player[i].body.center.x = scrn->width/5;
-	    player[i].direction = RIGHT;
-	    evenCount++;
-	} else {
-	    if (oddCount % 2 == 0) {
-		player[i].body.center.y = scrn->height/5;
-	    } else {
-		player[i].body.center.y = 3 * scrn->height/5;
-	    }
-	    player[i].body.center.x = 4 * scrn->width/5;
-	    player[i].direction = LEFT;
-	    oddCount++;
+		switch(i) {
+			case 0:
+				for (int j = 0; j < 3; j++)
+					player[i].color[j] = colors.red[j];
+				break;
+			case 1:
+				for (int j = 0; j < 3; j++)
+					player[i].color[j] = colors.pink[j];
+				break;
+			case 2:
+				for (int j = 0; j < 3; j++)
+					player[i].color[j] = colors.blue[j];
+				break;
+			case 3:
+				for (int j = 0; j < 3; j++)
+					player[i].color[j] = colors.green[j];
+				break;
+			default:
+				break;
+		}
 	}
-
-	switch(i) {
-	    case 0:
-		for (int j = 0; j < 3; j++)
-		    player[i].color[j] = colors.red[j];
-		break;
-	    case 1:
-		for (int j = 0; j < 3; j++)
-		    player[i].color[j] = colors.pink[j];
-		break;
-	    case 2:
-		for (int j = 0; j < 3; j++)
-		    player[i].color[j] = colors.blue[j];
-		break;
-	    case 3:
-		for (int j = 0; j < 3; j++)
-		    player[i].color[j] = colors.green[j];
-		break;
-	    default:
-		break;
-	}
-    }
-    //================END ERICK's CODE====================
+	//================END ERICK's CODE====================
 }
