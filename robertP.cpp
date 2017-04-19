@@ -23,6 +23,10 @@ each player has.
 04/16/2017
 Today I figured out how to make the characters respawn. The death functions
 are called in each level handler.
+
+04/17/2017
+Added timeDiff function to handle player respawns. Next up will work on revamping 
+sound code and moving texture definitions out of my file.
  */
 
 #include "headers.h"
