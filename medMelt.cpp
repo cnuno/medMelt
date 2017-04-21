@@ -153,6 +153,7 @@ int main()
 		glXSwapBuffers(dpy, win);
 	}
 	endSound();
+    closeSoundDevice();
 	cleanupXWindows();
 	return 0;
 }

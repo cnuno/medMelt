@@ -79,6 +79,9 @@ void Player::check_controller(Player *player, Joystick *joystick)
 
     if (joystick->sample(&event) && event.isButton() && event.value == 1) {
 	switch (event.number) {
+        case 0:
+            player->attack();
+            break;
 	    case 1:
 	    case 3:
 		//JUMP
@@ -199,7 +202,9 @@ Player::Player()
 {
     JUMP_MAX = 4;
     body.radius = 50; 
-    body.width = 100; 
+    body.width = 100;
+    weapon.width = body.width; 
+    weapon.height = 20;
     body.height = body.width;
     body.center.y = 4*scrn->height/5;
     delta.x = 0; 
@@ -249,6 +254,20 @@ void Player::render()
 	    radius = body.radius - 10;
 	else if (jumpCount == 4) 
 	    radius = body.radius - 15;
+
+    //render weapon
+    glColor3f(102, 51, 0);
+    glPushMatrix();
+    glBegin(GL_QUADS);
+    glVertex2i(weapon.center.x - weapon.width/2,
+            weapon.center.y - weapon.height/2);
+    glVertex2i(weapon.center.x - weapon.width/2,
+            weapon.center.y + weapon.height/2);
+    glVertex2i(weapon.center.x + weapon.width/2,
+            weapon.center.y + weapon.height/2);
+    glVertex2i(weapon.center.x + weapon.width/2,
+            weapon.center.y - weapon.height/2);
+    glEnd();
 
 	//black circle
 	glPushMatrix();
@@ -363,7 +382,7 @@ void Player::render()
 	    }
 	}
     } 
-    else if (status.lifeState == DEAD) {
+    /*else if (status.lifeState == DEAD) {
 	//DEATH ANIMATION
 	glColor3ub(0,255,0); 
 	glPushMatrix(); 
@@ -374,6 +393,7 @@ void Player::render()
 	glVertex2i(50,200);
 	glEnd(); 
     }
+    */
 }
 
 //Pill Constructor
@@ -409,6 +429,8 @@ void Level::physics(Player *player)
     player->delta.y -= GRAVITY; 
     player->body.center.y += player->delta.y;
     player->body.center.x += player->delta.x;
+    player->weapon.center.x = player->body.center.x;
+    player->weapon.center.y = player->body.center.y;
 
     player->collision(platform); 
     //if (player->onGround && player->delta.y <= 0.0) {
@@ -423,6 +445,8 @@ void Level::physics(Player *player)
 	    player->delta.y *= -0.2f;
 	    player->body.center.y += player->delta.y;
 	    player->body.center.x += player->delta.x;
+    player->weapon.center.x = player->body.center.x;
+    player->weapon.center.y = player->body.center.y;
 	}
 
 	//Player Moving Right 
@@ -870,7 +894,9 @@ void Field_Level::erick_init()
 	int oddCount = 0;
 
 	for (int i = 0; i < MAX_PLAYER; i++) {
-		player[i].status.health = 0;
+		player[i].index = i;
+        player[i].multiplier = 0.0;
+        player[i].status.health = 0;
 		player[i].status.lifeCount = 5;
 		player[i].status.lifeState = ALIVE;
 
@@ -892,80 +918,86 @@ void Field_Level::erick_init()
 			player[i].body.center.x = 4 * scrn->width/5;
 			player[i].direction = LEFT;
 			oddCount++;
-		}
-		switch(i) {
-			case 0:
-				for (int j = 0; j < 3; j++)
-					player[i].color[j] = colors.red[j];
-				break;
-			case 1:
-				for (int j = 0; j < 3; j++)
-					player[i].color[j] = colors.pink[j];
-				break;
-			case 2:
-				for (int j = 0; j < 3; j++)
-					player[i].color[j] = colors.darkblue[j];
-				break;
-			case 3:
-				for (int j = 0; j < 3; j++)
-					player[i].color[j] = colors.darkgreen[j];
-				break;
-			default:
-				break;
-		}
-	}
-	//================END ERICK's CODE====================
+        }
+        player[i].weapon.center.x = player[i].body.center.x;
+        player[i].weapon.center.y = player[i].body.center.y;
+        switch(i) {
+            case 0:
+                for (int j = 0; j < 3; j++)
+                    player[i].color[j] = colors.red[j];
+                break;
+            case 1:
+                for (int j = 0; j < 3; j++)
+                    player[i].color[j] = colors.pink[j];
+                break;
+            case 2:
+                for (int j = 0; j < 3; j++)
+                    player[i].color[j] = colors.darkblue[j];
+                break;
+            case 3:
+                for (int j = 0; j < 3; j++)
+                    player[i].color[j] = colors.darkgreen[j];
+                break;
+            default:
+                break;
+        }
+    }
+    //================END ERICK's CODE====================
 }
 
 void Starynight_Level::erick_init()
 {
-	//==================ERICK's CODE====================
-	Color colors;
-	int evenCount = 0;
-	int oddCount = 0;
-	for (int i = 0; i < MAX_PLAYER; i++) {
-		player[i].status.health = 0;
-		player[i].status.lifeCount = 5;
-		if (i % 2 == 0) {
-			if (evenCount % 2 == 0) {
-				player[i].body.center.y = scrn->height/5;
-			} else {
-				player[i].body.center.y = 3 * scrn->height/5;
-			}
-			player[i].body.center.x = scrn->width/5;
-			player[i].direction = RIGHT;
-			evenCount++;
-		} else {
-			if (oddCount % 2 == 0) {
-				player[i].body.center.y = scrn->height/5;
-			} else {
-				player[i].body.center.y = 3 * scrn->height/5;
-			}
-			player[i].body.center.x = 4 * scrn->width/5;
-			player[i].direction = LEFT;
-			oddCount++;
-		}
+    //==================ERICK's CODE====================
+    Color colors;
+    int evenCount = 0;
+    int oddCount = 0;
+    for (int i = 0; i < MAX_PLAYER; i++) {
+        player[i].index = i;
+        player[i].multiplier = 0.0;
+        player[i].status.health = 0;
+        player[i].status.lifeCount = 5;
+        if (i % 2 == 0) {
+            if (evenCount % 2 == 0) {
+                player[i].body.center.y = scrn->height/5;
+            } else {
+                player[i].body.center.y = 3 * scrn->height/5;
+            }
+            player[i].body.center.x = scrn->width/5;
+            player[i].direction = RIGHT;
+            evenCount++;
+        } else {
+            if (oddCount % 2 == 0) {
+                player[i].body.center.y = scrn->height/5;
+            } else {
+                player[i].body.center.y = 3 * scrn->height/5;
+            }
+            player[i].body.center.x = 4 * scrn->width/5;
+            player[i].direction = LEFT;
+            oddCount++;
+        }
+        player[i].weapon.center.x = player[i].body.center.x;
+        player[i].weapon.center.y = player[i].body.center.y;
 
-		switch(i) {
-			case 0:
-				for (int j = 0; j < 3; j++)
-					player[i].color[j] = colors.red[j];
-				break;
-			case 1:
-				for (int j = 0; j < 3; j++)
-					player[i].color[j] = colors.pink[j];
-				break;
-			case 2:
-				for (int j = 0; j < 3; j++)
-					player[i].color[j] = colors.blue[j];
-				break;
-			case 3:
-				for (int j = 0; j < 3; j++)
-					player[i].color[j] = colors.green[j];
-				break;
-			default:
-				break;
-		}
-	}
-	//================END ERICK's CODE====================
+        switch(i) {
+            case 0:
+                for (int j = 0; j < 3; j++)
+                    player[i].color[j] = colors.red[j];
+                break;
+            case 1:
+                for (int j = 0; j < 3; j++)
+                    player[i].color[j] = colors.pink[j];
+                break;
+            case 2:
+                for (int j = 0; j < 3; j++)
+                    player[i].color[j] = colors.blue[j];
+                break;
+            case 3:
+                for (int j = 0; j < 3; j++)
+                    player[i].color[j] = colors.green[j];
+                break;
+            default:
+                break;
+        }
+    }
+    //================END ERICK's CODE====================
 }

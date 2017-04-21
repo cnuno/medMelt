@@ -73,9 +73,12 @@ class Particle {
 class Level;
 class Player {
 	public:
+        int index;
+        float multiplier;
 		Stat status;
 		Joystick *joystick = NULL;
 		Shape body;
+        Shape weapon;
 		int color[3];
 		Vec delta;
 		bool onGround;
@@ -93,9 +96,12 @@ class Player {
 		Particle bloodStream[MAX_PARTICLE];
 		double timeDiff(struct timespec *start, struct timespec *end);
 		Player();
+        void attack();
+        void boxRender(int centx, int centy, int width);
 };
 
 //inheritance test
+/*
 class Kerby:public Player {
 	public:
 		Shape outline;
@@ -106,6 +112,7 @@ class Kerby:public Player {
 		float dashStrength;
 		void render() {Player::render();}
 };
+*/
 
 class StatDisplay {
 	public:
@@ -163,7 +170,7 @@ class Test {
 
 class Level {
 	public:
-		Player player[4];
+		Player player[MAX_PLAYER];
 		Shape platform[MAX_PLAT];
 		Gpad controller;
 		StatDisplay statDisplay;
@@ -174,6 +181,8 @@ class Level {
 		void physics(Player *player);
 		void deathCheck(Player *player);
 		void respawn(Player *player);
+        void Lattack(int index);
+        //void attack(Player *player);
 		Level();
 };
 
