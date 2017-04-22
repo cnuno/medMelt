@@ -682,8 +682,9 @@ void Level::Lattack(int index)
 
                 distance = sqrt(distance);
                 if (distance < player[i].body.radius){
-                    player[i].body.center.x -= player[i].multiplier * 50;
-                    player[i].multiplier += 0.25;
+                    //player[i].body.center.x -= player[i].multiplier * 50;
+                    player[i].delta.x -= player[i].multiplier*5;
+					player[i].multiplier += 0.25;
                 }
             }
             else if(player[index].direction == RIGHT) {
@@ -695,7 +696,8 @@ void Level::Lattack(int index)
                     pow((player[index].weapon.center.y + player[index].weapon.height/2) - player[i].body.center.y, 2);
                 distance = sqrt(distance);
                 if (distance < player[i].body.radius) {
-                    player[i].body.center.x += player[i].multiplier * 50;
+                    //player[i].body.center.x += player[i].multiplier * 50;
+                    player[i].delta.x += player[i].multiplier*5;
                     player[i].multiplier += 0.25;
                 }
             }
