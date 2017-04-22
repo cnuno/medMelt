@@ -12,15 +12,13 @@
 #define MAX_PARTICLE 50
 #define MAX_STAR 50
 
-enum State {MAINMENU, PAUSE, LEVELSEL, ERICK, ROBERT, ZACK, FIELD, STARYNIGHT, BAKERSFIELD};
+enum State {MAINMENU, PAUSE, LEVELSEL, ERICK, ROBERT, ZACK, FIELD, 
+	STARYNIGHT, DISCO};
 enum PlayerState {ALIVE, DEAD};
 enum Collision {ENEMY, PLATFORM, PROJECTILE};
 enum PlayerAction {EMPTY, PASSIVE, GROUNDPOUND, DASH, ATTACK, DEFEND, JUMP, MOVE};
 enum Direction {LEFT, UP, RIGHT, DOWN};
 enum TimeOfDay {MORNING, NOON, NIGHT};
-
-
-
 
 class Vec {
 	public:
@@ -60,6 +58,7 @@ class Color {
 		int darkblue[3];
 		int darkgreen[3];
 		int hotpink[3];
+		int neon[6][3];
 		Color();
 };
 
@@ -167,6 +166,12 @@ class Test {
 		int yScale;
 };
 
+class Coordinates {
+	public:
+		int x;
+		int y;
+		int color[3][3];
+};
 
 class Level {
 	public:
@@ -223,15 +228,13 @@ class Field_Level: public Level {
 		}
 };
 
-class Bakersfield_Level: public Level {
+class Disco_Level: public Level {
 	public:
-		TimeOfDay tod;
-		Shape sun;
-		Shape moon;
-		Shape gas;
-		Shape oil;
+		void init_triangle_sky();
+		void erick_init();
 		void render();
-		Bakersfield_Level();
+		Disco_Level();
+		Coordinates coor[10 * 17];
 		void physics(Player *player) 
 		{
 			Level::physics(player);
@@ -257,7 +260,7 @@ class Game {
 
 		Field_Level level2;
 		Starynight_Level level3;	
-		Bakersfield_Level level4;
+		Disco_Level level4;
 		State prevState;
 		Game();
 		~Game();

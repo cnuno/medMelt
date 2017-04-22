@@ -684,6 +684,7 @@ void Level::Lattack(int index)
                 if (distance < player[i].body.radius){
                     //player[i].body.center.x -= player[i].multiplier * 50;
                     player[i].delta.x -= player[i].multiplier*5;
+                    player[i].delta.y += 0.75;
 					player[i].multiplier += 0.25;
                 }
             }
@@ -698,6 +699,7 @@ void Level::Lattack(int index)
                 if (distance < player[i].body.radius) {
                     //player[i].body.center.x += player[i].multiplier * 50;
                     player[i].delta.x += player[i].multiplier*5;
+                    player[i].delta.y += 0.75;
                     player[i].multiplier += 0.25;
                 }
             }

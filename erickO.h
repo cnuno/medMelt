@@ -16,6 +16,6 @@ void render_triangle_sky(Game *game);
 int noise(int x);
 bool collision_detect(Game *game, int x);
 void toggle_move(Player *player, Direction dir);
-void bakersfield(Game *game);
+void disco(Game *game);
 
 #endif
