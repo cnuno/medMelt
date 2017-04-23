@@ -494,19 +494,28 @@ void check_keys(XEvent *e, Game *game)
                     case STARYNIGHT:
                         game->level3.player[0].action = GROUNDPOUND;
                         game->level3.player[0].delta.x = 0.0f;
+#ifdef USE_OPENAL_SOUND
+			play_sound(3, 1.0f, false);
+#endif
                         //usleep(300000);
                         game->level3.player[0].delta.y = -20.0f;
                         break;
                     case FIELD:
                         game->level2.player[0].action = GROUNDPOUND;
                         game->level2.player[0].delta.x = 0.0f;
-                        //usleep(300000);
+#ifdef USE_OPENAL_SOUND
+			play_sound(3, 1.0f, false);
+#endif
+                       //usleep(300000);
                         game->level2.player[0].delta.y = -20.0f;
                         break;
                     case DISCO:
                         game->level4.player[0].action = GROUNDPOUND;
                         game->level4.player[0].delta.x = 0.0f;
-                        //usleep(300000);
+#ifdef USE_OPENAL_SOUND
+			play_sound(3, 1.0f, false);
+#endif
+                       //usleep(300000);
                         game->level4.player[0].delta.y = -20.0f;
                         break;
                     default : 
@@ -517,12 +526,21 @@ void check_keys(XEvent *e, Game *game)
                 switch(game->render) {
                     case STARYNIGHT:
                         game->level3.player[0].attack(); 
+#ifdef USE_OPENAL_SOUND
+			play_sound(2, 1.0f, false);
+#endif
                         break;
                     case FIELD:
                         game->level2.player[0].attack(); 
-                        break;
+#ifdef USE_OPENAL_SOUND
+			play_sound(2, 1.0f, false);
+#endif
+                       break;
                     case DISCO:
-                        game->level4.player[0].attack(); 
+#ifdef USE_OPENAL_SOUND
+			play_sound(2, 1.0f, false);
+#endif
+                       game->level4.player[0].attack(); 
                         break;
                     default:
                         break;
@@ -531,9 +549,7 @@ void check_keys(XEvent *e, Game *game)
             case XK_Return:
                 switch (game->render) {
                     case MAINMENU:
-                        if (dyna == playIcon) {             
-                            //loadSound("./audio/testsong.wav");
-                            //playSound(1.0f, false);
+                        if (dyna == playIcon) { 
                             game->render = LEVELSEL;
                         }
                         else if (dyna == optionsIcon) {
@@ -554,9 +570,15 @@ void check_keys(XEvent *e, Game *game)
                         }
                     case LEVELSEL:
                         if (dyna2 == fieldIcon) {
+#ifdef USE_OPENAL_SOUND
+			    play_sound(4, 1.0f, true);
+#endif
                             game->render = FIELD;
                         }
                         else if (dyna2 == staryIcon) {
+#ifdef USE_OPENAL_SOUND
+			    play_sound(5, 1.0f, true);
+#endif
                             game->render = STARYNIGHT;
                         }
                         break;
@@ -688,6 +710,9 @@ void check_keys(XEvent *e, Game *game)
                 };
                 break;
             case XK_v:
+#ifdef USE_OPENAL_SOUND
+		play_sound (1, 1.0f, true);
+#endif
                 game->render = DISCO; 
                 break;
 

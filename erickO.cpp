@@ -95,6 +95,9 @@ void Player::check_controller(Player *player, Joystick *joystick)
 		switch (event.number) {
 			case 0:
 				player->attack();
+#ifdef USE_OPENAL_SOUND
+			        play_sound(2, 1.0f, false);
+#endif
 				break;
 			case 1:
 			case 3:
@@ -160,6 +163,9 @@ void Player::check_controller(Player *player, Joystick *joystick)
 				//SPECIAL MOVE: GROUND POUND
 				player->action = GROUNDPOUND;
 				player->delta.x = 0.0f; 
+#ifdef USE_OPENAL_SOUND
+				play_sound(3, 1.0f, false);
+#endif
 				//usleep(300000);
 				player->delta.y = -20.0f; 
 				break;
