@@ -486,16 +486,16 @@ void Player::boxRender(int centx, int centy, int width)
 	float twicePI = 2.0 * M_PI;
     Rect r; 
     glEnable(GL_TEXTURE_2D);
-    r.bot = y - width/2-100;
-    r.left = x+width/2;
+    r.bot = y + width;
+    r.left = x + 42;
     r.center = x; 
     char temp[15]; 
     for(int i=0; i<15; i++) {
         temp[i] = st[index][i]; 
     }
     ggprint40(&r,0,0x0ff0000,"%s", temp); 
-    r.bot = y + width/2;
-    r.left = x+width/2;
+    r.bot = y - width/2;
+    r.left = x + width;
     r.center = x; 
     switch(game.render) {
         case STARYNIGHT:
@@ -506,6 +506,34 @@ void Player::boxRender(int centx, int centy, int width)
             break;
         case DISCO:
             ggprint40(&r, 0, 0x0ff0000, "%i", game.level4.player[index].status.lifeCount);
+            break;
+        case MAINMENU:
+            break;
+        case PAUSE:
+            break;
+        case ERICK:
+            break;
+        case LEVELSEL:
+            break;
+        case ROBERT:
+            break;
+        case ZACK:
+            break;
+        default:
+            break;
+    }
+    r.bot = y + width/2;
+    r.left = x + width;
+    r.center = x; 
+    switch(game.render) {
+        case STARYNIGHT:
+            ggprint40(&r, 0, 0x0ff0000, "%1.1f", game.level3.player[index].multiplier*10);
+            break;
+        case FIELD:
+            ggprint40(&r, 0, 0x0ff0000, "%1.1f", game.level2.player[index].multiplier*10);
+            break;
+        case DISCO:
+            ggprint40(&r, 0, 0x0ff0000, "%1.1f", game.level4.player[index].multiplier*10);
             break;
         case MAINMENU:
             break;
