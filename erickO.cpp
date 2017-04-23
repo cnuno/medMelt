@@ -528,7 +528,8 @@ void Player::collision(Shape platform[])
 			> (platform[i].center.y - platform[i].height/2);
 		condition5 = delta.y <= 0.0;
 
-		if (condition1 && condition2 && condition3 && condition4 && condition5) {
+		if (condition1 && condition2 && condition3 && condition4 
+				&& condition5) {
 			onGround = true;
 			currentContact = i;
 			i = MAX_PLAT + 1; //break
@@ -728,10 +729,16 @@ Disco_Level::Disco_Level()
 {
 	erick_init();
 	//floor characteristics
-	platform[0].center.x = scrn->width/2;
 	platform[0].width = scrn->width-50;
 	platform[0].height = scrn->height/20; 
+	platform[0].center.x = scrn->width/2;
 	platform[0].center.y = platform[0].height/2 + 150; 
+
+	//moving platform
+	platform[1].width = scrn->width/4;
+	platform[1].height = scrn->height/20; 
+	platform[1].center.x = scrn->width/2;
+	platform[1].center.y = 5*scrn->height/8; 
 
 	//shade handling
 	widthPartition = scrn->width/7;
@@ -743,6 +750,26 @@ Disco_Level::Disco_Level()
 		player[i].status.lifeCount = 5;
 	}
 	init_triangle_sky();
+}
+
+bool fw = true;
+void Disco_Level::movingPlat(Shape *p) {
+
+	if (fw) {
+		p->center.x += 5;
+	} else if (fw == false) {
+		p->center.x -= 5;
+	} else {
+		p->center.y -= 5;
+	}
+
+	if (p->center.x <=0) {
+		fw = true;
+	} else if (p->center.x >=scrn->width) {
+		fw = false; 
+	}
+
+
 }
 
 bool alterCoor = false;
@@ -757,6 +784,7 @@ void disco(Game *game)
 
 	game->level4.renderSky();
 	game->level4.render();
+	game->level4.movingPlat(&game->level4.platform[1]);
 
 	for (int i = 0; i < MAX_PLAYER; i++) {
 		game->level4.physics(&game->level4.player[i]);
@@ -771,16 +799,21 @@ void disco(Game *game)
 		{
 			game->level4.player[i].render();
 		} 
-		else if (game->level4.player[i].status.lifeState == DEAD && game->level4.player[i].status.initDeath == false) 
+		else if (game->level4.player[i].status.lifeState == DEAD 
+				&& game->level4.player[i].status.initDeath == false) 
 		{
 			clock_gettime(CLOCK_REALTIME, &game->level4.player[i].timeStart);
 			game->level4.player[i].status.initDeath = true;
 		}
-		else if (game->level4.player[i].status.lifeState == DEAD && game->level4.player[i].status.initDeath == true) 
+		else if (game->level4.player[i].status.lifeState == DEAD 
+				&& game->level4.player[i].status.initDeath == true) 
 		{
 			clock_gettime(CLOCK_REALTIME, &game->level4.player[i].timeCurrent);
-			game->level4.player[i].timeSpan = game->level4.player[i].timeDiff(&game->level4.player[i].timeStart, &game->level4.player[i].timeCurrent);
-			if (game->level4.player[i].timeSpan >= 5 && game->level4.player[i].status.lifeCount > 0)
+			game->level4.player[i].timeSpan = 
+				game->level4.player[i].timeDiff(&game->level4.player[i].timeStart, 
+						&game->level4.player[i].timeCurrent);
+			if (game->level4.player[i].timeSpan >= 5 
+					&& game->level4.player[i].status.lifeCount > 0)
 			{
 				game->level4.player[i].status.initDeath = false;
 				game->level4.respawn(&game->level4.player[i]);
@@ -791,7 +824,7 @@ void disco(Game *game)
 			}
 		}	
 	}
-    game->level4.statDisplay.render();
+	game->level4.statDisplay.render();
 }
 
 int ct = 0;
@@ -800,6 +833,7 @@ bool forward = true;
 float opacity = 0;
 void Disco_Level::render()	
 {
+	Color colors;
 	glLineWidth(1);
 	glColor3ub(255,255,255);
 	glBegin(GL_LINES);
@@ -822,35 +856,78 @@ void Disco_Level::render()
 	glVertex2f(-scrn->width/2,-scrn->height/2);
 	glEnd();
 
-	//Render black line on floor
-	glColor3ub(150,150,0); 
-	glPushMatrix(); 
-	glBegin(GL_QUADS); 
-	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
-			platform[0].center.y - platform[0].height/2 - 5);
-	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
-			platform[0].center.y + platform[0].height/2 + 5);
-	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
-			platform[0].center.y + platform[0].height/2 + 5);
-	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
-			platform[0].center.y - platform[0].height/2 - 5);
-	glEnd(); 
-	// End of blfloor
-
-	//Render of floor
+	//floor
 	glColor3ub(0,0,0); 
 	glPushMatrix(); 
 	glBegin(GL_QUADS); 
-	glVertex2i(platform[0].center.x - platform[0].width/2, 
-			platform[0].center.y - platform[0].height/2);
-	glVertex2i(platform[0].center.x - platform[0].width/2, 
-			platform[0].center.y + platform[0].height/2);
-	glVertex2i(platform[0].center.x + platform[0].width/2, 
-			platform[0].center.y + platform[0].height/2);
-	glVertex2i(platform[0].center.x + platform[0].width/2, 
-			platform[0].center.y - platform[0].height/2);
-	glEnd(); 
-	// End of floor
+	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
+			platform[0].center.y - platform[0].height/2 - 5);
+	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
+			platform[0].center.y + platform[0].height/2 + 5);
+	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
+			platform[0].center.y + platform[0].height/2 + 5);
+	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
+			platform[0].center.y - platform[0].height/2 - 5);
+	glEnd();
+
+	//floor outline
+	glColor3ub(colors.neon[1][0],colors.neon[1][1],colors.neon[1][2]); 
+	glPushMatrix(); 
+	glBegin(GL_LINES); 
+	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
+			platform[0].center.y - platform[0].height/2 - 5);
+	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
+			platform[0].center.y + platform[0].height/2 + 5);
+	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
+			platform[0].center.y + platform[0].height/2 + 5);
+	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
+			platform[0].center.y + platform[0].height/2 + 5);
+	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
+			platform[0].center.y + platform[0].height/2 + 5);
+	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
+			platform[0].center.y - platform[0].height/2 - 5);
+	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
+			platform[0].center.y - platform[0].height/2 - 5);
+	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
+			platform[0].center.y - platform[0].height/2 - 5);
+	glEnd();
+
+	//moving platform
+	glColor3ub(0,0,0); 
+	glPushMatrix(); 
+	glBegin(GL_QUADS); 
+	glVertex2i(platform[1].center.x - platform[1].width/2 - 5, 
+			platform[1].center.y - platform[1].height/2 - 5);
+	glVertex2i(platform[1].center.x - platform[1].width/2 - 5, 
+			platform[1].center.y + platform[1].height/2 + 5);
+	glVertex2i(platform[1].center.x + platform[1].width/2 + 5, 
+			platform[1].center.y + platform[1].height/2 + 5);
+	glVertex2i(platform[1].center.x + platform[1].width/2 + 5, 
+			platform[1].center.y - platform[1].height/2 - 5);
+	glEnd();
+
+	//floor outline
+	glColor3ub(colors.neon[1][0],colors.neon[1][1],colors.neon[1][2]); 
+	glPushMatrix(); 
+	glBegin(GL_LINES); 
+	glVertex2i(platform[1].center.x - platform[1].width/2 - 5, 
+			platform[1].center.y - platform[1].height/2 - 5);
+	glVertex2i(platform[1].center.x - platform[1].width/2 - 5, 
+			platform[1].center.y + platform[1].height/2 + 5);
+	glVertex2i(platform[1].center.x - platform[1].width/2 - 5, 
+			platform[1].center.y + platform[1].height/2 + 5);
+	glVertex2i(platform[1].center.x + platform[1].width/2 + 5, 
+			platform[1].center.y + platform[1].height/2 + 5);
+	glVertex2i(platform[1].center.x + platform[1].width/2 + 5, 
+			platform[1].center.y + platform[1].height/2 + 5);
+	glVertex2i(platform[1].center.x + platform[1].width/2 + 5, 
+			platform[1].center.y - platform[1].height/2 - 5);
+	glVertex2i(platform[1].center.x + platform[1].width/2 + 5, 
+			platform[1].center.y - platform[1].height/2 - 5);
+	glVertex2i(platform[1].center.x - platform[1].width/2 - 5, 
+			platform[1].center.y - platform[1].height/2 - 5);
+	glEnd();
+
 }
 
 void Disco_Level::renderSky() {
