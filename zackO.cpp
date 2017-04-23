@@ -1,4 +1,4 @@
-//Author: Zack Obeid
+//Author: Zachary Obeid
 
 /*
 Date 04/14/2017
@@ -29,7 +29,6 @@ worked a total of around 7-8 hours
 
 #include "headers.h"
 #include "zackO.h"
-//#include <GL/glx.h>
 
 using namespace std;
 #define GRAVITY .1
@@ -69,6 +68,7 @@ Level::Level()
        Color colors;
        for (int i = 0; i < MAX_PARTICLE; i++) {
     //set dimensions of particles
+    //void loadImages();
     bloodStream[i].s.width = 4;
     bloodStream[i].s.height = bloodStream[i].s.width;
 
@@ -107,24 +107,31 @@ void field(Game *game)
 
     for (int i = 0; i < MAX_PLAYER; i++) {
         game->level2.physics(&game->level2.player[i]);
-        game->level2.player[i].check_controller(&game->level2.player[i], game->level2.controller.joystick[i]);
+        game->level2.player[i].check_controller(&game->level2.player[i], 
+                game->level2.controller.joystick[i]);
         game->level2.deathCheck(&game->level2.player[i]);
 
         if (game->level2.player[i].status.lifeState == ALIVE) 
         {
             game->level2.player[i].render();
         } 
-        else if (game->level2.player[i].status.lifeState == DEAD && game->level2.player[i].status.initDeath == false) 
+        else if (game->level2.player[i].status.lifeState == DEAD && 
+                game->level2.player[i].status.initDeath == false) 
         {
             clock_gettime(CLOCK_REALTIME, &game->level2.player[i].timeStart);
             game->level2.player[i].status.initDeath = true;
         }
-        else if (game->level2.player[i].status.lifeState == DEAD && game->level2.player[i].status.initDeath == true) 
+        else if (game->level2.player[i].status.lifeState == 
+                DEAD && game->level2.player[i].status.initDeath == true) 
         {
             clock_gettime(CLOCK_REALTIME, &game->level2.player[i].timeCurrent);
             //game->level2.player[i].deathRender();
-            game->level2.player[i].timeSpan = game->level2.player[i].timeDiff(&game->level2.player[i].timeStart, &game->level2.player[i].timeCurrent);
-            if (game->level2.player[i].timeSpan >= 5 && game->level2.player[i].status.lifeCount > 0)
+            game->level2.player[i].timeSpan = 
+                game->level2.player[i].timeDiff(
+                        &game->level2.player[i].timeStart, 
+                        &game->level2.player[i].timeCurrent);
+            if (game->level2.player[i].timeSpan >= 5 && 
+                    game->level2.player[i].status.lifeCount > 0)
             {
                 game->level2.player[i].status.initDeath = false;
                 game->level2.respawn(&game->level2.player[i]);
@@ -167,10 +174,14 @@ void Field_Level::render()
     glColor3ub(0,0,0); 
     glPushMatrix(); 
     glBegin(GL_QUADS); 
-    glVertex2i(platform[0].center.x - platform[0].width/2 - 2, platform[0].center.y - platform[0].height/2 - 2);
-    glVertex2i(platform[0].center.x - platform[0].width/2 - 2, platform[0].center.y + platform[0].height/2 + 2);
-    glVertex2i(platform[0].center.x + platform[0].width/2 + 2, platform[0].center.y + platform[0].height/2 + 2);
-    glVertex2i(platform[0].center.x + platform[0].width/2 + 2, platform[0].center.y - platform[0].height/2 - 2);
+    glVertex2i(platform[0].center.x - platform[0].width/2 - 2, 
+            platform[0].center.y - platform[0].height/2 - 2);
+    glVertex2i(platform[0].center.x - platform[0].width/2 - 2, 
+            platform[0].center.y + platform[0].height/2 + 2);
+    glVertex2i(platform[0].center.x + platform[0].width/2 + 2, 
+            platform[0].center.y + platform[0].height/2 + 2);
+    glVertex2i(platform[0].center.x + platform[0].width/2 + 2, 
+            platform[0].center.y - platform[0].height/2 - 2);
     glEnd(); 
     // End of blfloor
 
@@ -178,11 +189,15 @@ void Field_Level::render()
     glColor3ub(99,160,0); 
     glPushMatrix(); 
     glBegin(GL_QUADS); 
-    glVertex2i(platform[0].center.x - platform[0].width/2, platform[0].center.y - platform[0].height/2);
-    glVertex2i(platform[0].center.x - platform[0].width/2, platform[0].center.y + platform[0].height/2);
+    glVertex2i(platform[0].center.x - platform[0].width/2, 
+            platform[0].center.y - platform[0].height/2);
+    glVertex2i(platform[0].center.x - platform[0].width/2, 
+            platform[0].center.y + platform[0].height/2);
     glColor3ub(120,210,0); 
-    glVertex2i(platform[0].center.x + platform[0].width/2, platform[0].center.y + platform[0].height/2);
-    glVertex2i(platform[0].center.x + platform[0].width/2, platform[0].center.y - platform[0].height/2);
+    glVertex2i(platform[0].center.x + platform[0].width/2, 
+            platform[0].center.y + platform[0].height/2);
+    glVertex2i(platform[0].center.x + platform[0].width/2, 
+            platform[0].center.y - platform[0].height/2);
     glEnd(); 
     // End of floor
 }
@@ -201,9 +216,11 @@ Starynight_Level::Starynight_Level()
     for (int i=1; i<MAX_PLAT; i++ ) {
         if ( i % 2 == 0 ) {
             platform[i].center.x = scrn->width/2;
-            platform[i].center.y = scrn->height-scrn->height/2 + (scrn->height/6 );
+            platform[i].center.y = scrn->height-scrn->height/2 + 
+                (scrn->height/6 );
         } else {
-            platform[i].center.x = scrn->width/6 + ((scrn->width - scrn->width/6) *(i-1))/2.5;
+            platform[i].center.x = scrn->width/6 + 
+                ((scrn->width - scrn->width/6) *(i-1))/2.5;
             platform[i].center.y = scrn->height-scrn->height/2;
         }
         platform[i].width = 250;
@@ -215,7 +232,7 @@ Starynight_Level::Starynight_Level()
     heightPartition = scrn->height/7;
 
     //Randomizing Stars 
-    for(int i=0; i<MAX_STAR; i++) {
+    for (int i=0; i<MAX_STAR; i++) {
         starP[i]=rnd(); 
     }
 
@@ -234,7 +251,8 @@ void starynight(Game *game)
 
     for (int i = 0; i < MAX_PLAYER; i++) {
         game->level3.physics(&game->level3.player[i]);
-        game->level3.player[i].check_controller(&game->level3.player[i], game->level3.controller.joystick[i]);
+        game->level3.player[i].check_controller(&game->level3.player[i], 
+                game->level3.controller.joystick[i]);
         game->level3.player[i].render();
         game->level3.deathCheck(&game->level3.player[i]);
 
@@ -242,16 +260,22 @@ void starynight(Game *game)
         {
             game->level3.player[i].render();
         } 
-        else if (game->level3.player[i].status.lifeState == DEAD && game->level3.player[i].status.initDeath == false) 
+        else if (game->level3.player[i].status.lifeState == DEAD && 
+                game->level3.player[i].status.initDeath == false) 
         {
             clock_gettime(CLOCK_REALTIME, &game->level3.player[i].timeStart);
             game->level3.player[i].status.initDeath = true;
         }
-        else if (game->level3.player[i].status.lifeState == DEAD && game->level3.player[i].status.initDeath == true) 
+        else if (game->level3.player[i].status.lifeState == DEAD && 
+                game->level3.player[i].status.initDeath == true) 
         {
             clock_gettime(CLOCK_REALTIME, &game->level3.player[i].timeCurrent);
-            game->level3.player[i].timeSpan = game->level3.player[i].timeDiff(&game->level3.player[i].timeStart, &game->level3.player[i].timeCurrent);
-            if (game->level3.player[i].timeSpan >= 5 && game->level3.player[i].status.lifeCount > 0)
+            game->level3.player[i].timeSpan = 
+                game->level3.player[i].timeDiff(
+                        &game->level3.player[i].timeStart, 
+                        &game->level3.player[i].timeCurrent);
+            if (game->level3.player[i].timeSpan >= 5 && 
+                    game->level3.player[i].status.lifeCount > 0)
             {
                 game->level3.player[i].status.initDeath = false;
                 game->level3.respawn(&game->level3.player[i]);
@@ -287,8 +311,8 @@ void Starynight_Level::render()
     int vertical=0; 
     int horizontal=0; 
     int sideL=5;
-    for(int i=0; i<7; i++){
-        for(int j=0; j<7; j++){
+    for (int i=0; i<7; i++) {
+        for (int j=0; j<7; j++) {
             vertical=((int)2*scrn->height/7)*(i+starP[(i+1)*(j+1)]); 
             horizontal=((int)2*scrn->width/7)*(j+starP[(i+1)*(j+1)]);
             vertical -= scrn->height/2;
@@ -318,7 +342,7 @@ void Starynight_Level::render()
     float twicePi = 2.0f * M_PI; 
     glBegin(GL_TRIANGLE_FAN);
     glVertex2f(x, y); // center of circle
-    for(int i = 0; i <= triangleAmount;i++) { 
+    for (int i = 0; i <= triangleAmount;i++) { 
         glVertex2f(
                 x + (radius * cos(i *  twicePi / triangleAmount)), 
                 y + (radius * sin(i * twicePi / triangleAmount))
@@ -356,10 +380,14 @@ void Starynight_Level::render()
     glColor3ub(0,0,0); 
     glPushMatrix(); 
     glBegin(GL_QUADS); 
-    glVertex2i(platform[0].center.x - platform[0].width/2 - 2, platform[0].center.y - platform[0].height/2 - 2);
-    glVertex2i(platform[0].center.x - platform[0].width/2 - 2, platform[0].center.y + platform[0].height/2 + 2);
-    glVertex2i(platform[0].center.x + platform[0].width/2 + 2, platform[0].center.y + platform[0].height/2 + 2);
-    glVertex2i(platform[0].center.x + platform[0].width/2 + 2, platform[0].center.y - platform[0].height/2 - 2);
+    glVertex2i(platform[0].center.x - platform[0].width/2 - 2, 
+            platform[0].center.y - platform[0].height/2 - 2);
+    glVertex2i(platform[0].center.x - platform[0].width/2 - 2, 
+            platform[0].center.y + platform[0].height/2 + 2);
+    glVertex2i(platform[0].center.x + platform[0].width/2 + 2, 
+            platform[0].center.y + platform[0].height/2 + 2);
+    glVertex2i(platform[0].center.x + platform[0].width/2 + 2, 
+            platform[0].center.y - platform[0].height/2 - 2);
     glEnd(); 
     // End of blfloor
 
@@ -369,10 +397,14 @@ void Starynight_Level::render()
         glColor3ub(0,0,0); 
         glPushMatrix(); 
         glBegin(GL_QUADS); 
-        glVertex2i(platform[i].center.x - platform[i].width/2 - 2, platform[i].center.y - platform[i].height/2 -2);
-        glVertex2i(platform[i].center.x - platform[i].width/2 -2, platform[i].center.y + platform[i].height/2 +2);
-        glVertex2i(platform[i].center.x + platform[i].width/2 + 2, platform[i].center.y + platform[i].height/2 + 2);
-        glVertex2i(platform[i].center.x + platform[i].width/2 + 2, platform[i].center.y - platform[i].height/2 - 2);
+        glVertex2i(platform[i].center.x - platform[i].width/2 - 2, 
+                platform[i].center.y - platform[i].height/2 -2);
+        glVertex2i(platform[i].center.x - platform[i].width/2 -2, 
+                platform[i].center.y + platform[i].height/2 +2);
+        glVertex2i(platform[i].center.x + platform[i].width/2 + 2, 
+                platform[i].center.y + platform[i].height/2 + 2);
+        glVertex2i(platform[i].center.x + platform[i].width/2 + 2, 
+                platform[i].center.y - platform[i].height/2 - 2);
         glEnd(); 
         // end of black line 
 
@@ -380,11 +412,15 @@ void Starynight_Level::render()
         glColor3ub(125,160,255); 
         glPushMatrix(); 
         glBegin(GL_QUADS); 
-        glVertex2i(platform[i].center.x - platform[i].width/2, platform[i].center.y - platform[i].height/2);
-        glVertex2i(platform[i].center.x - platform[i].width/2, platform[i].center.y + platform[i].height/2);
+        glVertex2i(platform[i].center.x - platform[i].width/2, 
+                platform[i].center.y - platform[i].height/2);
+        glVertex2i(platform[i].center.x - platform[i].width/2, 
+                platform[i].center.y + platform[i].height/2);
         glColor3ub(120,210,0); 
-        glVertex2i(platform[i].center.x + platform[i].width/2, platform[i].center.y + platform[i].height/2);
-        glVertex2i(platform[i].center.x + platform[i].width/2, platform[i].center.y - platform[i].height/2);
+        glVertex2i(platform[i].center.x + platform[i].width/2, 
+                platform[i].center.y + platform[i].height/2);
+        glVertex2i(platform[i].center.x + platform[i].width/2, 
+                platform[i].center.y - platform[i].height/2);
         glEnd(); 
         // End of Platforms 
     }
@@ -393,11 +429,15 @@ void Starynight_Level::render()
     glColor3ub(99,160,0); 
     glPushMatrix(); 
     glBegin(GL_QUADS); 
-    glVertex2i(platform[0].center.x - platform[0].width/2, platform[0].center.y - platform[0].height/2);
-    glVertex2i(platform[0].center.x - platform[0].width/2, platform[0].center.y + platform[0].height/2);
+    glVertex2i(platform[0].center.x - platform[0].width/2, 
+            platform[0].center.y - platform[0].height/2);
+    glVertex2i(platform[0].center.x - platform[0].width/2, 
+            platform[0].center.y + platform[0].height/2);
     glColor3ub(120,210,0); 
-    glVertex2i(platform[0].center.x + platform[0].width/2, platform[0].center.y + platform[0].height/2);
-    glVertex2i(platform[0].center.x + platform[0].width/2, platform[0].center.y - platform[0].height/2);
+    glVertex2i(platform[0].center.x + platform[0].width/2, 
+            platform[0].center.y + platform[0].height/2);
+    glVertex2i(platform[0].center.x + platform[0].width/2, 
+            platform[0].center.y - platform[0].height/2);
     glEnd(); 
     // End of floor
 }
@@ -405,49 +445,61 @@ void Starynight_Level::render()
 void check_keys(XEvent *e, Game *game) 
 {
     bool conditionA, conditionB, conditionC; 
-    if(e->type == KeyPress) {
+    if (e->type == KeyPress) {
         int key = XLookupKeysym(&e->xkey,0);
 
-        switch(key) {
+        switch (key) {
             default:
                 break;
             case XK_Escape:
                 done = 1; 
                 break;
             case XK_w:
-                switch(game->render) {
+                switch (game->render) {
                     case MAINMENU:
                         if (dyna == playIcon) {
                             dyna = exitIcon;
-                            game->mainMenu.selector.center.x = game->mainMenu.exitBox.center.x;
-                            game->mainMenu.selector.center.y = game->mainMenu.exitBox.center.y;
+                            game->mainMenu.selector.center.x = 
+                                game->mainMenu.exitBox.center.x;
+                            game->mainMenu.selector.center.y = 
+                                game->mainMenu.exitBox.center.y;
                         }
                         else if (dyna == optionsIcon) {
                             dyna = playIcon;
-                            game->mainMenu.selector.center.x = game->mainMenu.playBox.center.x;
-                            game->mainMenu.selector.center.y = game->mainMenu.playBox.center.y;
+                            game->mainMenu.selector.center.x = 
+                                game->mainMenu.playBox.center.x;
+                            game->mainMenu.selector.center.y = 
+                                game->mainMenu.playBox.center.y;
                         }
                         else if (dyna == exitIcon) {
                             dyna = optionsIcon;
-                            game->mainMenu.selector.center.x = game->mainMenu.optionBox.center.x;
-                            game->mainMenu.selector.center.y = game->mainMenu.optionBox.center.y;
+                            game->mainMenu.selector.center.x = 
+                                game->mainMenu.optionBox.center.x;
+                            game->mainMenu.selector.center.y = 
+                                game->mainMenu.optionBox.center.y;
                         }
                         break;
                     case PAUSE:
                         if (dyna1 == resumeIcon) {
                             dyna1 = quitIcon;
-                            game->pauseMenu.selector.center.x = game->pauseMenu.qbox.center.x;
-                            game->pauseMenu.selector.center.y = game->pauseMenu.qbox.center.y;
+                            game->pauseMenu.selector.center.x = 
+                                game->pauseMenu.qbox.center.x;
+                            game->pauseMenu.selector.center.y = 
+                                game->pauseMenu.qbox.center.y;
                         }
                         else if (dyna1 == optionsIcon) {
                             dyna1 = resumeIcon;
-                            game->pauseMenu.selector.center.x = game->pauseMenu.rbox.center.x;
-                            game->pauseMenu.selector.center.y = game->pauseMenu.rbox.center.y;
+                            game->pauseMenu.selector.center.x = 
+                                game->pauseMenu.rbox.center.x;
+                            game->pauseMenu.selector.center.y = 
+                                game->pauseMenu.rbox.center.y;
                         }
                         else if (dyna1 == quitIcon) {
                             dyna1 = optionsIcon;
-                            game->pauseMenu.selector.center.x = game->pauseMenu.obox.center.x;
-                            game->pauseMenu.selector.center.y = game->pauseMenu.obox.center.y;
+                            game->pauseMenu.selector.center.x = 
+                                game->pauseMenu.obox.center.x;
+                            game->pauseMenu.selector.center.y = 
+                                game->pauseMenu.obox.center.y;
                         }
                         break;
                     default : 
@@ -456,46 +508,58 @@ void check_keys(XEvent *e, Game *game)
                 }
                 break;
             case XK_s:
-                switch(game->render) {
+                switch (game->render) {
                     case MAINMENU:
                         if (dyna == playIcon) {
                             dyna = optionsIcon;
-                            game->mainMenu.selector.center.x = game->mainMenu.optionBox.center.x;
-                            game->mainMenu.selector.center.y = game->mainMenu.optionBox.center.y;
+                            game->mainMenu.selector.center.x = 
+                                game->mainMenu.optionBox.center.x;
+                            game->mainMenu.selector.center.y = 
+                                game->mainMenu.optionBox.center.y;
                         }
                         else if (dyna == optionsIcon) {
                             dyna = exitIcon;
-                            game->mainMenu.selector.center.x = game->mainMenu.exitBox.center.x;
-                            game->mainMenu.selector.center.y = game->mainMenu.exitBox.center.y;
+                            game->mainMenu.selector.center.x = 
+                                game->mainMenu.exitBox.center.x;
+                            game->mainMenu.selector.center.y = 
+                                game->mainMenu.exitBox.center.y;
                         }
                         else if (dyna == exitIcon) {
                             dyna = playIcon;
-                            game->mainMenu.selector.center.x = game->mainMenu.playBox.center.x;
-                            game->mainMenu.selector.center.y = game->mainMenu.playBox.center.y;
+                            game->mainMenu.selector.center.x = 
+                                game->mainMenu.playBox.center.x;
+                            game->mainMenu.selector.center.y = 
+                                game->mainMenu.playBox.center.y;
                         }
                         break;
                     case PAUSE:
                         if (dyna1 == resumeIcon) {
                             dyna1 = optionsIcon;
-                            game->pauseMenu.selector.center.x = game->pauseMenu.obox.center.x;
-                            game->pauseMenu.selector.center.y = game->pauseMenu.obox.center.y;
+                            game->pauseMenu.selector.center.x = 
+                                game->pauseMenu.obox.center.x;
+                            game->pauseMenu.selector.center.y = 
+                                game->pauseMenu.obox.center.y;
                         }
                         else if (dyna1 == optionsIcon) {
                             dyna1 = quitIcon;
-                            game->pauseMenu.selector.center.x = game->pauseMenu.qbox.center.x;
-                            game->pauseMenu.selector.center.y = game->pauseMenu.qbox.center.y;
+                            game->pauseMenu.selector.center.x = 
+                                game->pauseMenu.qbox.center.x;
+                            game->pauseMenu.selector.center.y = 
+                                game->pauseMenu.qbox.center.y;
                         }
                         else if (dyna1 == quitIcon) {
                             dyna1 = resumeIcon;
-                            game->pauseMenu.selector.center.x = game->pauseMenu.rbox.center.x;
-                            game->pauseMenu.selector.center.y = game->pauseMenu.rbox.center.y;
+                            game->pauseMenu.selector.center.x = 
+                                game->pauseMenu.rbox.center.x;
+                            game->pauseMenu.selector.center.y = 
+                                game->pauseMenu.rbox.center.y;
                         }
                         break;
                     case STARYNIGHT:
                         game->level3.player[0].action = GROUNDPOUND;
                         game->level3.player[0].delta.x = 0.0f;
 #ifdef USE_OPENAL_SOUND
-			play_sound(3, 1.0f, false);
+                        play_sound(3, 1.0f, false);
 #endif
                         //usleep(300000);
                         game->level3.player[0].delta.y = -20.0f;
@@ -504,18 +568,18 @@ void check_keys(XEvent *e, Game *game)
                         game->level2.player[0].action = GROUNDPOUND;
                         game->level2.player[0].delta.x = 0.0f;
 #ifdef USE_OPENAL_SOUND
-			play_sound(3, 1.0f, false);
+                        play_sound(3, 1.0f, false);
 #endif
-                       //usleep(300000);
+                        //usleep(300000);
                         game->level2.player[0].delta.y = -20.0f;
                         break;
                     case DISCO:
                         game->level4.player[0].action = GROUNDPOUND;
                         game->level4.player[0].delta.x = 0.0f;
 #ifdef USE_OPENAL_SOUND
-			play_sound(3, 1.0f, false);
+                        play_sound(3, 1.0f, false);
 #endif
-                       //usleep(300000);
+                        //usleep(300000);
                         game->level4.player[0].delta.y = -20.0f;
                         break;
                     default : 
@@ -523,24 +587,24 @@ void check_keys(XEvent *e, Game *game)
                 }
                 break;
             case XK_j:
-                switch(game->render) {
+                switch (game->render) {
                     case STARYNIGHT:
                         game->level3.player[0].attack(); 
 #ifdef USE_OPENAL_SOUND
-			play_sound(2, 1.0f, false);
+                        play_sound(2, 1.0f, false);
 #endif
                         break;
                     case FIELD:
                         game->level2.player[0].attack(); 
 #ifdef USE_OPENAL_SOUND
-			play_sound(2, 1.0f, false);
+                        play_sound(2, 1.0f, false);
 #endif
-                       break;
+                        break;
                     case DISCO:
 #ifdef USE_OPENAL_SOUND
-			play_sound(2, 1.0f, false);
+                        play_sound(2, 1.0f, false);
 #endif
-                       game->level4.player[0].attack(); 
+                        game->level4.player[0].attack(); 
                         break;
                     default:
                         break;
@@ -571,13 +635,13 @@ void check_keys(XEvent *e, Game *game)
                     case LEVELSEL:
                         if (dyna2 == fieldIcon) {
 #ifdef USE_OPENAL_SOUND
-			    play_sound(4, 1.0f, true);
+                            play_sound(4, 1.0f, true);
 #endif
                             game->render = FIELD;
                         }
                         else if (dyna2 == staryIcon) {
 #ifdef USE_OPENAL_SOUND
-			    play_sound(5, 1.0f, true);
+                            play_sound(5, 1.0f, true);
 #endif
                             game->render = STARYNIGHT;
                         }
@@ -587,17 +651,21 @@ void check_keys(XEvent *e, Game *game)
                 }
                 break;
             case XK_a:
-                switch(game->render) {
+                switch (game->render) {
                     case LEVELSEL:
                         if (dyna2 == fieldIcon) {
                             dyna2 = staryIcon;
-                            game->levelMenu.selector.center.x = game->levelMenu.level2.center.x;
-                            game->levelMenu.selector.center.y = game->levelMenu.level2.center.y;
+                            game->levelMenu.selector.center.x = 
+                                game->levelMenu.level2.center.x;
+                            game->levelMenu.selector.center.y = 
+                                game->levelMenu.level2.center.y;
                         }
                         else if (dyna2 == staryIcon) {
                             dyna2 = fieldIcon;
-                            game->levelMenu.selector.center.x = game->levelMenu.level1.center.x;
-                            game->levelMenu.selector.center.y = game->levelMenu.level1.center.y;
+                            game->levelMenu.selector.center.x = 
+                                game->levelMenu.level1.center.x;
+                            game->levelMenu.selector.center.y = 
+                                game->levelMenu.level1.center.y;
                         }
                         break;
                     case STARYNIGHT:
@@ -632,17 +700,21 @@ void check_keys(XEvent *e, Game *game)
                 }
                 break;
             case XK_d:
-                switch(game->render) {
+                switch (game->render) {
                     case LEVELSEL:
                         if (dyna2 == fieldIcon) {
                             dyna2 = staryIcon;
-                            game->levelMenu.selector.center.x = game->levelMenu.level2.center.x;
-                            game->levelMenu.selector.center.y = game->levelMenu.level2.center.y;
+                            game->levelMenu.selector.center.x = 
+                                game->levelMenu.level2.center.x;
+                            game->levelMenu.selector.center.y = 
+                                game->levelMenu.level2.center.y;
                         }
                         else if (dyna2 == staryIcon) {
                             dyna2 = fieldIcon;
-                            game->levelMenu.selector.center.x = game->levelMenu.level1.center.x;
-                            game->levelMenu.selector.center.y = game->levelMenu.level1.center.y;
+                            game->levelMenu.selector.center.x = 
+                                game->levelMenu.level1.center.x;
+                            game->levelMenu.selector.center.y = 
+                                game->levelMenu.level1.center.y;
                         }
                         break;
                     case STARYNIGHT:
@@ -677,19 +749,24 @@ void check_keys(XEvent *e, Game *game)
                 };
                 break;
             case XK_k:
-                switch(game->render) {
+                switch (game->render) {
                     case STARYNIGHT:
-                        conditionA= game->level3.player[0].jumpCount < game->level3.player[0].JUMP_MAX;
-                        conditionB= game->level3.player[0].action != GROUNDPOUND;
+                        conditionA= game->level3.player[0].jumpCount < 
+                            game->level3.player[0].JUMP_MAX;
+                        conditionB= game->level3.player[0].action != 
+                            GROUNDPOUND;
                         conditionC= game->level3.player[0].action != DASH;
                         if (conditionA && conditionB && conditionC) {
                             game->level3.player[0].delta.y = 7.0f; 
                             game->level3.player[0].jumpCount++; 
                         }
+                        //void loadImages();
                         break;
                     case FIELD:
-                        conditionA= game->level2.player[0].jumpCount < game->level2.player[0].JUMP_MAX;
-                        conditionB= game->level2.player[0].action != GROUNDPOUND;
+                        conditionA= game->level2.player[0].jumpCount < 
+                            game->level2.player[0].JUMP_MAX;
+                        conditionB= game->level2.player[0].action != 
+                            GROUNDPOUND;
                         conditionC= game->level2.player[0].action != DASH;
                         if (conditionA && conditionB && conditionC) {
                             game->level2.player[0].delta.y = 7.0f; 
@@ -697,8 +774,10 @@ void check_keys(XEvent *e, Game *game)
                         }
                         break;
                     case DISCO:
-                        conditionA= game->level4.player[0].jumpCount < game->level4.player[0].JUMP_MAX;
-                        conditionB= game->level4.player[0].action != GROUNDPOUND;
+                        conditionA= game->level4.player[0].jumpCount < 
+                            game->level4.player[0].JUMP_MAX;
+                        conditionB= game->level4.player[0].action != 
+                            GROUNDPOUND;
                         conditionC= game->level4.player[0].action != DASH;
                         if (conditionA && conditionB && conditionC) {
                             game->level4.player[0].delta.y = 7.0f; 
@@ -711,7 +790,7 @@ void check_keys(XEvent *e, Game *game)
                 break;
             case XK_v:
 #ifdef USE_OPENAL_SOUND
-		play_sound (1, 1.0f, true);
+                play_sound (1, 1.0f, true);
 #endif
                 game->render = DISCO; 
                 break;

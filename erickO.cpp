@@ -315,7 +315,7 @@ void Player::render()
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glBegin(GL_TRIANGLE_FAN);
 		glVertex2f(x,y);
-		for(int i = 0; i < 120; i++) {
+		for (int i = 0; i < 120; i++) {
 			glVertex2f(x + (radius * cos(i * twicePI / triangleNum)),
 					y + (radius * sin(i * twicePI / triangleNum)));
 		}
@@ -328,7 +328,7 @@ void Player::render()
 		glBegin(GL_TRIANGLE_FAN);
 		glColor4ub(color[0],color[1],color[2],255);
 		glVertex2f(x,y);
-		for(int i = 0; i < 120; i++) {
+		for (int i = 0; i < 120; i++) {
 			glVertex2f(x + (radius * cos(i * twicePI / triangleNum)),
 					y + (radius * sin(i * twicePI / triangleNum)));
 		}
@@ -739,6 +739,7 @@ Disco_Level::Disco_Level()
 	platform[0].height = scrn->height/20; 
 	platform[0].center.x = scrn->width/2;
 	platform[0].center.y = platform[0].height/2 + 150; 
+//void loadImages();
 
 	//moving platform
 	platform[1].width = scrn->width/4;
@@ -1133,6 +1134,7 @@ void Disco_Level::randomizeCoor() {
 
    for (int unsigned i = 0; i < MAX_PLAT;i++) {
    player->collision(&platform[i]); 
+//void loadImages();
    if (player->onGround) {
    player->jumpCount = 0;
 
@@ -1263,12 +1265,14 @@ void Field_Level::erick_init()
 		player[i].status.lifeState = ALIVE;
 
 		if (i % 2 == 0) {
+//void loadImages();
 			if (evenCount % 2 == 0) {
 				player[i].body.center.y = scrn->height/5;
 			} else {
 				player[i].body.center.y = 3 * scrn->height/5;
 			}
 			player[i].body.center.x = scrn->width/5;
+//void loadImages();
 			player[i].direction = RIGHT;
 			evenCount++;
 		} else {
@@ -1320,6 +1324,8 @@ void Starynight_Level::erick_init()
 			if (evenCount % 2 == 0) {
 				player[i].body.center.y = scrn->height/5;
 			} else {
+//void loadImages();
+//void loadImages();
 				player[i].body.center.y = 3 * scrn->height/5;
 			}
 			player[i].body.center.x = scrn->width/5;

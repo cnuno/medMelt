@@ -69,8 +69,8 @@ extern Game game;
 char st[4][15] = {{"Player 1"},{"Player 2"},{"Player 3"}, {"Player 4"}}; 
 Game::~Game()
 {
-	system("rm -Rf images/");
-	system("rm -Rf audio/");
+    system("rm -Rf images/");
+    system("rm -Rf audio/");
 }
 
 //Sound Code
@@ -78,63 +78,63 @@ Game::~Game()
 
 void initialize_sounds ()
 {
-	alutInit(0, NULL);
-	if (alGetError() != AL_NO_ERROR) {
-		cout << "OPENAL ERROR" << endl;
-		return;
-	}
-	alGetError();
-	float vec[6] = {0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f};
-	alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
-	alListenerfv(AL_ORIENTATION, vec);
-	alListenerf(AL_GAIN, 1.0f);
-	
-	//add sound sources here
-	alBuffer[0] = alutCreateBufferFromFile("./audio/test.wav");
-	alBuffer[1] = alutCreateBufferFromFile("./audio/disco.wav");
-	alBuffer[2] = alutCreateBufferFromFile("./audio/sword.wav");
-	alBuffer[3] = alutCreateBufferFromFile("./audio/pound.wav");
-	alBuffer[4] = alutCreateBufferFromFile("./audio/field.wav");
-	alBuffer[5] = alutCreateBufferFromFile("./audio/starnight.wav");
+    alutInit(0, NULL);
+    if (alGetError() != AL_NO_ERROR) {
+        cout << "OPENAL ERROR" << endl;
+        return;
+    }
+    alGetError();
+    float vec[6] = {0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f};
+    alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
+    alListenerfv(AL_ORIENTATION, vec);
+    alListenerf(AL_GAIN, 1.0f);
 
-	alGenSources(TOTALSOUNDS, alSource);
+    //add sound sources here
+    alBuffer[0] = alutCreateBufferFromFile("./audio/test.wav");
+    alBuffer[1] = alutCreateBufferFromFile("./audio/disco.wav");
+    alBuffer[2] = alutCreateBufferFromFile("./audio/sword.wav");
+    alBuffer[3] = alutCreateBufferFromFile("./audio/pound.wav");
+    alBuffer[4] = alutCreateBufferFromFile("./audio/field.wav");
+    alBuffer[5] = alutCreateBufferFromFile("./audio/starnight.wav");
 
-	//link buffers here
-	alSourcei(alSource[0], AL_BUFFER, alBuffer[0]);
-	alSourcei(alSource[1], AL_BUFFER, alBuffer[1]);	
-	alSourcei(alSource[2], AL_BUFFER, alBuffer[2]);
-	alSourcei(alSource[3], AL_BUFFER, alBuffer[3]);
-	alSourcei(alSource[4], AL_BUFFER, alBuffer[4]);
-	alSourcei(alSource[5], AL_BUFFER, alBuffer[5]);
+    alGenSources(TOTALSOUNDS, alSource);
+
+    //link buffers here
+    alSourcei(alSource[0], AL_BUFFER, alBuffer[0]);
+    alSourcei(alSource[1], AL_BUFFER, alBuffer[1]);	
+    alSourcei(alSource[2], AL_BUFFER, alBuffer[2]);
+    alSourcei(alSource[3], AL_BUFFER, alBuffer[3]);
+    alSourcei(alSource[4], AL_BUFFER, alBuffer[4]);
+    alSourcei(alSource[5], AL_BUFFER, alBuffer[5]);
 
 
 }
 
 void play_sound (int track, float pitch, bool loop)
 {
-	alSourcef(alSource[track], AL_GAIN, 1.0f);
-	alSourcef(alSource[track], AL_PITCH, pitch);
-	alSourcei(alSource[track], AL_LOOPING, loop);
-	if (alGetError() != AL_NO_ERROR) {
-		cout << "OPENAL ERROR" << endl;
-		return;
-	}
-	alSourcePlay(alSource[track]);
+    alSourcef(alSource[track], AL_GAIN, 1.0f);
+    alSourcef(alSource[track], AL_PITCH, pitch);
+    alSourcei(alSource[track], AL_LOOPING, loop);
+    if (alGetError() != AL_NO_ERROR) {
+        cout << "OPENAL ERROR" << endl;
+        return;
+    }
+    alSourcePlay(alSource[track]);
 }
 
 void cleanup_sounds () {
-	for (int i = 0; i < TOTALSOUNDS; i++) {
-		alDeleteSources(1, &alSource[i]);
-	}
-	for (int i = 0; i < TOTALSOUNDS; i++) {
-		alDeleteBuffers(1, &alBuffer[i]);
-	}
-	ALCcontext *Context = alcGetCurrentContext();
-	ALCdevice *Device = alcGetContextsDevice(Context);
-	alcMakeContextCurrent(NULL);
-	alcDestroyContext(Context);
-	alcCloseDevice(Device);
-	return;
+    for (int i = 0; i < TOTALSOUNDS; i++) {
+        alDeleteSources(1, &alSource[i]);
+    }
+    for (int i = 0; i < TOTALSOUNDS; i++) {
+        alDeleteBuffers(1, &alBuffer[i]);
+    }
+    ALCcontext *Context = alcGetCurrentContext();
+    ALCdevice *Device = alcGetContextsDevice(Context);
+    alcMakeContextCurrent(NULL);
+    alcDestroyContext(Context);
+    alcCloseDevice(Device);
+    return;
 }
 
 #endif
@@ -142,95 +142,98 @@ void cleanup_sounds () {
 //Constructor to display player stats such as health
 StatDisplay::StatDisplay()
 {
-	int bufferSize = 150;
-	int partitionSize = scrn->width/4;
-	int distance = 0;
+    int bufferSize = 150;
+    int partitionSize = scrn->width/4;
+    int distance = 0;
 
-	//define the x coordinate for each box
-	quadrant[0].center.x = -partitionSize/2;
-	quadrant[3].center.x = scrn->width + partitionSize/2;
-	distance = quadrant[3].center.x + abs(quadrant[0].center.x);
-	quadrant[1].center.x = quadrant[0].center.x + distance/3;
-	quadrant[2].center.x = quadrant[3].center.x - distance/3;
+    //define the x coordinate for each box
+    quadrant[0].center.x = -partitionSize/2;
+    quadrant[3].center.x = scrn->width + partitionSize/2;
+    distance = quadrant[3].center.x + abs(quadrant[0].center.x);
+    quadrant[1].center.x = quadrant[0].center.x + distance/3;
+    quadrant[2].center.x = quadrant[3].center.x - distance/3;
 
-	//uniformly define y coordinate for each box, width and height too
-	for (int i = 0; i < 4; i++) {
-		quadrant[i].center.y = -scrn->height/6;
-		quadrant[i].width = partitionSize - (2 * bufferSize);
-		quadrant[i].height = quadrant[i].width;
-	}
+    //uniformly define y coordinate for each box, width and height too
+    for (int i = 0; i < 4; i++) {
+        quadrant[i].center.y = -scrn->height/6;
+        quadrant[i].width = partitionSize - (2 * bufferSize);
+        quadrant[i].height = quadrant[i].width;
+    }
 }
 
 //need to pass an instance of each level. render(Level *level) does not work
 void StatDisplay::render() 
 {
-	//need to access player health, lifecount and display information here
-	int coorA, coorB, coorC, coorD;
-	int borderSize = 5;
+    //need to access player health, lifecount and display information here
+    int coorA, coorB, coorC, coorD;
+    int borderSize = 5;
 
-	//each i corresponds to each player
-	for (int i = 0; i < 4; i++) {
-		//Acquire coordinates
+    //each i corresponds to each player
+    for (int i = 0; i < 4; i++) {
+        //Acquire coordinates
 
-		coorA = quadrant[i].center.x - quadrant[i].width;
-		coorB = quadrant[i].center.x + quadrant[i].width;
-		coorC = quadrant[i].center.y - quadrant[i].height;
-		coorD = quadrant[i].center.y + quadrant[i].height;
+        coorA = quadrant[i].center.x - quadrant[i].width;
+        coorB = quadrant[i].center.x + quadrant[i].width;
+        coorC = quadrant[i].center.y - quadrant[i].height;
+        coorD = quadrant[i].center.y + quadrant[i].height;
 
-		//Black Border
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glColor4ub(0,0,0,100); 
-		glPushMatrix(); 
-		glBegin(GL_QUADS); 
-		glVertex2i(coorA - borderSize, coorC - borderSize);
-		glVertex2i(coorA - borderSize, coorD + borderSize);
-		glVertex2i(coorB + borderSize, coorD + borderSize);
-		glVertex2i(coorB + borderSize, coorC - borderSize);
-		glEnd(); 
-		glDisable(GL_BLEND);
+        //Black Border
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glColor4ub(0,0,0,100); 
+        glPushMatrix(); 
+        glBegin(GL_QUADS); 
+        glVertex2i(coorA - borderSize, coorC - borderSize);
+        glVertex2i(coorA - borderSize, coorD + borderSize);
+        glVertex2i(coorB + borderSize, coorD + borderSize);
+        glVertex2i(coorB + borderSize, coorC - borderSize);
+        glEnd(); 
+        glDisable(GL_BLEND);
 
-		//BackGround
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glColor4ub(155,155,255,100); 
-		glPushMatrix(); 
-		glBegin(GL_QUADS); 
-		glVertex2i(coorA, coorC);
-		glVertex2i(coorA, coorD);
-		glVertex2i(coorB, coorD);
-		glVertex2i(coorB, coorC);
-		glEnd(); 
-		glDisable(GL_BLEND);
-        
-        switch(game.render) {
+        //BackGround
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glColor4ub(155,155,255,100); 
+        glPushMatrix(); 
+        glBegin(GL_QUADS); 
+        glVertex2i(coorA, coorC);
+        glVertex2i(coorA, coorD);
+        glVertex2i(coorB, coorD);
+        glVertex2i(coorB, coorC);
+        glEnd(); 
+        glDisable(GL_BLEND);
+
+        switch (game.render) {
             case STARYNIGHT: 
-                game.level3.player[i].boxRender(quadrant[i].center.x, quadrant[i].center.y, quadrant[i].width);
+                game.level3.player[i].boxRender(quadrant[i].center.x, 
+                        quadrant[i].center.y, quadrant[i].width);
                 break;
             case FIELD:
-                game.level2.player[i].boxRender(quadrant[i].center.x, quadrant[i].center.y, quadrant[i].width);
+                game.level2.player[i].boxRender(quadrant[i].center.x, 
+                        quadrant[i].center.y, quadrant[i].width);
                 break;
             case DISCO:
-                game.level4.player[i].boxRender(quadrant[i].center.x, quadrant[i].center.y, quadrant[i].width);
+                game.level4.player[i].boxRender(quadrant[i].center.x, 
+                        quadrant[i].center.y, quadrant[i].width);
                 break;
-		case MAINMENU:
-			break;
-		case PAUSE:
-			break;
-		case ERICK:
-			break;
-		case LEVELSEL:
-			break;
-		case ROBERT:
-			break;
-		case ZACK:
-			break;
-		default:
-			break;
+            case MAINMENU:
+                break;
+            case PAUSE:
+                break;
+            case ERICK:
+                break;
+            case LEVELSEL:
+                break;
+            case ROBERT:
+                break;
+            case ZACK:
+                break;
+            default:
+                break;
         }
 
-	            //render # of icons to indicate life count
-            //else render one icon " x [Number of lives]"
+        //render # of icons to indicate life count
+        //else render one icon " x [Number of lives]"
 
 
         //if player health < 50%, display white numbers
@@ -245,33 +248,36 @@ void StatDisplay::render()
 void Player::boxRender(int centx, int centy, int width)
 {
 
-	float radius = width -75;
-	float x = centx - 50;
-	float y = centy - 50;
-	int triangleNum = 25;
-	float twicePI = 2.0 * M_PI;
+    float radius = width -75;
+    float x = centx - 50;
+    float y = centy - 50;
+    int triangleNum = 25;
+    float twicePI = 2.0 * M_PI;
     Rect r; 
     glEnable(GL_TEXTURE_2D);
     r.bot = y + width;
     r.left = x + 42;
     r.center = x; 
     char temp[15]; 
-    for(int i=0; i<15; i++) {
+    for (int i=0; i<15; i++) {
         temp[i] = st[index][i]; 
     }
     ggprint40(&r,0,0x0ff0000,"%s", temp); 
     r.bot = y - width/2;
     r.left = x + width;
     r.center = x; 
-    switch(game.render) {
+    switch (game.render) {
         case STARYNIGHT:
-            ggprint40(&r, 0, 0x0ff0000, "%i", game.level3.player[index].status.lifeCount);
+            ggprint40(&r, 0, 0x0ff0000, "%i", 
+                    game.level3.player[index].status.lifeCount);
             break;
         case FIELD:
-            ggprint40(&r, 0, 0x0ff0000, "%i", game.level2.player[index].status.lifeCount);
+            ggprint40(&r, 0, 0x0ff0000, "%i", 
+                    game.level2.player[index].status.lifeCount);
             break;
         case DISCO:
-            ggprint40(&r, 0, 0x0ff0000, "%i", game.level4.player[index].status.lifeCount);
+            ggprint40(&r, 0, 0x0ff0000, "%i", 
+                    game.level4.player[index].status.lifeCount);
             break;
         case MAINMENU:
             break;
@@ -291,15 +297,18 @@ void Player::boxRender(int centx, int centy, int width)
     r.bot = y + width/2;
     r.left = x + width;
     r.center = x; 
-    switch(game.render) {
+    switch (game.render) {
         case STARYNIGHT:
-            ggprint40(&r, 0, 0x0ff0000, "%1.1f", game.level3.player[index].multiplier*10);
+            ggprint40(&r, 0, 0x0ff0000, "%1.1f", 
+                    game.level3.player[index].multiplier*10);
             break;
         case FIELD:
-            ggprint40(&r, 0, 0x0ff0000, "%1.1f", game.level2.player[index].multiplier*10);
+            ggprint40(&r, 0, 0x0ff0000, "%1.1f", 
+                    game.level2.player[index].multiplier*10);
             break;
         case DISCO:
-            ggprint40(&r, 0, 0x0ff0000, "%1.1f", game.level4.player[index].multiplier*10);
+            ggprint40(&r, 0, 0x0ff0000, "%1.1f", 
+                    game.level4.player[index].multiplier*10);
             break;
         case MAINMENU:
             break;
@@ -319,92 +328,92 @@ void Player::boxRender(int centx, int centy, int width)
 
     glDisable(GL_TEXTURE_2D);
 
-	//black circle
-	glPushMatrix();
-	glColor4ub(0,0,0,255);
-	glEnable (GL_BLEND); 
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glBegin(GL_TRIANGLE_FAN);
-	glVertex2f(x,y);
-	for(int i = 0; i < 120; i++) {
-	    glVertex2f(x + (radius * cos(i * twicePI / triangleNum)),
-		    y + (radius * sin(i * twicePI / triangleNum)));
-	}
-	glEnd();
-
-	//Large Color Circle
-	radius -= 3;
-	glPushMatrix();
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glBegin(GL_TRIANGLE_FAN);
-	glColor4ub(color[0],color[1],color[2],255);
-	glVertex2f(x,y);
-	for(int i = 0; i < 120; i++) {
-	    glVertex2f(x + (radius * cos(i * twicePI / triangleNum)),
-		    y + (radius * sin(i * twicePI / triangleNum)));
+    //black circle
+    glPushMatrix();
+    glColor4ub(0,0,0,255);
+    glEnable (GL_BLEND); 
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2f(x,y);
+    for (int i = 0; i < 120; i++) {
+        glVertex2f(x + (radius * cos(i * twicePI / triangleNum)),
+                y + (radius * sin(i * twicePI / triangleNum)));
     }
-        glEnd();
+    glEnd();
 
-	for (int i = 0; i < 3; i++) { 
-	    if (color[i] == 150) { 
-		color[i] += 30;
-	    } else if (color[i] == 75) {
-		color[i] += 55;
-	    }
-	}
+    //Large Color Circle
+    radius -= 3;
+    glPushMatrix();
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBegin(GL_TRIANGLE_FAN);
+    glColor4ub(color[0],color[1],color[2],255);
+    glVertex2f(x,y);
+    for (int i = 0; i < 120; i++) {
+        glVertex2f(x + (radius * cos(i * twicePI / triangleNum)),
+                y + (radius * sin(i * twicePI / triangleNum)));
+    }
+    glEnd();
 
-	//smaller color circle
-	radius = radius - radius/4;
-	glPushMatrix();
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glBegin(GL_TRIANGLE_FAN);
-	int x1;
-	int y1 = y + sqrt(radius);
+    for (int i = 0; i < 3; i++) { 
+        if (color[i] == 150) { 
+            color[i] += 30;
+        } else if (color[i] == 75) {
+            color[i] += 55;
+        }
+    }
 
-	float OldMax, OldMin, OldValue;
-	float NewMax, NewMin, offset;
+    //smaller color circle
+    radius = radius - radius/4;
+    glPushMatrix();
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBegin(GL_TRIANGLE_FAN);
+    int x1;
+    int y1 = y + sqrt(radius);
 
-	//if character is in the middle of the level
-	    x1 = x;
-	    //take the width resolution and scale the entire thing down to 7
-	    //controls shading of round character
-	    OldValue = x;
-	    OldMin = 0;
-	    OldMax = scrn->width/2;
-	    NewMin = 0;
-	    NewMax = sqrt(radius - 10);
-	    offset = (OldValue - OldMin) * (NewMax - NewMin);
-	    offset /= (OldMax - OldMin);
-	    offset += NewMin;
-	    offset -= sqrt(radius - 10);
-	    offset = abs(offset);
-	    x1 = x + offset; 
-	glColor3ub(color[0],color[1],color[2]);
-	glVertex2f(x1,y1);
-	for(int i = 0; i < 120; i++) {
-	    glVertex2f(x1 + (radius * cos(i * twicePI / triangleNum)),
-		    y1 + (radius * sin(i * twicePI / triangleNum)));
-	}
-	glEnd();
+    float OldMax, OldMin, OldValue;
+    float NewMax, NewMin, offset;
 
-	//(Eye or Dot) Position
-	int y2,x2;
-	radius = 6;
-	glPushMatrix();
-	glColor4f(0.0,0.0,0.0, 1.0);
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glBegin(GL_TRIANGLE_FAN);
-	    x2 = x + 3.5 * radius;
-	    y2 = y + 2 * radius;
-	glVertex2f(x2,y2);
-	for(int i = 0; i < 120; i++) {
-	    glVertex2f(x2 + (radius * cos(i * twicePI / triangleNum)),
-		    y2 + (radius * sin(i * twicePI / triangleNum)));
-	}
-	glEnd();
-	glDisable(GL_BLEND);
+    //if character is in the middle of the level
+    x1 = x;
+    //take the width resolution and scale the entire thing down to 7
+    //controls shading of round character
+    OldValue = x;
+    OldMin = 0;
+    OldMax = scrn->width/2;
+    NewMin = 0;
+    NewMax = sqrt(radius - 10);
+    offset = (OldValue - OldMin) * (NewMax - NewMin);
+    offset /= (OldMax - OldMin);
+    offset += NewMin;
+    offset -= sqrt(radius - 10);
+    offset = abs(offset);
+    x1 = x + offset; 
+    glColor3ub(color[0],color[1],color[2]);
+    glVertex2f(x1,y1);
+    for (int i = 0; i < 120; i++) {
+        glVertex2f(x1 + (radius * cos(i * twicePI / triangleNum)),
+                y1 + (radius * sin(i * twicePI / triangleNum)));
+    }
+    glEnd();
 
-    
+    //(Eye or Dot) Position
+    int y2,x2;
+    radius = 6;
+    glPushMatrix();
+    glColor4f(0.0,0.0,0.0, 1.0);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBegin(GL_TRIANGLE_FAN);
+    x2 = x + 3.5 * radius;
+    y2 = y + 2 * radius;
+    glVertex2f(x2,y2);
+    for (int i = 0; i < 120; i++) {
+        glVertex2f(x2 + (radius * cos(i * twicePI / triangleNum)),
+                y2 + (radius * sin(i * twicePI / triangleNum)));
+    }
+    glEnd();
+    glDisable(GL_BLEND);
+
+
 }
 
 //when main menu is called after quitting, the following function resets 
@@ -412,15 +421,16 @@ void Player::boxRender(int centx, int centy, int width)
 void resetMain(Game *game) 
 {
 #ifdef USE_OPENAL_SOUND
-//    endSound();
-//    loadSound("./audio/test.wav");
+    //    endSound();
+    //    loadSound("./audio/test.wav");
 #endif
     game->mainMenu.titleVel.y = rnd() * 0.5 - 0.25;
-    game->mainMenu.titleBox.center.y = game->WINDOW_HEIGHT + game->WINDOW_HEIGHT/3;
+    game->mainMenu.titleBox.center.y = 
+        game->WINDOW_HEIGHT + game->WINDOW_HEIGHT/3;
     game->mainMenu.titleBox.center.x = game->WINDOW_WIDTH/2;
 #ifdef USE_OPENAL_SOUND
     for (int i = 0; i < TOTALSOUNDS; i++) {
-	alSourceStop(alSource[i]);
+        alSourceStop(alSource[i]);
     }
     titledrop = 0;
     pitch = 3.0f;
@@ -518,28 +528,38 @@ void Level::Lattack(int index)
         if (player[index].index == i) {}
         else {
             if (player[index].direction == LEFT) {
-                //if (player[index].weapon.center.x - player[index].weapon.width/2 
+                //if (player[index].weapon.center.x - i
+                //player[index].weapon.width/2 
                 //        <= player[i].body.center.x + player[i].body.width) {
                 //    player[i].body.center.x -= 50;
                 //}
-                float distance = pow((player[index].weapon.center.x - player[index].weapon.width/2) - player[i].body.center.x, 2) + 
-                    pow((player[index].weapon.center.y - player[index].weapon.height/2) - player[i].body.center.y, 2);
+                float distance = pow((player[index].weapon.center.x - 
+                            player[index].weapon.width/2) - 
+                        player[i].body.center.x, 2) + 
+                    pow((player[index].weapon.center.y - 
+                                player[index].weapon.height/2) - 
+                            player[i].body.center.y, 2);
 
                 distance = sqrt(distance);
                 if (distance < player[i].body.radius){
                     //player[i].body.center.x -= player[i].multiplier * 50;
                     player[i].delta.x -= player[i].multiplier*5;
                     player[i].delta.y += player[i].multiplier*2;
-					player[i].multiplier += 0.25;
+                    player[i].multiplier += 0.25;
                 }
             }
-            else if(player[index].direction == RIGHT) {
-                //if (player[index].weapon.center.x + player[index].weapon.width/2
+            else if (player[index].direction == RIGHT) {
+                //if (player[index].weapon.center.x + 
+                //player[index].weapon.width/2
                 //	   >= player[i].body.center.x - player[i].body.width) {
                 //player[i].body.center.x += 50;
                 //}
-                float distance = pow((player[index].weapon.center.x + player[index].weapon.width/2) - player[i].body.center.x,2) +
-                    pow((player[index].weapon.center.y + player[index].weapon.height/2) - player[i].body.center.y, 2);
+                float distance = pow((player[index].weapon.center.x + 
+                            player[index].weapon.width/2) - 
+                        player[i].body.center.x,2) +
+                    pow((player[index].weapon.center.y + 
+                                player[index].weapon.height/2) - 
+                            player[i].body.center.y, 2);
                 distance = sqrt(distance);
                 if (distance < player[i].body.radius) {
                     //player[i].body.center.x += player[i].multiplier * 50;
