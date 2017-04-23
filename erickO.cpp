@@ -55,11 +55,12 @@
 
 using namespace std;
 
-#define rnd() (float)rand() / (float)RAND_MAX
 #define MAX_PILLS 1000
 #define x_rnd() (rand() % 11) - 5 
 #define y_rnd() (rand() % 11)  
 #define color_rnd() (rand() % 6) 
+#define coor() ((float)rand() / (float)RAND_MAX) - 0.5
+#define rnd() (float)rand() / (float)RAND_MAX
 
 extern Screen* scrn;
 extern void resetMain(Game *game);
@@ -732,9 +733,15 @@ Disco_Level::Disco_Level()
 	init_triangle_sky();
 }
 
+bool alterCoor = false;
 void disco(Game *game)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	if (alterCoor == true) {
+		game->level4.randomizeCoor();
+		alterCoor = false;
+	}
 
 	game->level4.render();
 
@@ -776,7 +783,9 @@ void disco(Game *game)
 
 int ct = 0;
 bool begining = true;
-void Disco_Level::render() 
+bool forward = true;
+float opacity = 0;
+void Disco_Level::render()	
 {
 	glLineWidth(1);
 	glColor3ub(255,255,255);
@@ -833,11 +842,10 @@ void Disco_Level::render()
 		y3 = coor[i + 18].y;
 
 		if (flag) {
-
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glColor3ub(coor[i].color[0][0],coor[i].color[0][1],
-					coor[i].color[0][2]);
+			glColor4ub(coor[i].color[0][0],coor[i].color[0][1],
+					coor[i].color[0][2], opacity);
 			glBegin(GL_LINES);
 			glVertex2f(x,y);
 			glVertex2f(x1,y1);
@@ -846,8 +854,8 @@ void Disco_Level::render()
 
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glColor3ub(coor[i].color[1][0],coor[i].color[1][1],
-					coor[i].color[1][2]);
+			glColor4ub(coor[i].color[1][0],coor[i].color[1][1],
+					coor[i].color[1][2], opacity);
 			glBegin(GL_LINES);
 			glVertex2f(x,y);
 			glVertex2f(x2,y2);
@@ -856,8 +864,8 @@ void Disco_Level::render()
 
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glColor3ub(coor[i].color[2][0],coor[i].color[2][1],
-					coor[i].color[2][2]);
+			glColor4ub(coor[i].color[2][0],coor[i].color[2][1],
+					coor[i].color[2][2], opacity);
 			glBegin(GL_LINES);
 			glVertex2f(x,y);
 			glVertex2f(x3,y3);
@@ -873,6 +881,20 @@ void Disco_Level::render()
 			processed++;
 		}
 	}	
+	if (opacity >= 255) {
+		forward = false;
+	}
+	else if (opacity <= 0) {
+		//randomize coordinates here
+		alterCoor = true;
+		forward = true;
+	}
+
+	if (forward) {
+		opacity += 0.75;
+	} else {
+		opacity -= 0.75;
+	}
 
 	//Render black line on floor
 	glColor3ub(150,150,0); 
@@ -903,6 +925,57 @@ void Disco_Level::render()
 			platform[0].center.y - platform[0].height/2);
 	glEnd(); 
 	// End of floor
+}
+
+void Disco_Level::randomizeCoor() {
+	srand(time(NULL));
+	int yPartition = 9;
+	int xPartition = 16;
+	float xRange = 2 * scrn->width;
+	float yRange = 2 * scrn->height;
+	float xStart = -scrn->width/2;
+	float yStart = scrn->height + scrn->height/2;
+	float yManip = scrn->height + scrn->height/2;
+	float xJump = xRange / xPartition;
+	float yJump = yRange / yPartition;
+	int sample = 0;
+	Color colors;
+
+	//Define verticies
+	coor[0].x = xStart;
+	coor[0].y = yStart;
+	sample = color_rnd();
+
+	for (int j = 0; j < 3; j++) {
+		for (int k = 0; k < 3; k++) {
+			coor[0].color[j][k] = colors.neon[sample][k];
+		}	
+	}
+
+	//every (x,y) on screen
+	for (int i = 1; i < (xPartition + 1) * (yPartition + 1); i++) {
+		//traves accross the screen
+		coor[i].x = coor[i-1].x + xJump * coor();
+		coor[i].y = yManip + yManip * coor();
+		
+		//coor[i].x = coor[i-1].x + xJump;
+		//coor[i].y = yManip;
+
+		//Assign line color
+		for (int j = 0; j < 3; j++) {
+			sample = color_rnd();
+			for (int k = 0; k < 3; k++) {
+				coor[i].color[j][k] = colors.neon[sample][k];
+			}	
+		}	
+
+		//restart x coordinate
+		if (i % (xPartition + 1) == 0) {
+			yManip -= yJump;
+			coor[i].x = xStart;
+			coor[i].y = yManip;
+		}
+	}
 }
 
 /*
@@ -1028,7 +1101,6 @@ onGround = false;
  */
 void Field_Level::erick_init()
 {
-	//==================ERICK's CODE====================
 	//life assignment, health assignment
 	//Temporary color assignment until character select is up and running
 	Color colors;
@@ -1084,7 +1156,6 @@ void Field_Level::erick_init()
 				break;
 		}
 	}
-	//================END ERICK's CODE====================
 }
 
 void Starynight_Level::erick_init()

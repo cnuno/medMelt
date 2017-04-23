@@ -235,6 +235,7 @@ class Disco_Level: public Level {
 		void render();
 		Disco_Level();
 		Coordinates coor[10 * 17];
+		void randomizeCoor();
 		void physics(Player *player) 
 		{
 			Level::physics(player);

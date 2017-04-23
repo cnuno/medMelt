@@ -444,6 +444,9 @@ void StatDisplay::render()
             case FIELD:
                 game.level2.player[i].boxRender(quadrant[i].center.x, quadrant[i].center.y, quadrant[i].width);
                 break;
+            case DISCO:
+                game.level4.player[i].boxRender(quadrant[i].center.x, quadrant[i].center.y, quadrant[i].width);
+                break;
 		case MAINMENU:
 			break;
 		case PAUSE:
