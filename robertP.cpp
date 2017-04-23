@@ -95,7 +95,7 @@ extern ALuint alBuffer;
 extern Ppmimage *etIcon;
 extern GLuint etTexture;
 extern Game game;
-
+char st[4][15] = {{"Player 1"},{"Player 2"},{"Player 3"}, {"Player 4"}}; 
 Game::~Game()
 {
 	system("rm -Rf images/");
@@ -480,12 +480,50 @@ void Player::boxRender(int centx, int centy, int width)
 {
 
 	float radius = width -75;
-	float x = centx;
-	float y = centy;
+	float x = centx - 50;
+	float y = centy - 50;
 	int triangleNum = 25;
 	float twicePI = 2.0 * M_PI;
+    Rect r; 
+    glEnable(GL_TEXTURE_2D);
+    r.bot = y - width/2-100;
+    r.left = x+width/2;
+    r.center = x; 
+    char temp[15]; 
+    for(int i=0; i<15; i++) {
+        temp[i] = st[index][i]; 
+    }
+    ggprint40(&r,0,0x0ff0000,"%s", temp); 
+    r.bot = y + width/2;
+    r.left = x+width/2;
+    r.center = x; 
+    switch(game.render) {
+        case STARYNIGHT:
+            ggprint40(&r, 0, 0x0ff0000, "%i", game.level3.player[index].status.lifeCount);
+            break;
+        case FIELD:
+            ggprint40(&r, 0, 0x0ff0000, "%i", game.level2.player[index].status.lifeCount);
+            break;
+        case DISCO:
+            ggprint40(&r, 0, 0x0ff0000, "%i", game.level4.player[index].status.lifeCount);
+            break;
+        case MAINMENU:
+            break;
+        case PAUSE:
+            break;
+        case ERICK:
+            break;
+        case LEVELSEL:
+            break;
+        case ROBERT:
+            break;
+        case ZACK:
+            break;
+        default:
+            break;
+    }
 
-
+    glDisable(GL_TEXTURE_2D);
 
 	//black circle
 	glPushMatrix();
@@ -667,7 +705,10 @@ void Player::attack()
         game.level2.Lattack(index);
     } else if (game.render == STARYNIGHT) {
         game.level3.Lattack(index);
+    } else if (game.render == DISCO) {
+        game.level4.Lattack(index);
     }
+
 }
 
 void Level::Lattack(int index)

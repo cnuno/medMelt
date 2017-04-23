@@ -791,6 +791,7 @@ void disco(Game *game)
 			}
 		}	
 	}
+    game->level4.statDisplay.render();
 }
 
 int ct = 0;
