@@ -2,6 +2,17 @@
 
 /*
    Progress Log
+   04/18/2017 - 04/21/2017
+   I developed a new "DISCO" level with dynamic features. I encountered a lot
+   of issues in establishing the coordinates for the triangle lined sky. The
+   sky fades in and fades out. Once it fades out, the background randomizes.
+   The mathematics had me boggled for days. So, I toubleshooted this issue
+   and rendered the coordinates onto the screen without the lines. This 
+   helped me solve the issues I encountered. 
+
+   04/17/2017
+   Worked with robert to figure out timing for respawns. 
+
    April 16th, 2017 - part 2
    I am attempting to create inheritance from the player class. In this
    attempt, I realized that this may alter the way physics is conducted for
@@ -61,6 +72,7 @@ using namespace std;
 #define color_rnd() (rand() % 6) 
 #define coor() ((float)rand() / (float)RAND_MAX) - 0.5
 #define rnd() (float)rand() / (float)RAND_MAX
+#define change() (rand() % 3) + 1
 
 extern Screen* scrn;
 extern void resetMain(Game *game);
@@ -219,7 +231,6 @@ void toggle_move(Player *player, Direction dir)
 }
 
 //Player constructor
-//Must rework, each level must assign a center(x,y)
 Player::Player() 
 {
 	JUMP_MAX = 4;
@@ -527,6 +538,7 @@ void Player::collision(Shape platform[])
 		}
 	}
 }
+
 void erick(Game *game) 
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -743,6 +755,7 @@ void disco(Game *game)
 		alterCoor = false;
 	}
 
+	game->level4.renderSky();
 	game->level4.render();
 
 	for (int i = 0; i < MAX_PLAYER; i++) {
@@ -778,7 +791,6 @@ void disco(Game *game)
 			}
 		}	
 	}
-
 }
 
 int ct = 0;
@@ -809,6 +821,38 @@ void Disco_Level::render()
 	glVertex2f(-scrn->width/2,-scrn->height/2);
 	glEnd();
 
+	//Render black line on floor
+	glColor3ub(150,150,0); 
+	glPushMatrix(); 
+	glBegin(GL_QUADS); 
+	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
+			platform[0].center.y - platform[0].height/2 - 5);
+	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
+			platform[0].center.y + platform[0].height/2 + 5);
+	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
+			platform[0].center.y + platform[0].height/2 + 5);
+	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
+			platform[0].center.y - platform[0].height/2 - 5);
+	glEnd(); 
+	// End of blfloor
+
+	//Render of floor
+	glColor3ub(0,0,0); 
+	glPushMatrix(); 
+	glBegin(GL_QUADS); 
+	glVertex2i(platform[0].center.x - platform[0].width/2, 
+			platform[0].center.y - platform[0].height/2);
+	glVertex2i(platform[0].center.x - platform[0].width/2, 
+			platform[0].center.y + platform[0].height/2);
+	glVertex2i(platform[0].center.x + platform[0].width/2, 
+			platform[0].center.y + platform[0].height/2);
+	glVertex2i(platform[0].center.x + platform[0].width/2, 
+			platform[0].center.y - platform[0].height/2);
+	glEnd(); 
+	// End of floor
+}
+
+void Disco_Level::renderSky() {
 	//TriSky
 	int processed = 0;
 	ct = 0;
@@ -884,7 +928,7 @@ void Disco_Level::render()
 	if (opacity >= 255) {
 		forward = false;
 	}
-	else if (opacity <= 0) {
+	else if (opacity < 0) {
 		//randomize coordinates here
 		alterCoor = true;
 		forward = true;
@@ -892,40 +936,14 @@ void Disco_Level::render()
 
 	if (forward) {
 		opacity += 0.75;
+		//opacity += 5;
 	} else {
 		opacity -= 0.75;
+		//opacity -= 5;
 	}
 
-	//Render black line on floor
-	glColor3ub(150,150,0); 
-	glPushMatrix(); 
-	glBegin(GL_QUADS); 
-	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
-			platform[0].center.y - platform[0].height/2 - 5);
-	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
-			platform[0].center.y + platform[0].height/2 + 5);
-	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
-			platform[0].center.y + platform[0].height/2 + 5);
-	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
-			platform[0].center.y - platform[0].height/2 - 5);
-	glEnd(); 
-	// End of blfloor
-
-	//Render of floor
-	glColor3ub(0,0,0); 
-	glPushMatrix(); 
-	glBegin(GL_QUADS); 
-	glVertex2i(platform[0].center.x - platform[0].width/2, 
-			platform[0].center.y - platform[0].height/2);
-	glVertex2i(platform[0].center.x - platform[0].width/2, 
-			platform[0].center.y + platform[0].height/2);
-	glVertex2i(platform[0].center.x + platform[0].width/2, 
-			platform[0].center.y + platform[0].height/2);
-	glVertex2i(platform[0].center.x + platform[0].width/2, 
-			platform[0].center.y - platform[0].height/2);
-	glEnd(); 
-	// End of floor
 }
+
 
 void Disco_Level::randomizeCoor() {
 	srand(time(NULL));
@@ -952,14 +970,33 @@ void Disco_Level::randomizeCoor() {
 		}	
 	}
 
+	int temp = change();
 	//every (x,y) on screen
 	for (int i = 1; i < (xPartition + 1) * (yPartition + 1); i++) {
-		//traves accross the screen
-		coor[i].x = coor[i-1].x + xJump * coor();
-		coor[i].y = yManip + yManip * coor();
-		
-		//coor[i].x = coor[i-1].x + xJump;
-		//coor[i].y = yManip;
+		//travse accross the screen
+		if (temp % 2 != 0) {
+			if(change() % 1 == 0) {
+				coor[i].x = coor[i-1].x + xJump * coor();
+				coor[i].y = yManip + yManip * coor();
+			}
+			else {
+				coor[i].x = coor[i-1].x + xJump;
+				coor[i].y = yManip;
+			}
+		} else {
+			if(temp % 1 == 0) {
+				coor[i].x = coor[i-1].x + xJump * coor();
+				coor[i].y = yManip + yManip * coor();
+			} 
+			else if(temp % 2 == 0) {
+				coor[i].x = coor[i-1].x + xJump;
+				coor[i].y = yManip + pow(coor(), 4) * 100;
+			}
+			else {
+				coor[i].x = coor[i-1].x + xJump;
+				coor[i].y = yManip;
+			}
+		}
 
 		//Assign line color
 		for (int j = 0; j < 3; j++) {

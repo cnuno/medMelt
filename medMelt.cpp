@@ -179,8 +179,7 @@ void render_switch(Game *game)
 		case ZACK:
 			break;
 		case FIELD:
-			disco(game); 
-			//field(game); 
+			field(game); 
 			break;
 		case STARYNIGHT:
 			starynight(game);

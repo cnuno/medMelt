@@ -319,6 +319,11 @@ void render_pause(Game *game)
 		for (int i = 0; i < MAX_PLAYER; i++) {
 			game->level3.player[i].render();
 		}
+	} else if(game->prevState == DISCO) {
+		game->level4.render();
+		for (int i = 0; i < MAX_PLAYER; i++) {
+			game->level4.player[i].render();
+		}
 	}
 	/*A = game->pauseMenu.selector.center.x - dyna1->width/2;
 	  B = game->pauseMenu.selector.center.y - dyna1->height/2;

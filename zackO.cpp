@@ -565,6 +565,10 @@ void check_keys(XEvent *e, Game *game)
                     default:
                         break;
                 }
+			case XK_v:
+				game->render = DISCO; 
+				break;
+
                 break;
 
         }

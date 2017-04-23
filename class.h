@@ -233,6 +233,7 @@ class Disco_Level: public Level {
 		void init_triangle_sky();
 		void erick_init();
 		void render();
+		void renderSky();
 		Disco_Level();
 		Coordinates coor[10 * 17];
 		void randomizeCoor();
