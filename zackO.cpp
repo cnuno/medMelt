@@ -502,6 +502,40 @@ void check_keys(XEvent *e, Game *game)
                                 game->pauseMenu.obox.center.y;
                         }
                         break;
+                        case STARYNIGHT:
+                        conditionA= game->level3.player[0].jumpCount < 
+                            game->level3.player[0].JUMP_MAX;
+                        conditionB= game->level3.player[0].action != 
+                            GROUNDPOUND;
+                        conditionC= game->level3.player[0].action != DASH;
+                        if (conditionA && conditionB && conditionC) {
+                            game->level3.player[0].delta.y = 7.0f; 
+                            game->level3.player[0].jumpCount++; 
+                        }
+                        //void loadImages();
+                        break;
+                    case FIELD:
+                        conditionA= game->level2.player[0].jumpCount < 
+                            game->level2.player[0].JUMP_MAX;
+                        conditionB= game->level2.player[0].action != 
+                            GROUNDPOUND;
+                        conditionC= game->level2.player[0].action != DASH;
+                        if (conditionA && conditionB && conditionC) {
+                            game->level2.player[0].delta.y = 7.0f; 
+                            game->level2.player[0].jumpCount++; 
+                        }
+                        break;
+                    case DISCO:
+                        conditionA= game->level4.player[0].jumpCount < 
+                            game->level4.player[0].JUMP_MAX;
+                        conditionB= game->level4.player[0].action != 
+                            GROUNDPOUND;
+                        conditionC= game->level4.player[0].action != DASH;
+                        if (conditionA && conditionB && conditionC) {
+                            game->level4.player[0].delta.y = 7.0f; 
+                            game->level4.player[0].jumpCount++; 
+                        }
+                        break;
                     default : 
                         break;
 
@@ -749,44 +783,6 @@ void check_keys(XEvent *e, Game *game)
                 };
                 break;
             case XK_k:
-                switch (game->render) {
-                    case STARYNIGHT:
-                        conditionA= game->level3.player[0].jumpCount < 
-                            game->level3.player[0].JUMP_MAX;
-                        conditionB= game->level3.player[0].action != 
-                            GROUNDPOUND;
-                        conditionC= game->level3.player[0].action != DASH;
-                        if (conditionA && conditionB && conditionC) {
-                            game->level3.player[0].delta.y = 7.0f; 
-                            game->level3.player[0].jumpCount++; 
-                        }
-                        //void loadImages();
-                        break;
-                    case FIELD:
-                        conditionA= game->level2.player[0].jumpCount < 
-                            game->level2.player[0].JUMP_MAX;
-                        conditionB= game->level2.player[0].action != 
-                            GROUNDPOUND;
-                        conditionC= game->level2.player[0].action != DASH;
-                        if (conditionA && conditionB && conditionC) {
-                            game->level2.player[0].delta.y = 7.0f; 
-                            game->level2.player[0].jumpCount++; 
-                        }
-                        break;
-                    case DISCO:
-                        conditionA= game->level4.player[0].jumpCount < 
-                            game->level4.player[0].JUMP_MAX;
-                        conditionB= game->level4.player[0].action != 
-                            GROUNDPOUND;
-                        conditionC= game->level4.player[0].action != DASH;
-                        if (conditionA && conditionB && conditionC) {
-                            game->level4.player[0].delta.y = 7.0f; 
-                            game->level4.player[0].jumpCount++; 
-                        }
-                        break;
-                    default:
-                        break;
-                };
                 break;
             case XK_v:
 #ifdef USE_OPENAL_SOUND
