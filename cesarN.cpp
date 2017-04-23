@@ -151,10 +151,6 @@ void menu_move(Joystick *joystick, Game* game)
 		    switch (game->render) {
 			case MAINMENU:
 			    if (dyna == playIcon) {  
-#ifdef USE_OPENAL_SOUND           
-				loadSound("./audio/testsong.wav");
-				playSound(1.0f, false);
-#endif
 				game->render = LEVELSEL;
 			    }
 			    else if (dyna == optionsIcon) {
@@ -609,7 +605,7 @@ void movement_menu(Game *game)
 			game->WINDOW_HEIGHT-game->WINDOW_HEIGHT/3.5) {
 #ifdef USE_OPENAL_SOUND
 		if (titledrop < 11) {
-			playSound(pitch, false);
+			play_sound(0, pitch, false);
 			titledrop++;
 			pitch = pitch + .7f;
 		}

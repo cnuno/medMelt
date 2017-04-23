@@ -59,8 +59,13 @@ GLuint quitSelTexture;
 GLuint fieldTexture;
 GLuint staryTexture;
 GLuint etTexture;
-ALuint alSource;
-ALuint alBuffer;
+
+#ifdef USE_OPENAL_SOUND
+//Sound variables
+#define SOUNDCOUNT 20
+ALuint alSource[SOUNDCOUNT];
+ALuint alBuffer[SOUNDCOUNT];
+#endif
 
 #ifdef USE_OPENAL_SOUND
 int titledrop = 0;
@@ -137,7 +142,7 @@ int main()
 	init_opengl();
 	srand(time(NULL));
 #ifdef USE_OPENAL_SOUND
-	loadSound("./audio/test.wav");
+	initialize_sounds();
 #endif
 	//start animation
 	while (!done) {
@@ -158,8 +163,7 @@ int main()
 		glXSwapBuffers(dpy, win);
 	}
 #ifdef USE_OPENAL_SOUND
-	endSound();
-    closeSoundDevice();
+	cleanup_sounds();
 #endif
 	cleanupXWindows();
 	return 0;

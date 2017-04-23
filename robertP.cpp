@@ -29,10 +29,12 @@ sound code and moving texture definitions out of my file.
 Today we rendered the weapon, character status boxes, and added the attack 
 collision detection. We worked for 7.75 hours.
 
-4/22/2017
-Today I isolated the sound and added ifdef statements around all sound stuff. I 
+4/22-4/23/2017
+Tonight I isolated the sound and added ifdef statements around all sound stuff. I 
 also edited the makefile to create an executable with the sound and one without
-the sound. I plan to refactor my sound code and make large changes to it.
+the sound. I refactored the sound code that will load all sound files used in
+the game at one time for ease of access. I also added songs to the levels as well
+as sounds to the players.
  */
 
 #include "headers.h"
@@ -42,7 +44,9 @@ the sound. I plan to refactor my sound code and make large changes to it.
 #include <sys/stat.h>
 #include <stdio.h>
 #include <iostream>
+#ifdef USE_OPENAL_SOUND
 #include </usr/include/AL/alut.h>
+#endif
 #define GRAVITY .1
 #define MAX_PARTICLE 50
 #define x_rnd() (rand() % 11) - 5 
@@ -53,8 +57,9 @@ using namespace std;
 
 extern void resetMain(Game *game); 
 #ifdef USE_OPENAL_SOUND
-extern ALuint alSource;
-extern ALuint alBuffer;
+#define TOTALSOUNDS 6
+extern ALuint alSource[TOTALSOUNDS];
+extern ALuint alBuffer[TOTALSOUNDS];
 extern int titledrop;
 extern float pitch;
 #endif
@@ -67,50 +72,63 @@ Game::~Game()
 	system("rm -Rf images/");
 	system("rm -Rf audio/");
 }
+
+//Sound Code
 #ifdef USE_OPENAL_SOUND
-void loadSound (const char path[20])
+
+void initialize_sounds ()
 {
-	
-
-
 	alutInit(0, NULL);
 	if (alGetError() != AL_NO_ERROR) {
-		printf("ERROR: alutInit()\n");
+		cout << "OPENAL ERROR" << endl;
+		return;
 	}
 	alGetError();
-	float vec[6] = {0.0f,0.0f,1.0f, 0.0f,1.0f,0.0f};
+	float vec[6] = {0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f};
 	alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
 	alListenerfv(AL_ORIENTATION, vec);
 	alListenerf(AL_GAIN, 1.0f);
-	alBuffer = alutCreateBufferFromFile(path);
-	alGenSources(1, &alSource);
-	if (alGetError() != AL_NO_ERROR) {
-		printf("ERROR: setting source\n");
-	}
+	
+	//add sound sources here
+	alBuffer[0] = alutCreateBufferFromFile("./audio/test.wav");
+	alBuffer[1] = alutCreateBufferFromFile("./audio/disco.wav");
+	alBuffer[2] = alutCreateBufferFromFile("./audio/sword.wav");
+	alBuffer[3] = alutCreateBufferFromFile("./audio/pound.wav");
+	alBuffer[4] = alutCreateBufferFromFile("./audio/field.wav");
+	alBuffer[5] = alutCreateBufferFromFile("./audio/starnight.wav");
+
+	alGenSources(TOTALSOUNDS, alSource);
+
+	//link buffers here
+	alSourcei(alSource[0], AL_BUFFER, alBuffer[0]);
+	alSourcei(alSource[1], AL_BUFFER, alBuffer[1]);	
+	alSourcei(alSource[2], AL_BUFFER, alBuffer[2]);
+	alSourcei(alSource[3], AL_BUFFER, alBuffer[3]);
+	alSourcei(alSource[4], AL_BUFFER, alBuffer[4]);
+	alSourcei(alSource[5], AL_BUFFER, alBuffer[5]);
+
+
 }
 
-//playSound parameters
-//1st: float pitch
-//2nd: bool - true or false for looping
-void playSound(float pitch, bool loop)
+void play_sound (int track, float pitch, bool loop)
 {
-	alSourcei(alSource, AL_BUFFER, alBuffer);
-	alSourcef(alSource, AL_GAIN, 1.0f);
-	alSourcef(alSource, AL_PITCH, pitch);
-	if (loop == true) {
-		alSourcei(alSource, AL_LOOPING, AL_TRUE);
-	} else {
-		alSourcei(alSource, AL_LOOPING, AL_FALSE);
+	alSourcef(alSource[track], AL_GAIN, 1.0f);
+	alSourcef(alSource[track], AL_PITCH, pitch);
+	alSourcei(alSource[track], AL_LOOPING, loop);
+	if (alGetError() != AL_NO_ERROR) {
+		cout << "OPENAL ERROR" << endl;
+		return;
 	}
-	alSourcePlay(alSource);
+	alSourcePlay(alSource[track]);
 }
 
-void endSound() {
-	alDeleteSources(1, &alSource);
-	alDeleteBuffers(1, &alBuffer);
-}
-
-void closeSoundDevice() {
+void cleanup_sounds () {
+	for (int i = 0; i < TOTALSOUNDS; i++) {
+		alDeleteSources(1, &alSource[i]);
+	}
+	for (int i = 0; i < TOTALSOUNDS; i++) {
+		alDeleteBuffers(1, &alBuffer[i]);
+	}
 	ALCcontext *Context = alcGetCurrentContext();
 	ALCdevice *Device = alcGetContextsDevice(Context);
 	alcMakeContextCurrent(NULL);
@@ -118,6 +136,7 @@ void closeSoundDevice() {
 	alcCloseDevice(Device);
 	return;
 }
+
 #endif
 
 //Constructor to display player stats such as health
@@ -393,13 +412,16 @@ void Player::boxRender(int centx, int centy, int width)
 void resetMain(Game *game) 
 {
 #ifdef USE_OPENAL_SOUND
-    endSound();
-    loadSound("./audio/test.wav");
+//    endSound();
+//    loadSound("./audio/test.wav");
 #endif
     game->mainMenu.titleVel.y = rnd() * 0.5 - 0.25;
     game->mainMenu.titleBox.center.y = game->WINDOW_HEIGHT + game->WINDOW_HEIGHT/3;
     game->mainMenu.titleBox.center.x = game->WINDOW_WIDTH/2;
 #ifdef USE_OPENAL_SOUND
+    for (int i = 0; i < TOTALSOUNDS; i++) {
+	alSourceStop(alSource[i]);
+    }
     titledrop = 0;
     pitch = 3.0f;
 #endif

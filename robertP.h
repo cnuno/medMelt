@@ -3,10 +3,11 @@
 #ifndef _ROBERT_
 #define _ROBERT_
 
-void loadSound(const char path[20]);
-void playSound(float pitch, bool loop);
-void endSound();
-void closeSoundDevice();
+#ifdef USE_OPENAL_SOUND
+void initialize_sounds();
+void play_sound(int track, float pitch, bool loop);
+void cleanup_sounds();
+#endif
 //void deathAnimation(int x, int y);
 void deathPhysics();
 void deathRender();
