@@ -761,6 +761,8 @@ Disco_Level::Disco_Level()
 bool fw = true;
 void Disco_Level::movingPlat(Shape *p) {
 
+	//if forward flag, increment
+	//else, decrement
 	if (fw) {
 		p->center.x += 5;
 	} else if (fw == false) {
@@ -769,13 +771,12 @@ void Disco_Level::movingPlat(Shape *p) {
 		p->center.y -= 5;
 	}
 
+	//set flag, check range
 	if (p->center.x <=0) {
 		fw = true;
 	} else if (p->center.x >=scrn->width) {
 		fw = false; 
 	}
-
-
 }
 
 bool alterCoor = false;
@@ -793,6 +794,32 @@ void disco(Game *game)
 	game->level4.movingPlat(&game->level4.platform[1]);
 
 	for (int i = 0; i < MAX_PLAYER; i++) {
+		
+		//--------------------DEVELOP-------------------------------------------------------
+		game->level4.player[i].collision(game->level4.platform);
+		//if (game->level4.player[i].currentContact == 1 
+		//		&& game->level4.player[i].onGround == true) {
+		if (game->level4.player[i].currentContact == 1) { 
+			if (game->level4.player[i].onGround == true) {
+			cout << "*" << endl;
+			}
+			int dist = 0;
+			if (game->level4.platform[1].center.x 
+					< game->level4.player[i].body.center.x) {
+				dist =  game->level4.player[i].body.center.x 
+					- game->level4.platform[1].center.x;
+				game->level4.player[i].body.center.x = game->level4.platform[1].center.x 
+					+ dist;
+			} else {
+				dist = game->level4.platform[1].center.x 
+					- game->level4.player[i].body.center.x; 
+				game->level4.player[i].body.center.x = game->level4.platform[1].center.x 
+					- dist;
+
+			}
+		}
+		//--------------------DEVELOP-------------------------------------------------------
+
 		game->level4.physics(&game->level4.player[i]);
 		game->level4.player[i].check_controller(&game->level4.player[i], 
 				game->level4.controller.joystick[i]);
