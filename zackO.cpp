@@ -404,6 +404,7 @@ void Starynight_Level::render()
 //Check Keys for Gordon
 void check_keys(XEvent *e, Game *game) 
 {
+    bool conditionA, conditionB, conditionC; 
     if(e->type == KeyPress) {
         int key = XLookupKeysym(&e->xkey,0);
 
@@ -490,9 +491,42 @@ void check_keys(XEvent *e, Game *game)
                             game->pauseMenu.selector.center.y = game->pauseMenu.rbox.center.y;
                         }
                         break;
+                    case STARYNIGHT:
+                        game->level3.player[0].action = GROUNDPOUND;
+                        game->level3.player[0].delta.x = 0.0f;
+                        //usleep(300000);
+                        game->level3.player[0].delta.y = -20.0f;
+                        break;
+                    case FIELD:
+                        game->level2.player[0].action = GROUNDPOUND;
+                        game->level2.player[0].delta.x = 0.0f;
+                        //usleep(300000);
+                        game->level2.player[0].delta.y = -20.0f;
+                        break;
+                    case DISCO:
+                        game->level4.player[0].action = GROUNDPOUND;
+                        game->level4.player[0].delta.x = 0.0f;
+                        //usleep(300000);
+                        game->level4.player[0].delta.y = -20.0f;
+                        break;
                     default : 
                         break;
                 }
+                break;
+            case XK_j:
+                switch(game->render) {
+                    case STARYNIGHT:
+                        game->level3.player[0].attack(); 
+                        break;
+                    case FIELD:
+                        game->level2.player[0].attack(); 
+                        break;
+                    case DISCO:
+                        game->level4.player[0].attack(); 
+                        break;
+                    default:
+                        break;
+                };
                 break;
             case XK_Return:
                 switch (game->render) {
@@ -544,6 +578,33 @@ void check_keys(XEvent *e, Game *game)
                             game->levelMenu.selector.center.y = game->levelMenu.level1.center.y;
                         }
                         break;
+                    case STARYNIGHT:
+                        if (game->level3.player[0].action != DASH) {
+                            game->level3.player[0].direction = LEFT;
+                            game->level3.player[0].action = MOVE;
+                            game->level3.player[0].delta.x = -5.0f;
+                        }
+                        if (game->level3.player[0].onGround)
+                            game->level3.player[0].delta.y = 1.25f;
+                        break;
+                    case FIELD:
+                        if (game->level2.player[0].action != DASH) {
+                            game->level2.player[0].direction = LEFT;
+                            game->level2.player[0].action = MOVE;
+                            game->level2.player[0].delta.x = -5.0f;
+                        }
+                        if (game->level2.player[0].onGround)
+                            game->level2.player[0].delta.y = 1.25f;
+                        break;
+                    case DISCO:
+                        if (game->level4.player[0].action != DASH) {
+                            game->level4.player[0].direction = LEFT;
+                            game->level4.player[0].action = MOVE;
+                            game->level4.player[0].delta.x = -5.0f;
+                        }
+                        if (game->level4.player[0].onGround)
+                            game->level4.player[0].delta.y = 1.25f;
+                        break;
                     default:
                         break;
                 }
@@ -562,15 +623,75 @@ void check_keys(XEvent *e, Game *game)
                             game->levelMenu.selector.center.y = game->levelMenu.level1.center.y;
                         }
                         break;
+                    case STARYNIGHT:
+                        if (game->level3.player[0].action != DASH) {
+                            game->level3.player[0].direction = RIGHT;
+                            game->level3.player[0].action = MOVE;
+                            game->level3.player[0].delta.x = 5.0f;
+                        }
+                        if (game->level3.player[0].onGround)
+                            game->level3.player[0].delta.y = 1.25f;
+                        break;
+                    case FIELD:
+                        if (game->level2.player[0].action != DASH) {
+                            game->level2.player[0].direction = RIGHT;
+                            game->level2.player[0].action = MOVE;
+                            game->level2.player[0].delta.x = 5.0f;
+                        }
+                        if (game->level2.player[0].onGround)
+                            game->level2.player[0].delta.y = 1.25f;
+                        break;
+                    case DISCO:
+                        if (game->level4.player[0].action != DASH) {
+                            game->level4.player[0].direction = RIGHT;
+                            game->level4.player[0].action = MOVE;
+                            game->level4.player[0].delta.x = 5.0f;
+                        }
+                        if (game->level4.player[0].onGround)
+                            game->level4.player[0].delta.y = 1.25f;
+                        break;
                     default:
                         break;
-                }
-			case XK_v:
-				game->render = DISCO; 
-				break;
-
+                };
+                break;
+            case XK_k:
+                switch(game->render) {
+                    case STARYNIGHT:
+                        conditionA= game->level3.player[0].jumpCount < game->level3.player[0].JUMP_MAX;
+                        conditionB= game->level3.player[0].action != GROUNDPOUND;
+                        conditionC= game->level3.player[0].action != DASH;
+                        if (conditionA && conditionB && conditionC) {
+                            game->level3.player[0].delta.y = 7.0f; 
+                            game->level3.player[0].jumpCount++; 
+                        }
+                        break;
+                    case FIELD:
+                        conditionA= game->level2.player[0].jumpCount < game->level2.player[0].JUMP_MAX;
+                        conditionB= game->level2.player[0].action != GROUNDPOUND;
+                        conditionC= game->level2.player[0].action != DASH;
+                        if (conditionA && conditionB && conditionC) {
+                            game->level2.player[0].delta.y = 7.0f; 
+                            game->level2.player[0].jumpCount++; 
+                        }
+                        break;
+                    case DISCO:
+                        conditionA= game->level4.player[0].jumpCount < game->level4.player[0].JUMP_MAX;
+                        conditionB= game->level4.player[0].action != GROUNDPOUND;
+                        conditionC= game->level4.player[0].action != DASH;
+                        if (conditionA && conditionB && conditionC) {
+                            game->level4.player[0].delta.y = 7.0f; 
+                            game->level4.player[0].jumpCount++; 
+                        }
+                        break;
+                    default:
+                        break;
+                };
+                break;
+            case XK_v:
+                game->render = DISCO; 
                 break;
 
+                break;
         }
 
     }

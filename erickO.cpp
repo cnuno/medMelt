@@ -160,7 +160,7 @@ void Player::check_controller(Player *player, Joystick *joystick)
 				//SPECIAL MOVE: GROUND POUND
 				player->action = GROUNDPOUND;
 				player->delta.x = 0.0f; 
-				usleep(300000);
+				//usleep(300000);
 				player->delta.y = -20.0f; 
 				break;
 			default: 
