@@ -640,13 +640,15 @@ void render_levelsel(Game *game)
 	//end of background
 
 	//text===========================
-	//Rect r;
-	//r.bot = game->levelMenu.textBox.center.y -10;
-	//r.left = game->levelMenu.textBox.center.x;
-	//r.center = game->levelMenu.textBox.center.x;
-	//unsigned int color = 0x0ffffff;
-	//char text[] = "Level Select";
-	//ggprint40(&r, 0, color, "%s", text);
+	Rect r;
+    glEnable(GL_TEXTURE_2D);
+	r.bot = game->levelMenu.textBox.center.y -10;
+	r.left = game->levelMenu.textBox.center.x;
+	r.center = game->levelMenu.textBox.center.x;
+	unsigned int color = 0x0ff0000;
+	char text[] = "Level Select";
+	ggprint40(&r, 20, color, "%s", text);
+    glDisable(GL_TEXTURE_2D);
 	//end of text======================
 
 	A = game->levelMenu.level1.center.x - fieldIcon->width/4;
@@ -704,7 +706,7 @@ void levelsel_move(Joystick *joystick, Game *game)
 					break;
 				case 0 : 
 					if (dyna2 == fieldIcon) {
-						game->render = FIELD;
+						game->render = DISCO;
 					}
 					else if (dyna2 == staryIcon) {
 						game->render = STARYNIGHT;
