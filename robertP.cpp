@@ -1,11 +1,6 @@
 /*
 Author: Robert Pierucci
 Progress Log
-03/23/2017
-I added level structure
-
-
-
 04/09/2017
 I added an area on the screen of each level. We will display the health, life 
 count, and unique identifier here. Since we changed the coordinates of the 
@@ -33,6 +28,11 @@ sound code and moving texture definitions out of my file.
 4/21/2017
 Today we rendered the weapon, character status boxes, and added the attack 
 collision detection. We worked for 7.75 hours.
+
+4/22/2017
+Today I isolated the sound and added ifdef statements around all sound stuff. I 
+also edited the makefile to create an executable with the sound and one without
+the sound. I plan to refactor my sound code and make large changes to it.
  */
 
 #include "headers.h"
@@ -52,46 +52,12 @@ extern Screen* scrn;
 using namespace std;
 
 extern void resetMain(Game *game); 
+#ifdef USE_OPENAL_SOUND
 extern ALuint alSource;
 extern ALuint alBuffer;
 extern int titledrop;
 extern float pitch;
-extern Ppmimage *dyna;
-extern Ppmimage *dyna1; 
-extern Ppmimage *dyna2; 
-extern Ppmimage *medMeltTitle; 
-extern Ppmimage *pillIcon; 
-extern Ppmimage *playIcon; 
-extern Ppmimage *optionsIcon; 
-extern Ppmimage *exitIcon; 
-extern Ppmimage *dyna; 
-extern Ppmimage *dyna1; 
-extern Ppmimage *resumeIcon; 
-extern Ppmimage *resumeSelIcon; 
-extern Ppmimage *quitIcon; 
-extern Ppmimage *quitSelIcon;
-extern Ppmimage *fieldIcon;
-extern Ppmimage *staryIcon;
-extern GLuint silTitle; 
-extern GLuint silPill; 
-extern GLuint silPlay; 
-extern GLuint silOptions; 
-extern GLuint silOptionsSel; 
-extern GLuint silExit; 
-extern GLuint medMeltTexture; 
-extern GLuint pillTexture; 
-extern GLuint playTexture; 
-extern GLuint optionsTexture; 
-extern GLuint exitTexture; 
-extern GLuint resumeTexture; 
-extern GLuint resumeSelTexture; 
-extern GLuint quitTexture; 
-extern GLuint quitSelTexture;
-extern GLuint fieldTexture;
-extern GLuint staryTexture;
-extern unsigned char *buildAlphaData(Ppmimage *img);
-extern ALuint alSource;  
-extern ALuint alBuffer;
+#endif
 extern Ppmimage *etIcon;
 extern GLuint etTexture;
 extern Game game;
@@ -101,9 +67,12 @@ Game::~Game()
 	system("rm -Rf images/");
 	system("rm -Rf audio/");
 }
-
-void loadSound(const char path[20])
+#ifdef USE_OPENAL_SOUND
+void loadSound (const char path[20])
 {
+	
+
+
 	alutInit(0, NULL);
 	if (alGetError() != AL_NO_ERROR) {
 		printf("ERROR: alutInit()\n");
@@ -149,6 +118,7 @@ void closeSoundDevice() {
 	alcCloseDevice(Device);
 	return;
 }
+#endif
 
 //Constructor to display player stats such as health
 StatDisplay::StatDisplay()
@@ -422,13 +392,17 @@ void Player::boxRender(int centx, int centy, int width)
 //all parameters.
 void resetMain(Game *game) 
 {
+#ifdef USE_OPENAL_SOUND
     endSound();
     loadSound("./audio/test.wav");
+#endif
     game->mainMenu.titleVel.y = rnd() * 0.5 - 0.25;
     game->mainMenu.titleBox.center.y = game->WINDOW_HEIGHT + game->WINDOW_HEIGHT/3;
     game->mainMenu.titleBox.center.x = game->WINDOW_WIDTH/2;
+#ifdef USE_OPENAL_SOUND
     titledrop = 0;
     pitch = 3.0f;
+#endif
     game->render = MAINMENU;
 }
 

@@ -26,8 +26,10 @@ extern GLuint pillTexture;
 extern GLuint playTexture;
 extern GLuint optionsTexture;
 extern GLuint exitTexture;
+#ifdef USE_OPENAL_SOUND
 extern int titledrop;
 extern float pitch;
+#endif
 extern Ppmimage *resumeIcon;
 extern Ppmimage *resumeSelIcon;
 extern Ppmimage *optionsIcon;
@@ -148,9 +150,11 @@ void menu_move(Joystick *joystick, Game* game)
 		case 0 :
 		    switch (game->render) {
 			case MAINMENU:
-			    if (dyna == playIcon) {             
-				//loadSound("./audio/testsong.wav");
-				//playSound(1.0f, false);
+			    if (dyna == playIcon) {  
+#ifdef USE_OPENAL_SOUND           
+				loadSound("./audio/testsong.wav");
+				playSound(1.0f, false);
+#endif
 				game->render = LEVELSEL;
 			    }
 			    else if (dyna == optionsIcon) {
@@ -603,11 +607,13 @@ void movement_menu(Game *game)
 	game->mainMenu.titleBox.center.y += game->mainMenu.titleVel.y;
 	if (game->mainMenu.titleBox.center.y <= 
 			game->WINDOW_HEIGHT-game->WINDOW_HEIGHT/3.5) {
+#ifdef USE_OPENAL_SOUND
 		if (titledrop < 11) {
 			playSound(pitch, false);
 			titledrop++;
 			pitch = pitch + .7f;
 		}
+#endif
 		game->mainMenu.titleBox.center.y = 
 			game->WINDOW_HEIGHT-game->WINDOW_HEIGHT/
 			3.5-game->mainMenu.titleBox.height/2;

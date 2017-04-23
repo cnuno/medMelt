@@ -62,8 +62,10 @@ GLuint etTexture;
 ALuint alSource;
 ALuint alBuffer;
 
+#ifdef USE_OPENAL_SOUND
 int titledrop = 0;
 float pitch = 3.0f;
+#endif
 int done=0;
 
 Joystick joystick1("/dev/input/js0");
@@ -134,7 +136,9 @@ int main()
 	initXWindows();
 	init_opengl();
 	srand(time(NULL));
+#ifdef USE_OPENAL_SOUND
 	loadSound("./audio/test.wav");
+#endif
 	//start animation
 	while (!done) {
 		while (XPending(dpy)) {
@@ -153,8 +157,10 @@ int main()
 		render_switch(&game); 
 		glXSwapBuffers(dpy, win);
 	}
+#ifdef USE_OPENAL_SOUND
 	endSound();
     closeSoundDevice();
+#endif
 	cleanupXWindows();
 	return 0;
 }
