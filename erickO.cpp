@@ -96,7 +96,7 @@ void Player::check_controller(Player *player, Joystick *joystick)
 			case 0:
 				player->attack();
 #ifdef USE_OPENAL_SOUND
-			        play_sound(2, 1.0f, false);
+				play_sound(2, 1.0f, false);
 #endif
 				break;
 			case 1:
@@ -116,7 +116,7 @@ void Player::check_controller(Player *player, Joystick *joystick)
 				conditionB = player->action != GROUNDPOUND;
 				if (conditionA || conditionB) {
 					player->action = DASH;
-					usleep(300000);
+					//usleep(300000);
 
 					conditionC = player->onGround;
 					conditionD = player->delta.x == 0.0f;
@@ -141,23 +141,31 @@ void Player::check_controller(Player *player, Joystick *joystick)
 				break;
 			case 12:
 				//MOVE RIGHT
-				if (player->action != DASH) {
+				if (player->direction == LEFT && player->onGround) {
+					player->direction = RIGHT;
+					player->action = PASSIVE;
+				} else {
 					player->direction = RIGHT;
 					player->action = MOVE;
 					player->delta.x = 5.0f; 
+					if (player->onGround) { 
+						player->delta.y = 1.25f;
+					}
 				}
-				if (player->onGround) 
-					player->delta.y = 1.25f;
 				break;
 			case 11:
 				//MOVE LEFT
-				if (player->action != DASH) {
+				if (player->direction == RIGHT && player->onGround) {
+					player->direction = LEFT;
+					player->action = PASSIVE;
+				} else {
 					player->direction = LEFT;
 					player->action = MOVE;
 					player->delta.x = -5.0f; 
+					if (player->onGround) { 
+						player->delta.y = 1.25f; 
+					}
 				}
-				if (player->onGround) 
-					player->delta.y = 1.25f; 
 				break;
 			case 14:
 				//SPECIAL MOVE: GROUND POUND
@@ -530,8 +538,10 @@ void Player::collision(Shape platform[])
 		//left edge of player to left of right most spot
 		condition3 = (body.center.x - body.width/2) 
 			<= (platform[i].center.x + platform[i].width/2);
+		//bottom of player is above the bottom of the platform
 		condition4 = (body.center.y - body.height/2) 
 			> (platform[i].center.y - platform[i].height/2);
+		//player is falling
 		condition5 = delta.y <= 0.0;
 
 		if (condition1 && condition2 && condition3 && condition4 
@@ -731,6 +741,7 @@ void Disco_Level::init_triangle_sky()
 	}
 }
 
+//Disco Constructor
 Disco_Level::Disco_Level() 
 {
 	fw = true;
@@ -740,7 +751,7 @@ Disco_Level::Disco_Level()
 	platform[0].height = scrn->height/20; 
 	platform[0].center.x = scrn->width/2;
 	platform[0].center.y = platform[0].height/2 + 150; 
-//void loadImages();
+	//void loadImages();
 
 	//moving platform
 	platform[1].width = scrn->width/4;
@@ -779,33 +790,38 @@ void Disco_Level::movingPlat(Shape *p) {
 	}
 }
 
-void Disco_Level::movingPlatformPlayer()
+void Disco_Level::movingPlatformPlayer(Player *p)
 {
 	//--------------------DEVELOP---------------------------------
-	for (int i = 0; i < MAX_PLAYER; i++) {
-		player[i].collision(platform);
-		if (player[i].currentContact == 1) { 
-			if (player[i].onGround == true) {
-				cout << "*" << endl;
-			}
-			int dist = 0;
-			if (platform[1].center.x < player[i].body.center.x) {
-				dist = player[i].body.center.x - platform[1].center.x;
-				player[i].body.center.x = platform[1].center.x + dist;
-			} else {
-				dist = platform[1].center.x	- player[i].body.center.x; 
-				player[i].body.center.x = platform[1].center.x - dist;
-			}
+	float dist = 0.0;
+
+	p->collision(platform);
+
+	if (p->currentContact == 1 
+			&& (p->body.center.y - p->body.height/2 - 10) <= 
+			(platform[1].center.y + platform[1].height)
+			&& p->delta.y <  0.01667
+			&& p->delta.y >  0.01665
+			&& p->body.center.x <= platform[1].center.x + platform[1].height/2
+			&& p->body.center.x 
+			>= platform[1].center.x - platform[1].height/2) { 
+
+		if (platform[1].center.x < p->body.center.x) {
+			dist = p->body.center.x - platform[1].center.x;
+		} else {
+			dist = p->body.center.x - platform[1].center.x; 
 		}
+
+		p->body.center.x = platform[1].center.x + dist;
+		p->body.center.y = p->body.center.y;
 	}
 	//--------------------DEVELOP---------------------------------
-
-
 }
 
 bool alterCoor = false;
 void disco(Game *game)
 {
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (alterCoor == true) {
@@ -818,14 +834,12 @@ void disco(Game *game)
 	game->level4.movingPlat(&game->level4.platform[1]);
 
 	for (int i = 0; i < MAX_PLAYER; i++) {
-		game->level4.movingPlatformPlayer();
-
+		game->level4.movingPlatformPlayer(&game->level4.player[i]);
 		game->level4.physics(&game->level4.player[i]);
 		game->level4.player[i].check_controller(&game->level4.player[i], 
 				game->level4.controller.joystick[i]);
 		game->level4.player[i].render();
 		game->level4.statDisplay.render();
-
 		game->level4.deathCheck(&game->level4.player[i]);
 
 		if (game->level4.player[i].status.lifeState == ALIVE) 
@@ -866,6 +880,7 @@ bool forward = true;
 float opacity = 0;
 void Disco_Level::render()	
 {
+	glDisable(GL_BLEND);
 	Color colors;
 	glLineWidth(1);
 	glColor3ub(255,255,255);
