@@ -735,7 +735,7 @@ void levelsel_move(Joystick *joystick, Game *game)
                     }
                     else if (dyna2 == staryIcon) {
 #ifdef USE_OPENAL_SOUND
-			play_sound(4, 1.0f, true);
+			play_sound(5, 1.0f, true);
 #endif
                         game->render = STARYNIGHT;
                     }
