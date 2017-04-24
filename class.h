@@ -230,6 +230,8 @@ class Field_Level: public Level {
 
 class Disco_Level: public Level {
 	public:
+		bool fw;
+		void movingPlatformPlayer();
 		void init_triangle_sky();
 		void erick_init();
 		void render();

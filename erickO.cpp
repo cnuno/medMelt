@@ -78,17 +78,17 @@ extern Screen* scrn;
 extern void resetMain(Game *game);
 extern Game game;
 
+bool bTemp = true;
 void Player::check_controller(Player *player, Joystick *joystick)
 {
 	bool conditionA, conditionB, conditionC, conditionD;
 	JoystickEvent event;
 
-	bool temp = true;
-	if (!joystick->isFound() && temp)
+	if (!joystick->isFound() && bTemp)
 	{
 		printf("Attention: Game Pad is not connected\n");
 		printf("Multiplayer disabled\n");
-		temp = false;
+		bTemp = false;
 	}
 
 	if (joystick->sample(&event) && event.isButton() && event.value == 1) {
@@ -733,6 +733,7 @@ void Disco_Level::init_triangle_sky()
 
 Disco_Level::Disco_Level() 
 {
+	fw = true;
 	erick_init();
 	//floor characteristics
 	platform[0].width = scrn->width-50;
@@ -759,9 +760,7 @@ Disco_Level::Disco_Level()
 	init_triangle_sky();
 }
 
-bool fw = true;
 void Disco_Level::movingPlat(Shape *p) {
-
 	//if forward flag, increment
 	//else, decrement
 	if (fw) {
@@ -780,6 +779,30 @@ void Disco_Level::movingPlat(Shape *p) {
 	}
 }
 
+void Disco_Level::movingPlatformPlayer()
+{
+	//--------------------DEVELOP---------------------------------
+	for (int i = 0; i < MAX_PLAYER; i++) {
+		player[i].collision(platform);
+		if (player[i].currentContact == 1) { 
+			if (player[i].onGround == true) {
+				cout << "*" << endl;
+			}
+			int dist = 0;
+			if (platform[1].center.x < player[i].body.center.x) {
+				dist = player[i].body.center.x - platform[1].center.x;
+				player[i].body.center.x = platform[1].center.x + dist;
+			} else {
+				dist = platform[1].center.x	- player[i].body.center.x; 
+				player[i].body.center.x = platform[1].center.x - dist;
+			}
+		}
+	}
+	//--------------------DEVELOP---------------------------------
+
+
+}
+
 bool alterCoor = false;
 void disco(Game *game)
 {
@@ -795,31 +818,7 @@ void disco(Game *game)
 	game->level4.movingPlat(&game->level4.platform[1]);
 
 	for (int i = 0; i < MAX_PLAYER; i++) {
-		
-		//--------------------DEVELOP-------------------------------------------------------
-		game->level4.player[i].collision(game->level4.platform);
-		//if (game->level4.player[i].currentContact == 1 
-		//		&& game->level4.player[i].onGround == true) {
-		if (game->level4.player[i].currentContact == 1) { 
-			if (game->level4.player[i].onGround == true) {
-			cout << "*" << endl;
-			}
-			int dist = 0;
-			if (game->level4.platform[1].center.x 
-					< game->level4.player[i].body.center.x) {
-				dist =  game->level4.player[i].body.center.x 
-					- game->level4.platform[1].center.x;
-				game->level4.player[i].body.center.x = game->level4.platform[1].center.x 
-					+ dist;
-			} else {
-				dist = game->level4.platform[1].center.x 
-					- game->level4.player[i].body.center.x; 
-				game->level4.player[i].body.center.x = game->level4.platform[1].center.x 
-					- dist;
-
-			}
-		}
-		//--------------------DEVELOP-------------------------------------------------------
+		game->level4.movingPlatformPlayer();
 
 		game->level4.physics(&game->level4.player[i]);
 		game->level4.player[i].check_controller(&game->level4.player[i], 
@@ -972,16 +971,17 @@ void Disco_Level::renderSky() {
 	glLineWidth(3);
 	for (int i = 0; i < 17 * 9; i++) {
 		bool flag = true;
+
 		if (processed == (16 + ct) && begining == true) {
 			processed = 0;
 			flag = false;
 			begining = false;
 			ct++;
-		}
-		else if (processed == 16) {
+		} else if (processed == 16) {
 			processed = 0;
 			flag = false;
 		}
+
 		x = coor[i].x;
 		y = coor[i].y;
 
@@ -1053,9 +1053,7 @@ void Disco_Level::renderSky() {
 		opacity -= 0.75;
 		//opacity -= 5;
 	}
-
 }
-
 
 void Disco_Level::randomizeCoor() {
 	srand(time(NULL));
@@ -1135,10 +1133,10 @@ void Disco_Level::randomizeCoor() {
    for (int unsigned i = 0; i < MAX_PLAT;i++) {
    player->collision(&platform[i]); 
 //void loadImages();
-   if (player->onGround) {
-   player->jumpCount = 0;
+if (player->onGround) {
+player->jumpCount = 0;
 
-   if ((player->body.center.y <= platform[i].center.y - platform[i].height/2)) {
+if ((player->body.center.y <= platform[i].center.y - platform[i].height/2)) {
 //nothing
 } else if ((player->body.center.y > platform[i].center.y - platform[i].height/2)) {
 player->body.center.y = (platform[i].center.y + platform[i].height/2) + (player->body.height/2);
@@ -1265,14 +1263,14 @@ void Field_Level::erick_init()
 		player[i].status.lifeState = ALIVE;
 
 		if (i % 2 == 0) {
-//void loadImages();
+			//void loadImages();
 			if (evenCount % 2 == 0) {
 				player[i].body.center.y = scrn->height/5;
 			} else {
 				player[i].body.center.y = 3 * scrn->height/5;
 			}
 			player[i].body.center.x = scrn->width/5;
-//void loadImages();
+			//void loadImages();
 			player[i].direction = RIGHT;
 			evenCount++;
 		} else {
@@ -1324,8 +1322,8 @@ void Starynight_Level::erick_init()
 			if (evenCount % 2 == 0) {
 				player[i].body.center.y = scrn->height/5;
 			} else {
-//void loadImages();
-//void loadImages();
+				//void loadImages();
+				//void loadImages();
 				player[i].body.center.y = 3 * scrn->height/5;
 			}
 			player[i].body.center.x = scrn->width/5;

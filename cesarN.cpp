@@ -59,7 +59,7 @@ void pause_move(Joystick *joystick)
 
     if (!joystick->isFound())
     {
-        printf("open failed.\n");
+        //printf("open failed.\n");
     }
 
     if (game.render == PAUSE) {
@@ -142,7 +142,7 @@ void menu_move(Joystick *joystick, Game* game)
 
     if (!joystick->isFound())
     {
-        printf("open failed.\n");
+        //printf("open failed.\n");
     }
 
     if (game->render == MAINMENU) {
