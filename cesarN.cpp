@@ -728,9 +728,15 @@ void levelsel_move(Joystick *joystick, Game *game)
                     break;
                 case 0 : 
                     if (dyna2 == fieldIcon) {
+#ifdef USE_OPENAL_SOUND
+			play_sound(1, 1.0f, true);
+#endif
                         game->render = DISCO;
                     }
                     else if (dyna2 == staryIcon) {
+#ifdef USE_OPENAL_SOUND
+			play_sound(4, 1.0f, true);
+#endif
                         game->render = STARYNIGHT;
                     }
                     break;
