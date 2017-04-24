@@ -26,7 +26,6 @@ worked a total of around 7-8 hours
 
 */
 
-
 #include "headers.h"
 #include "zackO.h"
 
@@ -593,7 +592,9 @@ void check_keys(XEvent *e, Game *game)
                         game->level3.player[0].action = GROUNDPOUND;
                         game->level3.player[0].delta.x = 0.0f;
 #ifdef USE_OPENAL_SOUND
-                        play_sound(3, 1.0f, false);
+			if (game->level3.player[0].status.lifeState == ALIVE) {
+                        	play_sound(3, 1.0f, false);
+			}
 #endif
                         //usleep(300000);
                         game->level3.player[0].delta.y = -20.0f;
@@ -602,7 +603,9 @@ void check_keys(XEvent *e, Game *game)
                         game->level2.player[0].action = GROUNDPOUND;
                         game->level2.player[0].delta.x = 0.0f;
 #ifdef USE_OPENAL_SOUND
-                        play_sound(3, 1.0f, false);
+			if (game->level2.player[0].status.lifeState == ALIVE) {
+                        	play_sound(3, 1.0f, false);
+			}
 #endif
                         //usleep(300000);
                         game->level2.player[0].delta.y = -20.0f;
@@ -611,7 +614,9 @@ void check_keys(XEvent *e, Game *game)
                         game->level4.player[0].action = GROUNDPOUND;
                         game->level4.player[0].delta.x = 0.0f;
 #ifdef USE_OPENAL_SOUND
-                        play_sound(3, 1.0f, false);
+			if (game->level4.player[0].status.lifeState == ALIVE) {
+                        	play_sound(3, 1.0f, false);
+			}
 #endif
                         //usleep(300000);
                         game->level4.player[0].delta.y = -20.0f;
@@ -625,18 +630,24 @@ void check_keys(XEvent *e, Game *game)
                     case STARYNIGHT:
                         game->level3.player[0].attack(); 
 #ifdef USE_OPENAL_SOUND
-                        play_sound(2, 1.0f, false);
+			if (game->level3.player[0].status.lifeState == ALIVE) {
+                        	play_sound(2, 1.0f, false);
+			}
 #endif
                         break;
                     case FIELD:
                         game->level2.player[0].attack(); 
 #ifdef USE_OPENAL_SOUND
-                        play_sound(2, 1.0f, false);
+			if (game->level2.player[0].status.lifeState == ALIVE) {
+                        	play_sound(2, 1.0f, false);
+			}
 #endif
                         break;
                     case DISCO:
 #ifdef USE_OPENAL_SOUND
-                        play_sound(2, 1.0f, false);
+			if (game->level4.player[0].status.lifeState == ALIVE) {
+                        	play_sound(2, 1.0f, false);
+			}
 #endif
                         game->level4.player[0].attack(); 
                         break;
