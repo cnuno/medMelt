@@ -174,7 +174,12 @@ void menu_move(Joystick *joystick, Game* game)
                             break;
                     }
                     return;
-
+		case 6 :
+		    if (game->render == OVER){
+			    resetMain(game);
+			    game->render = MAINMENU;
+		    } 
+		    return;
 
                 case 13 :    //up on d-pad
                     switch (game->render) {

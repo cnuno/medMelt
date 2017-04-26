@@ -59,7 +59,7 @@ extern GLuint etTexture;
 extern float A,B,C,D;
 extern int done; 
 extern void resetMain(Game *game);
-
+extern Game game;
 
 Level::Level()
 {
@@ -443,7 +443,7 @@ void Starynight_Level::render()
 //Check Keys for Gordon
 void check_keys(XEvent *e, Game *game) 
 {
-    bool conditionA, conditionB, conditionC; 
+    bool conditionA, conditionB, conditionC;
     if (e->type == KeyPress) {
         int key = XLookupKeysym(&e->xkey,0);
 
@@ -540,6 +540,12 @@ void check_keys(XEvent *e, Game *game)
 
                 }
                 break;
+	    case XK_r: 
+		if (game->render == OVER) {
+			    resetMain(game);
+			    game->render = MAINMENU;
+		    }
+	       break;	
             case XK_s:
                 switch (game->render) {
                     case MAINMENU:
@@ -808,4 +814,76 @@ void check_keys(XEvent *e, Game *game)
     }
 
 
+}
+
+void end_game()
+{
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    Rect r;
+    glEnable(GL_TEXTURE_2D);
+    r.bot = game.levelMenu.textBox.center.y -10;
+    r.left = game.levelMenu.textBox.center.x;
+    r.center = game.levelMenu.textBox.center.x;
+    unsigned int color = 0x0ff0000;
+    char text[] = "GAME OVER";
+    ggprint40(&r, 0, color, "%s", text);
+    glDisable(GL_TEXTURE_2D);
+
+}
+
+bool endcheck()
+{
+    bool A = false;
+    bool B = false;
+    bool C = false;
+    bool D = false;
+    switch (game.render) {
+	case STARYNIGHT :
+	    if (game.level3.player[0].status.lifeCount == 0 && game.level3.player[0].status.lifeState == DEAD)
+		A = true;
+	    if (game.level3.player[1].status.lifeCount == 0 && game.level3.player[1].status.lifeState == DEAD)
+		B = true;
+	    if (game.level3.player[2].status.lifeCount == 0 && game.level3.player[2].status.lifeState == DEAD)
+		C = true;
+	    if (game.level3.player[3].status.lifeCount == 0 && game.level3.player[3].status.lifeState == DEAD)
+		D = true;
+	    break;
+	case FIELD :
+	    if (game.level2.player[0].status.lifeCount == 0 && game.level2.player[0].status.lifeState == DEAD)
+		A = true;
+	    if (game.level2.player[1].status.lifeCount == 0 && game.level2.player[1].status.lifeState == DEAD)
+		B = true;
+	    if (game.level2.player[2].status.lifeCount == 0 && game.level2.player[2].status.lifeState == DEAD)
+		C = true;
+	    if (game.level2.player[3].status.lifeCount == 0 && game.level2.player[3].status.lifeState == DEAD)
+		D = true;
+	    break;
+	case DISCO:
+	    if (game.level4.player[0].status.lifeCount == 0 && game.level4.player[0].status.lifeState == DEAD)
+		A = true;
+	    if (game.level4.player[1].status.lifeCount == 0 && game.level4.player[1].status.lifeState == DEAD)
+		B = true;
+	    if (game.level4.player[2].status.lifeCount == 0 && game.level4.player[2].status.lifeState == DEAD)
+		C = true;
+	    if (game.level4.player[3].status.lifeCount == 0 && game.level4.player[3].status.lifeState == DEAD)
+		D = true;
+	    break;
+	default: 
+	    break;
+    }
+    bool last1 = false;
+    bool last2 = false;
+    bool last3 = false;
+    bool last4 = false;
+    if (B && C && D) // last 1 alive is player 1
+	last1 = true;
+    if (A && C && D) // last 1 alive is player 2
+	last2 = true;
+    if (A && B && D) // last 1 alive is player 3
+	last3 = true;
+    if (A && B && C) // last one is player 4
+	last4 = true;
+
+    return(last1 || last2 || last3 || last4);
 }

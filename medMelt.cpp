@@ -153,12 +153,13 @@ int main()
 		    check_keys(&e, &game);
 		}
 
-		if (game.render==MAINMENU) {
+		if (game.render==MAINMENU && game.render==OVER) {
 			menu_move(&joystick1, &game);
 		}
 		else if (game.render==LEVELSEL) {
 			levelsel_move(&joystick1, &game);
 		}
+		if (endcheck()) game.render = OVER;
 		render_switch(&game); 
 		glXSwapBuffers(dpy, win);
 	}
@@ -198,6 +199,8 @@ void render_switch(Game *game)
 		case DISCO:
 			disco(game); 
 			break;
+		case OVER:
+			end_game();
 		default:
 			break;
 	}
