@@ -543,6 +543,12 @@ void check_keys(XEvent *e, Game *game)
 	    case XK_r: 
 		if (game->render == OVER) {
 			    resetMain(game);
+			    if (game->prevState == FIELD)
+				game->level2.erick_init();
+			    if (game->prevState == STARYNIGHT)
+				game->level3.erick_init();
+			    if (game->prevState == DISCO)
+				game->level4.erick_init();
 			    game->render = MAINMENU;
 		    }
 	       break;	

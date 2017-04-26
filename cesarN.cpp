@@ -176,121 +176,125 @@ void menu_move(Joystick *joystick, Game* game)
                     return;
 		case 6 :
 		    if (game->render == OVER){
-			    resetMain(game);
-			    game->render = MAINMENU;
+			    
+			resetMain(game);
+			    game->level2.erick_init();
+			    game->level3.erick_init();
+			    game->level4.erick_init();
+			game->render = MAINMENU;
 		    } 
 		    return;
 
-                case 13 :    //up on d-pad
-                    switch (game->render) {
-                        case MAINMENU:
-                            if (dyna == playIcon) {
-                                dyna = exitIcon;
-                                game->mainMenu.selector.center.x = 
-                                    game->mainMenu.exitBox.center.x;
-                                game->mainMenu.selector.center.y = 
-                                    game->mainMenu.exitBox.center.y;
-                            }
-                            else if (dyna == optionsIcon) {
-                                dyna = playIcon;
-                                game->mainMenu.selector.center.x = 
-                                    game->mainMenu.playBox.center.x;
-                                game->mainMenu.selector.center.y = 
-                                    game->mainMenu.playBox.center.y;
-                            }
-                            else if (dyna == exitIcon) {
-                                dyna = optionsIcon;
-                                game->mainMenu.selector.center.x = 
-                                    game->mainMenu.optionBox.center.x;
-                                game->mainMenu.selector.center.y = 
-                                    game->mainMenu.optionBox.center.y;
-                            }
-                            break;
-                            /*case PAUSE:
-                              if (dyna1 == resumeIcon) {
-                              dyna1 = quitIcon;
-                              game->pauseMenu.selector.center.x = 
-                              game->pauseMenu.qbox.center.x;
-                              game->pauseMenu.selector.center.y = 
-                              game->pauseMenu.qbox.center.y;
-                              }
-                              else if (dyna1 == optionsIcon) {
-                              dyna1 = resumeIcon;
-                              game->pauseMenu.selector.center.x = 
-                              game->pauseMenu.rbox.center.x;
-                              game->pauseMenu.selector.center.y = 
-                              game->pauseMenu.rbox.center.y;
-                              }
-                              else if (dyna1 == quitIcon) {
-                              dyna1 = optionsIcon;
-                              game->pauseMenu.selector.center.x = 
-                              game->pauseMenu.obox.center.x;
-                              game->pauseMenu.selector.center.y = 
-                              game->pauseMenu.obox.center.y;
-                              }
-                              break;*/
-                        default : 
-                            break;
-                    }
-                    return;
-                case 14:
-                    switch (game->render) {
-                        case MAINMENU:
-                            if (dyna == playIcon) {
-                                dyna = optionsIcon;
-                                game->mainMenu.selector.center.x = 
-                                    game->mainMenu.optionBox.center.x;
-                                game->mainMenu.selector.center.y = 
-                                    game->mainMenu.optionBox.center.y;
-                            }
-                            else if (dyna == optionsIcon) {
-                                dyna = exitIcon;
-                                game->mainMenu.selector.center.x = 
-                                    game->mainMenu.exitBox.center.x;
-                                game->mainMenu.selector.center.y = 
-                                    game->mainMenu.exitBox.center.y;
-                            }
-                            else if (dyna == exitIcon) {
-                                dyna = playIcon;
-                                game->mainMenu.selector.center.x = 
-                                    game->mainMenu.playBox.center.x;
-                                game->mainMenu.selector.center.y = 
-                                    game->mainMenu.playBox.center.y;
-                            }
-                            break;
-                            /*case PAUSE:
-                              if (dyna1 == resumeIcon) {
-                              dyna1 = optionsIcon;
-                              game->pauseMenu.selector.center.x = 
-                              game->pauseMenu.obox.center.x;
-                              game->pauseMenu.selector.center.y = 
-                              game->pauseMenu.obox.center.y;
-                              }
-                              else if (dyna1 == optionsIcon) {
-                              dyna1 = quitIcon;
-                              game->pauseMenu.selector.center.x = 
-                              game->pauseMenu.qbox.center.x;
-                              game->pauseMenu.selector.center.y = 
-                              game->pauseMenu.qbox.center.y;
-                              }
-                              else if (dyna1 == quitIcon) {
-                              dyna1 = resumeIcon;
-                              game->pauseMenu.selector.center.x = 
-                              game->pauseMenu.rbox.center.x;
-                              game->pauseMenu.selector.center.y = 
-                              game->pauseMenu.rbox.center.y;
-                              }
-                              break;*/
-                        default : 
-                            break;
-                    }
-                    return;
+		case 13 :    //up on d-pad
+		    switch (game->render) {
+			case MAINMENU:
+			    if (dyna == playIcon) {
+				dyna = exitIcon;
+				game->mainMenu.selector.center.x = 
+				    game->mainMenu.exitBox.center.x;
+				game->mainMenu.selector.center.y = 
+				    game->mainMenu.exitBox.center.y;
+			    }
+			    else if (dyna == optionsIcon) {
+				dyna = playIcon;
+				game->mainMenu.selector.center.x = 
+				    game->mainMenu.playBox.center.x;
+				game->mainMenu.selector.center.y = 
+				    game->mainMenu.playBox.center.y;
+			    }
+			    else if (dyna == exitIcon) {
+				dyna = optionsIcon;
+				game->mainMenu.selector.center.x = 
+				    game->mainMenu.optionBox.center.x;
+				game->mainMenu.selector.center.y = 
+				    game->mainMenu.optionBox.center.y;
+			    }
+			    break;
+			    /*case PAUSE:
+			      if (dyna1 == resumeIcon) {
+			      dyna1 = quitIcon;
+			      game->pauseMenu.selector.center.x = 
+			      game->pauseMenu.qbox.center.x;
+			      game->pauseMenu.selector.center.y = 
+			      game->pauseMenu.qbox.center.y;
+			      }
+			      else if (dyna1 == optionsIcon) {
+			      dyna1 = resumeIcon;
+			      game->pauseMenu.selector.center.x = 
+			      game->pauseMenu.rbox.center.x;
+			      game->pauseMenu.selector.center.y = 
+			      game->pauseMenu.rbox.center.y;
+			      }
+			      else if (dyna1 == quitIcon) {
+			      dyna1 = optionsIcon;
+			      game->pauseMenu.selector.center.x = 
+			      game->pauseMenu.obox.center.x;
+			      game->pauseMenu.selector.center.y = 
+			      game->pauseMenu.obox.center.y;
+			      }
+			      break;*/
+			default : 
+			    break;
+		    }
+		    return;
+		case 14:
+		    switch (game->render) {
+			case MAINMENU:
+			    if (dyna == playIcon) {
+				dyna = optionsIcon;
+				game->mainMenu.selector.center.x = 
+				    game->mainMenu.optionBox.center.x;
+				game->mainMenu.selector.center.y = 
+				    game->mainMenu.optionBox.center.y;
+			    }
+			    else if (dyna == optionsIcon) {
+				dyna = exitIcon;
+				game->mainMenu.selector.center.x = 
+				    game->mainMenu.exitBox.center.x;
+				game->mainMenu.selector.center.y = 
+				    game->mainMenu.exitBox.center.y;
+			    }
+			    else if (dyna == exitIcon) {
+				dyna = playIcon;
+				game->mainMenu.selector.center.x = 
+				    game->mainMenu.playBox.center.x;
+				game->mainMenu.selector.center.y = 
+				    game->mainMenu.playBox.center.y;
+			    }
+			    break;
+			    /*case PAUSE:
+			      if (dyna1 == resumeIcon) {
+			      dyna1 = optionsIcon;
+			      game->pauseMenu.selector.center.x = 
+			      game->pauseMenu.obox.center.x;
+			      game->pauseMenu.selector.center.y = 
+			      game->pauseMenu.obox.center.y;
+			      }
+			      else if (dyna1 == optionsIcon) {
+			      dyna1 = quitIcon;
+			      game->pauseMenu.selector.center.x = 
+			      game->pauseMenu.qbox.center.x;
+			      game->pauseMenu.selector.center.y = 
+			      game->pauseMenu.qbox.center.y;
+			      }
+			      else if (dyna1 == quitIcon) {
+			      dyna1 = resumeIcon;
+			      game->pauseMenu.selector.center.x = 
+			      game->pauseMenu.rbox.center.x;
+			      game->pauseMenu.selector.center.y = 
+			      game->pauseMenu.rbox.center.y;
+			      }
+			      break;*/
+			default : 
+			    break;
+		    }
+		    return;
 
-                default : 
-                    break;
+		default : 
+		    break;
 
-            }
-        }
+	    }
+	}
     }
 }
 Joystick *temp;
@@ -321,29 +325,29 @@ void render_pause(Game *game)
       game->WINDOW_HEIGHT/10, 0.0); 
       glVertex3f(game->WINDOW_WIDTH - 
       game->WINDOW_WIDTH/10, game->WINDOW_HEIGHT - 
-        game->WINDOW_HEIGHT/10, 0.0);
+      game->WINDOW_HEIGHT/10, 0.0);
       glVertex3f(game->WINDOW_WIDTH - 
-        game->WINDOW_WIDTH/10, game->WINDOW_HEIGHT/10, 0.0);
+      game->WINDOW_WIDTH/10, game->WINDOW_HEIGHT/10, 0.0);
       glEnd();*/
 
     // box still not transparent without clearing
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if (game->prevState == FIELD) {
-        game->level2.render();
-        for (int i = 0; i < MAX_PLAYER; i++) {
-            game->level2.player[i].render();
-        }
+	game->level2.render();
+	for (int i = 0; i < MAX_PLAYER; i++) {
+	    game->level2.player[i].render();
+	}
     } else if (game->prevState == STARYNIGHT) {
-        game->level3.render();
-        for (int i = 0; i < MAX_PLAYER; i++) {
-            game->level3.player[i].render();
-        }
+	game->level3.render();
+	for (int i = 0; i < MAX_PLAYER; i++) {
+	    game->level3.player[i].render();
+	}
     } else if (game->prevState == DISCO) {
-        game->level4.render();
-        for (int i = 0; i < MAX_PLAYER; i++) {
-            game->level4.player[i].render();
-        }
+	game->level4.render();
+	for (int i = 0; i < MAX_PLAYER; i++) {
+	    game->level4.player[i].render();
+	}
     }
     /*A = game->pauseMenu.selector.center.x - dyna1->width/2;
       B = game->pauseMenu.selector.center.y - dyna1->height/2;
@@ -363,48 +367,48 @@ void render_pause(Game *game)
       glEnd();
       glDisable(GL_BLEND);*/
     if (choice == 1) {
-        A = game->pauseMenu.rbox.center.x - resumeSelIcon->width/2;
-        B = game->pauseMenu.rbox.center.y - resumeSelIcon->height/2;
-        C = game->pauseMenu.rbox.center.y + resumeSelIcon->height/2;
-        D = game->pauseMenu.rbox.center.x + resumeSelIcon->width/2;
+	A = game->pauseMenu.rbox.center.x - resumeSelIcon->width/2;
+	B = game->pauseMenu.rbox.center.y - resumeSelIcon->height/2;
+	C = game->pauseMenu.rbox.center.y + resumeSelIcon->height/2;
+	D = game->pauseMenu.rbox.center.x + resumeSelIcon->width/2;
 
-        glPushMatrix();
-        glBindTexture(GL_TEXTURE_2D,resumeSelTexture);
-        glEnable(GL_ALPHA_TEST);
-        glEnable(GL_TEXTURE_2D);
-        glAlphaFunc(GL_GREATER, 0.0f);
-        glColor4ub(255,255,255,255);
-        glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 1.0f); glVertex2i(A,B);
-        glTexCoord2f(0.0f, 0.0f); glVertex2i(A,C);
-        glTexCoord2f(1.0f, 0.0f); glVertex2i(D,C);
-        glTexCoord2f(1.0f, 1.0f); glVertex2i(D,B);
-        glEnd();
-        glPopMatrix();
-        glDisable(GL_ALPHA_TEST);
-        glDisable(GL_TEXTURE_2D);
+	glPushMatrix();
+	glBindTexture(GL_TEXTURE_2D,resumeSelTexture);
+	glEnable(GL_ALPHA_TEST);
+	glEnable(GL_TEXTURE_2D);
+	glAlphaFunc(GL_GREATER, 0.0f);
+	glColor4ub(255,255,255,255);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f); glVertex2i(A,B);
+	glTexCoord2f(0.0f, 0.0f); glVertex2i(A,C);
+	glTexCoord2f(1.0f, 0.0f); glVertex2i(D,C);
+	glTexCoord2f(1.0f, 1.0f); glVertex2i(D,B);
+	glEnd();
+	glPopMatrix();
+	glDisable(GL_ALPHA_TEST);
+	glDisable(GL_TEXTURE_2D);
 
     } else {
-        A = game->pauseMenu.rbox.center.x - resumeIcon->width/2;
-        B = game->pauseMenu.rbox.center.y - resumeIcon->height/2;
-        C = game->pauseMenu.rbox.center.y + resumeIcon->height/2;
-        D = game->pauseMenu.rbox.center.x + resumeIcon->width/2;
+	A = game->pauseMenu.rbox.center.x - resumeIcon->width/2;
+	B = game->pauseMenu.rbox.center.y - resumeIcon->height/2;
+	C = game->pauseMenu.rbox.center.y + resumeIcon->height/2;
+	D = game->pauseMenu.rbox.center.x + resumeIcon->width/2;
 
-        glPushMatrix();
-        glBindTexture(GL_TEXTURE_2D,resumeTexture);
-        glEnable(GL_ALPHA_TEST);
-        glEnable(GL_TEXTURE_2D);
-        glAlphaFunc(GL_GREATER, 0.0f);
-        glColor4ub(255,255,255,255);
-        glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 1.0f); glVertex2i(A,B);
-        glTexCoord2f(0.0f, 0.0f); glVertex2i(A,C);
-        glTexCoord2f(1.0f, 0.0f); glVertex2i(D,C);
-        glTexCoord2f(1.0f, 1.0f); glVertex2i(D,B);
-        glEnd();
-        glPopMatrix();
-        glDisable(GL_ALPHA_TEST);
-        glDisable(GL_TEXTURE_2D);
+	glPushMatrix();
+	glBindTexture(GL_TEXTURE_2D,resumeTexture);
+	glEnable(GL_ALPHA_TEST);
+	glEnable(GL_TEXTURE_2D);
+	glAlphaFunc(GL_GREATER, 0.0f);
+	glColor4ub(255,255,255,255);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f); glVertex2i(A,B);
+	glTexCoord2f(0.0f, 0.0f); glVertex2i(A,C);
+	glTexCoord2f(1.0f, 0.0f); glVertex2i(D,C);
+	glTexCoord2f(1.0f, 1.0f); glVertex2i(D,B);
+	glEnd();
+	glPopMatrix();
+	glDisable(GL_ALPHA_TEST);
+	glDisable(GL_TEXTURE_2D);
     }
 
     A = game->pauseMenu.obox.center.x - optionsIcon->width/2;
@@ -429,47 +433,47 @@ void render_pause(Game *game)
     glDisable(GL_TEXTURE_2D);
 
     if (choice == 3) {
-        A = game->pauseMenu.qbox.center.x - quitSelIcon->width/2;
-        B = game->pauseMenu.qbox.center.y - quitSelIcon->height/2;
-        C = game->pauseMenu.qbox.center.y + quitSelIcon->height/2;
-        D = game->pauseMenu.qbox.center.x + quitSelIcon->width/2;
+	A = game->pauseMenu.qbox.center.x - quitSelIcon->width/2;
+	B = game->pauseMenu.qbox.center.y - quitSelIcon->height/2;
+	C = game->pauseMenu.qbox.center.y + quitSelIcon->height/2;
+	D = game->pauseMenu.qbox.center.x + quitSelIcon->width/2;
 
-        glPushMatrix();
-        glBindTexture(GL_TEXTURE_2D,quitSelTexture);
-        glEnable(GL_ALPHA_TEST);
-        glEnable(GL_TEXTURE_2D);
-        glAlphaFunc(GL_GREATER, 0.0f);
-        glColor4ub(255,255,255,255);
-        glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 1.0f); glVertex2i(A,B);
-        glTexCoord2f(0.0f, 0.0f); glVertex2i(A,C);
-        glTexCoord2f(1.0f, 0.0f); glVertex2i(D,C);
-        glTexCoord2f(1.0f, 1.0f); glVertex2i(D,B);
-        glEnd();
-        glPopMatrix();
-        glDisable(GL_ALPHA_TEST);
-        glDisable(GL_TEXTURE_2D);
+	glPushMatrix();
+	glBindTexture(GL_TEXTURE_2D,quitSelTexture);
+	glEnable(GL_ALPHA_TEST);
+	glEnable(GL_TEXTURE_2D);
+	glAlphaFunc(GL_GREATER, 0.0f);
+	glColor4ub(255,255,255,255);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f); glVertex2i(A,B);
+	glTexCoord2f(0.0f, 0.0f); glVertex2i(A,C);
+	glTexCoord2f(1.0f, 0.0f); glVertex2i(D,C);
+	glTexCoord2f(1.0f, 1.0f); glVertex2i(D,B);
+	glEnd();
+	glPopMatrix();
+	glDisable(GL_ALPHA_TEST);
+	glDisable(GL_TEXTURE_2D);
     } else {
-        A = game->pauseMenu.qbox.center.x - quitIcon->width/2;
-        B = game->pauseMenu.qbox.center.y - quitIcon->height/2;
-        C = game->pauseMenu.qbox.center.y + quitIcon->height/2;
-        D = game->pauseMenu.qbox.center.x + quitIcon->width/2;
+	A = game->pauseMenu.qbox.center.x - quitIcon->width/2;
+	B = game->pauseMenu.qbox.center.y - quitIcon->height/2;
+	C = game->pauseMenu.qbox.center.y + quitIcon->height/2;
+	D = game->pauseMenu.qbox.center.x + quitIcon->width/2;
 
-        glPushMatrix();
-        glBindTexture(GL_TEXTURE_2D,quitTexture);
-        glEnable(GL_ALPHA_TEST);
-        glEnable(GL_TEXTURE_2D);
-        glAlphaFunc(GL_GREATER, 0.0f);
-        glColor4ub(255,255,255,255);
-        glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 1.0f); glVertex2i(A,B);
-        glTexCoord2f(0.0f, 0.0f); glVertex2i(A,C);
-        glTexCoord2f(1.0f, 0.0f); glVertex2i(D,C);
-        glTexCoord2f(1.0f, 1.0f); glVertex2i(D,B);
-        glEnd();
-        glPopMatrix();
-        glDisable(GL_ALPHA_TEST);
-        glDisable(GL_TEXTURE_2D);
+	glPushMatrix();
+	glBindTexture(GL_TEXTURE_2D,quitTexture);
+	glEnable(GL_ALPHA_TEST);
+	glEnable(GL_TEXTURE_2D);
+	glAlphaFunc(GL_GREATER, 0.0f);
+	glColor4ub(255,255,255,255);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f); glVertex2i(A,B);
+	glTexCoord2f(0.0f, 0.0f); glVertex2i(A,C);
+	glTexCoord2f(1.0f, 0.0f); glVertex2i(D,C);
+	glTexCoord2f(1.0f, 1.0f); glVertex2i(D,B);
+	glEnd();
+	glPopMatrix();
+	glDisable(GL_ALPHA_TEST);
+	glDisable(GL_TEXTURE_2D);
 
     }
 
@@ -622,18 +626,18 @@ void movement_menu(Game *game)
     game->mainMenu.titleVel.y -= GRAVITY;
     game->mainMenu.titleBox.center.y += game->mainMenu.titleVel.y;
     if (game->mainMenu.titleBox.center.y <= 
-            game->WINDOW_HEIGHT-game->WINDOW_HEIGHT/3.5) {
+	    game->WINDOW_HEIGHT-game->WINDOW_HEIGHT/3.5) {
 #ifdef USE_OPENAL_SOUND
-        if (titledrop < 11) {
-            play_sound(0, pitch, false);
-            titledrop++;
-            pitch = pitch + .7f;
-        }
+	if (titledrop < 11) {
+	    play_sound(0, pitch, false);
+	    titledrop++;
+	    pitch = pitch + .7f;
+	}
 #endif
-        game->mainMenu.titleBox.center.y = 
-            game->WINDOW_HEIGHT-game->WINDOW_HEIGHT/
-            3.5-game->mainMenu.titleBox.height/2;
-        game->mainMenu.titleVel.y = -game->mainMenu.titleVel.y * 0.75f;
+	game->mainMenu.titleBox.center.y = 
+	    game->WINDOW_HEIGHT-game->WINDOW_HEIGHT/
+	    3.5-game->mainMenu.titleBox.height/2;
+	game->mainMenu.titleVel.y = -game->mainMenu.titleVel.y * 0.75f;
     }
 }
 void levelsel(Game *game)
@@ -727,61 +731,61 @@ void levelsel_move(Joystick *joystick, Game *game)
     JoystickEvent event;
 
     if (game->render == LEVELSEL) {
-        if (joystick->sample(&event) && event.isButton() && event.value == 1) {
-            switch (event.number) {
-                default : 
-                    break;
-                case 0 : 
-                    if (dyna2 == fieldIcon) {
+	if (joystick->sample(&event) && event.isButton() && event.value == 1) {
+	    switch (event.number) {
+		default : 
+		    break;
+		case 0 : 
+		    if (dyna2 == fieldIcon) {
 #ifdef USE_OPENAL_SOUND
 			play_sound(1, 1.0f, true);
 #endif
-                        game->render = DISCO;
-                    }
-                    else if (dyna2 == staryIcon) {
+			game->render = DISCO;
+		    }
+		    else if (dyna2 == staryIcon) {
 #ifdef USE_OPENAL_SOUND
 			play_sound(5, 1.0f, true);
 #endif
-                        game->render = STARYNIGHT;
-                    }
-                    break;
-                case 1 : 
-                    game->render = MAINMENU;
-                    break;
-                case 11 :
-                    if (dyna2 == fieldIcon) {
-                        dyna2 = staryIcon;
-                        game->levelMenu.selector.center.x = 
-                            game->levelMenu.level2.center.x;
-                        game->levelMenu.selector.center.y = 
-                            game->levelMenu.level2.center.y;
-                    }
-                    else if (dyna2 == staryIcon) {
-                        dyna2 = fieldIcon;
-                        game->levelMenu.selector.center.x = 
-                            game->levelMenu.level1.center.x;
-                        game->levelMenu.selector.center.y = 
-                            game->levelMenu.level1.center.y;
-                    }
-                    break;
-                case 12 :
-                    if (dyna2 == fieldIcon) {
-                        dyna2 = staryIcon;
-                        game->levelMenu.selector.center.x = 
-                            game->levelMenu.level2.center.x;
-                        game->levelMenu.selector.center.y = 
-                            game->levelMenu.level2.center.y;
-                    }
-                    else if (dyna2 == staryIcon) {
-                        dyna2 = fieldIcon;
-                        game->levelMenu.selector.center.x = 
-                            game->levelMenu.level1.center.x;
-                        game->levelMenu.selector.center.y = 
-                            game->levelMenu.level1.center.y;
-                    }
+			game->render = STARYNIGHT;
+		    }
+		    break;
+		case 1 : 
+		    game->render = MAINMENU;
+		    break;
+		case 11 :
+		    if (dyna2 == fieldIcon) {
+			dyna2 = staryIcon;
+			game->levelMenu.selector.center.x = 
+			    game->levelMenu.level2.center.x;
+			game->levelMenu.selector.center.y = 
+			    game->levelMenu.level2.center.y;
+		    }
+		    else if (dyna2 == staryIcon) {
+			dyna2 = fieldIcon;
+			game->levelMenu.selector.center.x = 
+			    game->levelMenu.level1.center.x;
+			game->levelMenu.selector.center.y = 
+			    game->levelMenu.level1.center.y;
+		    }
+		    break;
+		case 12 :
+		    if (dyna2 == fieldIcon) {
+			dyna2 = staryIcon;
+			game->levelMenu.selector.center.x = 
+			    game->levelMenu.level2.center.x;
+			game->levelMenu.selector.center.y = 
+			    game->levelMenu.level2.center.y;
+		    }
+		    else if (dyna2 == staryIcon) {
+			dyna2 = fieldIcon;
+			game->levelMenu.selector.center.x = 
+			    game->levelMenu.level1.center.x;
+			game->levelMenu.selector.center.y = 
+			    game->levelMenu.level1.center.y;
+		    }
 
-            }
-        }
+	    }
+	}
     }
 
 

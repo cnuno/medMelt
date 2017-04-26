@@ -159,7 +159,10 @@ int main()
 		else if (game.render==LEVELSEL) {
 			levelsel_move(&joystick1, &game);
 		}
-		if (endcheck()) game.render = OVER;
+		if (endcheck()){
+		    game.prevState = game.render;
+		    game.render = OVER;
+		}
 		render_switch(&game); 
 		glXSwapBuffers(dpy, win);
 	}
