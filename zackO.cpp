@@ -806,22 +806,18 @@ void check_keys(XEvent *e, Game *game)
                 };
                 break;
             case XK_k:
-                break;
-            case XK_v:
+		break;
+	    case XK_v:
 #ifdef USE_OPENAL_SOUND
-                play_sound (1, 1.0f, true);
+		play_sound (1, 1.0f, true);
 #endif
-                game->render = DISCO; 
-                break;
+		game->render = DISCO; 
+		break;
 
-                break;
-        }
-
+		break;
+	}
     }
-
-
 }
-
 void end_game()
 {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
@@ -835,9 +831,7 @@ void end_game()
     char text[] = "GAME OVER";
     ggprint40(&r, 0, color, "%s", text);
     glDisable(GL_TEXTURE_2D);
-
 }
-
 bool endcheck()
 {
     bool A = false;
@@ -890,6 +884,5 @@ bool endcheck()
 	last3 = true;
     if (A && B && C) // last one is player 4
 	last4 = true;
-
     return(last1 || last2 || last3 || last4);
 }
