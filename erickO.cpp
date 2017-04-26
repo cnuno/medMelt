@@ -118,7 +118,6 @@ void Player::check_controller(Player *player, Joystick *joystick)
 				conditionB = player->action != GROUNDPOUND;
 				if (conditionA || conditionB) {
 					player->action = DASH;
-					//usleep(300000);
 
 					conditionC = player->onGround;
 					conditionD = player->delta.x == 0.0f;
@@ -136,39 +135,76 @@ void Player::check_controller(Player *player, Joystick *joystick)
 					}
 				}
 				break;
-				break;
 			case 7:
 				//PAUSE
 				toggle_pause(joystick);
 				break;
 			case 12:
 				//MOVE RIGHT
-				if (player->direction == LEFT && player->onGround) {
-					player->direction = RIGHT;
-					player->action = PASSIVE;
+				if (player->onMovingPlat) {
+					if (player->direction == LEFT && player->onGround) {
+						player->direction = RIGHT;
+						player->action = PASSIVE;
+					} else {
+						if (player->platFW == true) {
+							player->direction = RIGHT;
+							player->action = MOVE;
+							player->delta.x = 10.0f; 
+							if (player->onGround) { 
+								player->delta.y = 1.25f;
+							}
+						} else {
+							player->direction = RIGHT;
+							player->action = MOVE;
+							player->delta.x = 5.0f; 
+							if (player->onGround) { 
+								player->delta.y = 1.25f;
+							}
+						}
+					}
 				} else {
-					player->direction = RIGHT;
-					player->action = MOVE;
-					player->delta.x = 5.0f; 
-					if (player->onGround) { 
-						player->delta.y = 1.25f;
+					if (player->direction == LEFT && player->onGround) {
+						player->direction = RIGHT;
+						player->action = PASSIVE;
+					} else {
+						player->direction = RIGHT;
+						player->action = MOVE;
+						player->delta.x = 5.0f; 
+						if (player->onGround) { 
+							player->delta.y = 1.25f;
+						}
 					}
 				}
 				break;
 			case 11:
 				//MOVE LEFT
-				if (player->direction == RIGHT && player->onGround) {
-					player->direction = LEFT;
-					player->action = PASSIVE;
-				} else {
-					player->direction = LEFT;
-					player->action = MOVE;
-					player->delta.x = -5.0f; 
-					if (player->onGround) { 
-						player->delta.y = 1.25f; 
+				if (player->onMovingPlat) {
+					if (player->direction == RIGHT && player->onGround) {
+						player->direction = LEFT;
+						player->action = PASSIVE;
+					} else {
+						player->direction = LEFT;
+						player->action = MOVE;
+						player->delta.x = -10.0f; 
+						if (player->onGround) { 
+							player->delta.y = 1.25f; 
+						}
 					}
+					break;
+				} else {
+					if (player->direction == RIGHT && player->onGround) {
+						player->direction = LEFT;
+						player->action = PASSIVE;
+					} else {
+						player->direction = LEFT;
+						player->action = MOVE;
+						player->delta.x = -5.0f; 
+						if (player->onGround) { 
+							player->delta.y = 1.25f; 
+						}
+					}
+					break;
 				}
-				break;
 			case 14:
 				//SPECIAL MOVE: GROUND POUND
 				player->action = GROUNDPOUND;
@@ -472,60 +508,108 @@ void makePoundParticle(Game *game, int x, int y)
 	 */
 }
 
-void Level::physics(Player *player) 
+void Level::physics(Player *p) 
 {
 	int temp = 0;
 	int scale = 12;
 	float reduction = 0.0;
-	player->delta.y -= GRAVITY; 
-	player->body.center.y += player->delta.y;
-	player->body.center.x += player->delta.x;
-	player->weapon.center.x = player->body.center.x;
-	player->weapon.center.y = player->body.center.y;
+	p->delta.y -= GRAVITY; 
+	p->body.center.y += p->delta.y;
+	p->body.center.x += p->delta.x;
+	p->weapon.center.x = p->body.center.x;
+	p->weapon.center.y = p->body.center.y;
 
-	player->collision(platform); 
+	p->collision(platform); 
 	//if (player->onGround && player->delta.y <= 0.0) {
-	if (player->onGround) {
+	if (p->onGround) {
 		//temp designate which platform the player is colliding with
-		temp = player->currentContact;
+		temp = p->currentContact;
 
-		if (player->delta.y <= 0.0) {
-			player->jumpCount = 0;
-			player->body.center.y = platform[temp].center.y 
-				+ platform[temp].height/2 + player->body.width/2;
-			player->delta.y *= -0.2f;
-			player->body.center.y += player->delta.y;
-			player->body.center.x += player->delta.x;
-			player->weapon.center.x = player->body.center.x;
-			player->weapon.center.y = player->body.center.y;
+		if (p->delta.y <= 0.0) {
+			p->jumpCount = 0;
+			p->body.center.y = platform[temp].center.y 
+				+ platform[temp].height/2 + p->body.width/2;
+			p->delta.y *= -0.2f;
+			p->body.center.y += p->delta.y;
+			p->body.center.x += p->delta.x;
+			p->weapon.center.x = p->body.center.x;
+			p->weapon.center.y = p->body.center.y;
 		}
 
 		//Player Moving Right 
-		if (player->delta.x > 0.0) {
+		if (p->delta.x > 0.0) {
 			//momentum reduction
-			reduction = player->delta.x/scale; 
-			if (player->delta.x > 0.05)  
-				player->delta.x -= 2 * reduction; 
-			else 
-				player->delta.x = 0.0f; 
+			reduction = p->delta.x/scale; 
+			if (p->delta.x > 0.05) { 
+				p->delta.x -= 2 * reduction; 
+			}
+			else { 
+				p->delta.x = 0.0f; 
+			}
 		}	
 
 		//Player Moving Left 
-		if (player->delta.x < 0.0) {
+		if (p->delta.x < 0.0) {
 			//momentum reduction
-			reduction = -player->delta.x / scale; 
-			if (player->delta.x < -0.05)  
-				player->delta.x += 2 * reduction; 
-			else 
-				player->delta.x = 0.0f; 
+			reduction = -p->delta.x / scale; 
+			if (p->delta.x < -0.05) { 
+				p->delta.x += 2 * reduction; 
+			}
+			else {
+				p->delta.x = 0.0f; 
+			}
 		}
 
 		//player not moving
-		if (player->delta.x == 0.0) 
-			player->action = PASSIVE;
+		if (p->delta.x == 0.0) 
+			p->action = PASSIVE;
 	} 
-	//else if (player->onGround && player->delta.y > 0.0) {
-	//}
+
+	for (int i = 0; i < MAX_PLAYER; i++) {
+		if (i == p->id) {
+			//skip itself
+			i++;
+		} else {
+			//is this character colliding with another?
+			p->collision(player[i]);
+
+			//if so, where?
+			if (p->collide == TP || p->collide == BOT) {
+				p->delta.y *= -0.8;
+			} else if (p->collide == LFT || p->collide == RGHT) {
+				p->delta.x *= -0.8;
+			} else {
+				p->collide = NONE;
+			}	
+		}
+	}
+}
+
+void Player::collision(Player p)
+{
+	bool condition1, condition2, condition3, condition4;
+	//TOP - This player is under
+	condition1 = body.center.y + body.height/2 == p.body.center.y - p.body.height/2;
+	condition2 = body.center.x + body.width/2 <= p.body.center.x - p.body.width/2;
+	condition3 = body.center.x - body.width/2 >= p.body.center.x + p.body.width/2;
+
+	if (condition1 && condition2 && condition3) {
+		collide = TP;
+		//playerContact
+	}
+
+	//BOTTOM - this player is over
+	condition1 = body.center.y - body.height/2 == p.body.center.y + p.body.height/2;
+	condition2 = body.center.x + body.width/2 <= p.body.center.x - p.body.width/2;
+	condition3 = body.center.x - body.width/2 >= p.body.center.x + p.body.width/2;
+	condition4 = delta.y <= 0.0;
+	if (condition1 && condition2 && condition3 && condition4) {
+		collide = BOT;
+	}
+
+	//LEFT - this player is to the right
+
+	//RIGHT - this player is to the left
 }
 
 void Player::collision(Shape platform[])
@@ -767,11 +851,6 @@ Disco_Level::Disco_Level()
 	widthPartition = scrn->width/7;
 	heightPartition = scrn->height/7;
 
-	//life assignment, health assignment
-	for (int i = 0; i < MAX_PLAYER; i++) {
-		player[i].status.health = 0;
-		player[i].status.lifeCount = 5;
-	}
 	init_triangle_sky();
 }
 
@@ -796,33 +875,33 @@ void Disco_Level::movingPlat(Shape *p) {
 
 void Disco_Level::movingPlatformPlayer(Player *p)
 {
-	//--------------------DEVELOP---------------------------------
-	float dist = 0.0;
+	if (p->onGround && p->currentContact == 1 && p->delta.x == 0.0) {
+		float dist = 0;
+		float offset = 5;
 
-	p->collision(platform);
+		p->onMovingPlat = true;
+		p->platFW = game.level4.fw;
 
-	if (p->currentContact == 1 
-			&& (p->body.center.y - p->body.height/2 - 10) <= 
-			(platform[1].center.y + platform[1].height)
-			&& p->delta.y <  0.01667
-			&& p->delta.y >  0.01665
-			&& p->body.center.x <= platform[1].center.x + platform[1].height/2
-			&& p->body.center.x 
-			>= platform[1].center.x - platform[1].height/2) { 
-
-		if (platform[1].center.x < p->body.center.x) {
-			dist = p->body.center.x - platform[1].center.x;
+		if (game.level4.fw == false) {
+			dist -= offset;
 		} else {
-			dist = p->body.center.x - platform[1].center.x; 
+			dist += offset;
 		}
 
-		p->body.center.x = platform[1].center.x + dist;
-		p->body.center.y = p->body.center.y;
+		//platform is to the left
+		if (game.level4.platform[1].center.x < game.level4.player[0].body.center.x) {
+			dist += abs(p->body.center.x) - abs(game.level4.platform[1].center.x);
+		}
+
+		p->body.center.x = game.level4.platform[1].center.x + dist;
+	} else {
+		p->onMovingPlat = false;
 	}
-	//--------------------DEVELOP---------------------------------
 }
 
 bool alterCoor = false;
+bool firstContact = false;
+bool forward = true;
 void disco(Game *game)
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
@@ -836,6 +915,7 @@ void disco(Game *game)
 	game->level4.renderSky();
 	game->level4.render();
 	game->level4.movingPlat(&game->level4.platform[1]);
+
 
 	for (int i = 0; i < MAX_PLAYER; i++) {
 		game->level4.movingPlatformPlayer(&game->level4.player[i]);
@@ -875,12 +955,12 @@ void disco(Game *game)
 			}
 		}	
 	}
+
 	game->level4.statDisplay.render();
 }
 
 int ct = 0;
 bool begining = true;
-bool forward = true;
 float opacity = 0;
 void Disco_Level::render()	
 {
@@ -1144,128 +1224,6 @@ void Disco_Level::randomizeCoor() {
 	}
 }
 
-/*
-   void Level::physics(Player *player) 
-   {
-   float reduction = 0.0;
-
-   for (int unsigned i = 0; i < MAX_PLAT;i++) {
-   player->collision(&platform[i]); 
-//void loadImages();
-if (player->onGround) {
-player->jumpCount = 0;
-
-if ((player->body.center.y <= platform[i].center.y - platform[i].height/2)) {
-//nothing
-} else if ((player->body.center.y > platform[i].center.y - platform[i].height/2)) {
-player->body.center.y = (platform[i].center.y + platform[i].height/2) + (player->body.height/2);
-player->delta.y = -player->delta.y * 0.2f; 
-}
-
-//Player Moving Right 
-if (player->delta.x > 0) {
-//momentum reduction
-reduction = player->delta.x/15; 
-if (player->delta.x > 0.05)  
-player->delta.x -= reduction; 
-else 
-player->delta.x = 0.0f; 
-}
-
-//Player Moving Left 
-if (player->delta.x < 0) {
-//momentum reduction
-reduction = -player->delta.x / 15; 
-if (player->delta.x < -0.05)  
-player->delta.x += reduction; 
-else 
-player->delta.x = 0.0f; 
-}
-
-//player not moving
-if (player->delta.x == 0) 
-player->action = PASSIVE;
-}
-//player in the air
-else {
-player->delta.y -= GRAVITY; 
-player->body.center.y += player->delta.y;
-player->body.center.x += player->delta.x;
-}
-}
-}
- */
-
-/*
-   void Level::physics(Player *player) 
-   {
-   float reduction = 0.0;
-   player->delta.y -= GRAVITY;
-   player->body.center.y += player->delta.y;
-   player->body.center.x += player->delta.x;
-
-   if (player->onGround == true) {
-   player->jumpCount = 0;
-   }
-
-   for (int unsigned i = 0; i < MAX_PLAT;i++) {
-//obtain whether player is on platform
-player->collision(&platform[i]);
-
-if (player->onGround) {
-player->body.center.y = platform[i].center.y + platform[i].height/2 + player->body.height;
-if (player->delta.x == 0.0 && player->delta.y == 0.0) {
-player->action = PASSIVE;
-}
-//moving left
-else if (player->delta.x < 0.0) {
-reduction = -player->delta.x / 15; 
-if (player->delta.x < -0.05)  
-player->delta.x += reduction; 
-else 
-player->delta.x = 0.0f; 
-} 
-//moving right
-else if (player->delta.x > 0.0) {
-reduction = player->delta.x/15; 
-if (player->delta.x > 0.05)  
-player->delta.x -= reduction; 
-else 
-player->delta.x = 0.0f; 
-}
-}
-
-if ((player->body.center.y <= platform[i].center.y + platform[i].height/2) && player->delta.y < 0.0) {
-player->body.center.y = (platform[i].center.y + platform[i].height/2) + (player->body.height/2);
-player->delta.y = -player->delta.y * 0.2f; 
-}
-}
-}
- */
-
-//void Player::collision(Shape *platform[])
-/*
-   void Player::collision(Shape *platform)
-//void Player::collision(Shape *platform[])
-{
-bool condition1, condition2, condition3, condition4;
-
-//for (int unsigned i = 0; i < MAX_PLAT;i++) {
-//bottom of player collide with floor
-condition1 = (body.center.y - body.height/2) <= (platform->center.y + platform->height/2);
-//right edge of player to right of left most spot
-condition2 = (body.center.x + body.width/2) >= (platform->center.x - platform->width/2);
-//left edge of player to left of right most spot
-condition3 = (body.center.x - body.width/2) <= (platform->center.x + platform->width/2);
-condition4 = body.center.y >= 0.0;	
-
-if (condition1 && condition2 && condition3 && condition4) 
-onGround = true;
-else  
-onGround = false;
-//}
-}
- */
 void Field_Level::erick_init()
 {
 	//life assignment, health assignment
@@ -1280,6 +1238,8 @@ void Field_Level::erick_init()
 		player[i].status.health = 0;
 		player[i].status.lifeCount = 5;
 		player[i].status.lifeState = ALIVE;
+		player[i].id = i;
+		player[i].collide = NONE;
 
 		if (i % 2 == 0) {
 			//void loadImages();
@@ -1337,6 +1297,9 @@ void Starynight_Level::erick_init()
 		player[i].multiplier = 0.0;
 		player[i].status.health = 0;
 		player[i].status.lifeCount = 5;
+		player[i].id = i;
+		player[i].collide = NONE;
+
 		if (i % 2 == 0) {
 			if (evenCount % 2 == 0) {
 				player[i].body.center.y = scrn->height/5;
@@ -1394,6 +1357,9 @@ void Disco_Level::erick_init()
 		player[i].multiplier = 0.0;
 		player[i].status.health = 0;
 		player[i].status.lifeCount = 5;
+		player[i].id = i;
+		player[i].collide = NONE;
+
 		if (i % 2 == 0) {
 			if (evenCount % 2 == 0) {
 				player[i].body.center.y = scrn->height/5;

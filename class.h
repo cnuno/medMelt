@@ -19,6 +19,7 @@ enum Collision {ENEMY, PLATFORM, PROJECTILE};
 enum PlayerAction {EMPTY, PASSIVE, GROUNDPOUND, DASH, ATTACK, DEFEND, JUMP, MOVE};
 enum Direction {LEFT, UP, RIGHT, DOWN};
 enum TimeOfDay {MORNING, NOON, NIGHT};
+enum CharCollision {TP, BOT, LFT, RGHT, NONE};
 
 class Vec {
 	public:
@@ -69,11 +70,16 @@ class Particle {
 		int color[3];
 };
 
+
 class Level;
 class Player {
 	public:
         int index;
         float multiplier;
+
+		int id;
+		CharCollision collide;
+
 		Stat status;
 		Joystick *joystick = NULL;
 		Shape body;
@@ -87,7 +93,12 @@ class Player {
 		int currentContact;
 		int jumpCount;
 		int JUMP_MAX;
+
 		void collision(Shape platform[]);
+		void collision(Player p);
+		bool onMovingPlat;
+		bool platFW;
+		
 		void check_controller(Player *player, Joystick *joystick);
 		void render();
 		struct timespec timeStart, timeCurrent;
