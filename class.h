@@ -93,7 +93,7 @@ class Player {
 		int currentContact;
 		int jumpCount;
 		int JUMP_MAX;
-
+		
 		void collision(Shape platform[]);
 		void collision(Player p);
 		bool onMovingPlat;
@@ -103,10 +103,18 @@ class Player {
 		void render();
 		struct timespec timeStart, timeCurrent;
 		double timeSpan;
+
+
 		Particle bloodStream[MAX_PARTICLE];
+
+
+
 		double timeDiff(struct timespec *start, struct timespec *end);
 		Player();
         void attack();
+	void deathInit(int x, int y);
+	void deathPhysics();
+	void deathRender();
         void boxRender(int centx, int centy, int width);
 };
 

@@ -441,45 +441,90 @@ void resetMain(Game *game)
 //incorporate this in zack's level handler functions
 void Level::deathCheck(Player *player)
 {
-    if (player->body.center.x < (-scrn->width/4 * 3)) {
+    if ((player->body.center.x < (-scrn->width/4 * 3)) && player->status.lifeState == ALIVE) {
         //call death animation on the left edge @ player->body.center.y
         //if lives available, respawn
         //Pass (x,y) to render particles at
-        //deathAnimation(-scrn->width/2, player->body.center.x);
+        player->deathInit(-scrn->width/2, player->body.center.x);
         player->multiplier=0;
         player->status.lifeState = DEAD;
     }
     else if (player->body.center.x 
-            > (scrn->width + scrn->width/4 * 3)) {
+            > ((scrn->width + scrn->width/4 * 3)) && player->status.lifeState == ALIVE) {
         //call death animation on the right edge @ player->body.center.y
         //if lives available, respawn
         //Pass (x,y) to render particles at
-        //deathAnimation(scrn->width + scrn->width/2,
-        //		player->body.center.y);
+        player->deathInit(scrn->width + scrn->width/2,
+        		player->body.center.y);
         player->multiplier=0;
         player->status.lifeState = DEAD;
     }
-    else if (player->body.center.y < (-scrn->height/4 * 3)) {
+    else if ((player->body.center.y < (-scrn->height/4 * 3)) && player->status.lifeState == ALIVE) {
         //call death animation on the Top edge @ player->body.center.x
         //if lives available, respawn
         //Pass (x,y) to render particles at
-        //deathAnimation(player->body.center.x, 
-        //		-scrn->height/2);
+        player->deathInit(player->body.center.x, 
+        		-scrn->height/2);
         player->multiplier=0;
         player->status.lifeState = DEAD;
     }
-    else if (player->body.center.y 
-            > (scrn->height + scrn->height/4 * 3)) {
+    else if ((player->body.center.y 
+            > (scrn->height + scrn->height/4 * 3)) && player->status.lifeState == ALIVE) {
         //call death animation on the top edge @ player->body.center.x
         //if lives available, respawn
         //Pass (x,y) to render particles at
-        //deathAnimation(player->body.center.x, 
-        //		scrn->height + scrn->height/2);
+        player->deathInit(player->body.center.x, 
+        		scrn->height + scrn->height/2);
         player->multiplier=0;
         player->status.lifeState = DEAD;
     }
+}
 
+//50 particles to work with
+void Player::deathInit(int x, int y) {
+    Color colors;
+    for (int i = 0; i < 50; i++) {
+	for (int j = 0; j < 3; j++) {
+		bloodStream[i].color[j] = colors.bloodred[j];
+	}
+	bloodStream[i].s.center.x = x;
+	bloodStream[i].s.center.y = y;
+	bloodStream[i].velocity.x = -delta.x + 20 * ((float)rand() / (float)RAND_MAX);
+	bloodStream[i].velocity.y = -delta.y + 20 * ((float)rand() / (float)RAND_MAX);; 
+    }
+}
 
+void Player::deathPhysics() {
+    for (int i = 0; i < 50; i++) {
+	bloodStream[i].velocity.y -= GRAVITY * 3;
+	bloodStream[i].s.center.x += bloodStream[i].velocity.x;
+	bloodStream[i].s.center.y += bloodStream[i].velocity.y;
+	cout << bloodStream[i].s.center.y << ", " << bloodStream[i].s.center.x << endl;
+    }
+}
+
+void Player::deathRender() {
+    for (int i = 0; i < 50; i++) {
+	glPushMatrix();
+	Vec *c = &bloodStream[i].s.center;
+	glTranslatef(bloodStream[i].s.center.x, bloodStream[i].s.center.y, bloodStream[i].s.center.z);
+	int w = 10;
+	int h = 10;
+	glBegin(GL_QUADS);
+	glColor3ub(0, 0, 0);
+		glVertex2i(c->x-w-3, c->y-h-3);
+		glVertex2i(c->x-w-3, c->y+h+3);
+		glVertex2i(c->x+w+3, c->y+h+3);
+		glVertex2i(c->x+w+3, c->y-h-3);
+
+	glColor3ub(bloodStream[i].color[0], bloodStream[i].color[1], bloodStream[i].color[2]);
+		glVertex2i(c->x-w, c->y-h);
+		glVertex2i(c->x-w, c->y+h);
+		glVertex2i(c->x+w, c->y+h);
+		glVertex2i(c->x+w, c->y-h);
+	glEnd();
+	glPopMatrix();
+    }
 }
 
 void Level::respawn(Player *player)
@@ -572,18 +617,8 @@ void Level::Lattack(int index)
     }
 
 }
-/*
-//50 particles to work with
-void deathAnimation(int x, int y) {
-}
 
-void deathPhysics() {
-//conduct physics for particles here
-}
 
-void deathRender() {
-//render particles here
-}
- */
+
 
 

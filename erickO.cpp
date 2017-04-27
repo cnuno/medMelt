@@ -922,9 +922,14 @@ void disco(Game *game)
 		game->level4.physics(&game->level4.player[i]);
 		game->level4.player[i].check_controller(&game->level4.player[i], 
 				game->level4.controller.joystick[i]);
-		game->level4.player[i].render();
-		game->level4.statDisplay.render();
 		game->level4.deathCheck(&game->level4.player[i]);
+		if (game->level4.player[i].status.lifeState == ALIVE) {
+			game->level4.player[i].render();
+		} else {
+		    game->level4.player[i].deathPhysics();
+		    game->level4.player[i].deathRender();
+		}
+		game->level4.statDisplay.render();
 
 		if (game->level4.player[i].status.lifeState == ALIVE) 
 		{
@@ -1097,6 +1102,7 @@ void Disco_Level::renderSky() {
 		y3 = coor[i + 18].y;
 
 		if (flag) {
+		    	glEnable(GL_ALPHA_TEST);
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glColor4ub(coor[i].color[0][0],coor[i].color[0][1],
@@ -1126,6 +1132,7 @@ void Disco_Level::renderSky() {
 			glVertex2f(x3,y3);
 			glEnd();
 			glDisable(GL_ALPHA_TEST);
+			glDisable(GL_BLEND);	
 		}
 		glColor3ub(255,0,0);
 		glBegin(GL_POINTS);

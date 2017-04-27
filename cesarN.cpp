@@ -172,17 +172,20 @@ void menu_move(Joystick *joystick, Game* game)
                               }*/
                         default:
                             break;
-                    }
-                    return;
+		    }
+		    return;
 		case 6 :
-		    if (game->render == OVER){
-			    
+		    if (game->render == OVER) {
 			resetMain(game);
+			if (game->prevState == FIELD)
 			    game->level2.erick_init();
+			if (game->prevState == STARYNIGHT)
 			    game->level3.erick_init();
+			if (game->prevState == DISCO)
 			    game->level4.erick_init();
 			game->render = MAINMENU;
-		    } 
+		    }
+
 		    return;
 
 		case 13 :    //up on d-pad
