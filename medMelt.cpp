@@ -69,7 +69,7 @@ ALuint alBuffer[SOUNDCOUNT];
 
 #ifdef USE_OPENAL_SOUND
 int titledrop = 0;
-float pitch = 3.0f;
+float pitch = 1.0f;
 #endif
 int done=0;
 

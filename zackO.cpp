@@ -463,6 +463,9 @@ void check_keys(XEvent *e, Game *game)
 	    case XK_Escape:
 		done = 1; 
 		break;
+	    case XK_m:
+		manual_launch();
+		break;
 	    case XK_w:
 		switch (game->render) {
 		    case MAINMENU:
@@ -651,26 +654,11 @@ void check_keys(XEvent *e, Game *game)
 		switch (game->render) {
 		    case STARYNIGHT:
 			game->level3.player[0].attack(); 
-#ifdef USE_OPENAL_SOUND
-			if (game->level3.player[0].status.lifeState == ALIVE) {
-			    play_sound(2, 1.0f, false);
-			}
-#endif
 			break;
 		    case FIELD:
 			game->level2.player[0].attack(); 
-#ifdef USE_OPENAL_SOUND
-			if (game->level2.player[0].status.lifeState == ALIVE) {
-			    play_sound(2, 1.0f, false);
-			}
-#endif
 			break;
 		    case DISCO:
-#ifdef USE_OPENAL_SOUND
-			if (game->level4.player[0].status.lifeState == ALIVE) {
-			    play_sound(2, 1.0f, false);
-			}
-#endif
 			game->level4.player[0].attack(); 
 			break;
 		    default:

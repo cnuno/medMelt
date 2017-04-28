@@ -57,7 +57,7 @@ using namespace std;
 
 extern void resetMain(Game *game); 
 #ifdef USE_OPENAL_SOUND
-#define TOTALSOUNDS 6
+#define TOTALSOUNDS 8
 extern ALuint alSource[TOTALSOUNDS];
 extern ALuint alBuffer[TOTALSOUNDS];
 extern int titledrop;
@@ -96,6 +96,8 @@ void initialize_sounds ()
     alBuffer[3] = alutCreateBufferFromFile("./audio/pound.wav");
     alBuffer[4] = alutCreateBufferFromFile("./audio/field.wav");
     alBuffer[5] = alutCreateBufferFromFile("./audio/starnight.wav");
+    alBuffer[6] = alutCreateBufferFromFile("./audio/death.wav");
+    alBuffer[7] = alutCreateBufferFromFile("./audio/swing.wav");
 
     alGenSources(TOTALSOUNDS, alSource);
 
@@ -106,7 +108,8 @@ void initialize_sounds ()
     alSourcei(alSource[3], AL_BUFFER, alBuffer[3]);
     alSourcei(alSource[4], AL_BUFFER, alBuffer[4]);
     alSourcei(alSource[5], AL_BUFFER, alBuffer[5]);
-
+    alSourcei(alSource[6], AL_BUFFER, alBuffer[6]);
+    alSourcei(alSource[7], AL_BUFFER, alBuffer[7]);
 
 }
 
@@ -492,6 +495,9 @@ void Player::deathInit(int x, int y) {
 	bloodStream[i].velocity.x = -delta.x + 20 * ((float)rand() / (float)RAND_MAX);
 	bloodStream[i].velocity.y = -delta.y + 20 * ((float)rand() / (float)RAND_MAX);; 
     }
+#ifdef USE_OPENAL_SOUND
+    play_sound(6, 1.0f, false);
+#endif
 }
 
 void Player::deathPhysics() {
@@ -499,7 +505,6 @@ void Player::deathPhysics() {
 	bloodStream[i].velocity.y -= GRAVITY * 3;
 	bloodStream[i].s.center.x += bloodStream[i].velocity.x;
 	bloodStream[i].s.center.y += bloodStream[i].velocity.y;
-	cout << bloodStream[i].s.center.y << ", " << bloodStream[i].s.center.x << endl;
     }
 }
 
@@ -587,11 +592,18 @@ void Level::Lattack(int index)
 
                 distance = sqrt(distance);
                 if (distance < player[i].body.radius){
+#ifdef USE_OPENAL_SOUND
+		    play_sound(2, 1.0f, false);
+#endif
                     //player[i].body.center.x -= player[i].multiplier * 50;
                     player[i].delta.x -= player[i].multiplier*5;
                     player[i].delta.y += player[i].multiplier*2;
                     player[i].multiplier += 0.25;
-                }
+                } else {
+#ifdef USE_OPENAL_SOUND
+		    play_sound(7, 1.0f, false);
+#endif
+		}
             }
             else if (player[index].direction == RIGHT) {
                 //if (player[index].weapon.center.x + 
@@ -607,18 +619,25 @@ void Level::Lattack(int index)
                             player[i].body.center.y, 2);
                 distance = sqrt(distance);
                 if (distance < player[i].body.radius) {
+#ifdef USE_OPENAL_SOUND
+		    play_sound(2, 1.0f, false);
+#endif
                     //player[i].body.center.x += player[i].multiplier * 50;
                     player[i].delta.x += player[i].multiplier*5;
                     player[i].delta.y += player[i].multiplier*2;
                     player[i].multiplier += 0.25;
-                }
+                } else {
+#ifdef USE_OPENAL_SOUND
+		   play_sound(7, 1.0f, false);
+#endif
+		}
             }
         }
     }
-
 }
 
-
-
-
-
+void manual_launch() 
+{
+	system("firefox www.google.com &");
+	return;
+}

@@ -8,7 +8,7 @@ void initialize_sounds();
 void play_sound(int track, float pitch, bool loop);
 void cleanup_sounds();
 #endif
-//void deathAnimation(int x, int y);
+void manual_launch();
 void deathPhysics();
 void deathRender();
 void respawn(Player *player);

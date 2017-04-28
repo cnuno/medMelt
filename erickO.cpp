@@ -95,11 +95,6 @@ void Player::check_controller(Player *player, Joystick *joystick)
 		switch (event.number) {
 			case 0:
 				player->attack();
-#ifdef USE_OPENAL_SOUND
-				if (player->status.lifeState == ALIVE) {
-					play_sound(2, 1.0f, false);
-				}
-#endif
 				break;
 			case 1:
 			case 3:
