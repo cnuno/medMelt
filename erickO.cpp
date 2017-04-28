@@ -306,9 +306,7 @@ Player::Player()
 			bloodStream[i].color[j] = colors.bloodred[j];
 		}
 	}
-
 	status.initDeath = false;
-
 }
 
 //Game Pad constructor
@@ -320,7 +318,6 @@ Gpad::Gpad()
 	joystick[3] = new Joystick("/dev/input/js3");
 }
 
-//Render Function for Player "Kirby"
 void Player::render()
 {
 	if (status.lifeState == ALIVE) {
@@ -338,9 +335,22 @@ void Player::render()
 			radius = body.radius - 15;
 
 		//render weapon
-		glColor3f(102, 51, 0);
 		glPushMatrix();
 		glBegin(GL_QUADS);
+
+		//outline
+		glColor3f(0,0,0);
+		glVertex2i(weapon.center.x - weapon.width/2 - 5,
+				weapon.center.y - weapon.height/2 - 5);
+		glVertex2i(weapon.center.x - weapon.width/2 - 5,
+				weapon.center.y + weapon.height/2 + 5);
+		glVertex2i(weapon.center.x + weapon.width/2 + 5,
+				weapon.center.y + weapon.height/2 + 5);
+		glVertex2i(weapon.center.x + weapon.width/2 + 5,
+				weapon.center.y - weapon.height/2 - 5);
+
+		//arm
+		glColor3ub(color[0],color[1],color[2]);
 		glVertex2i(weapon.center.x - weapon.width/2,
 				weapon.center.y - weapon.height/2);
 		glVertex2i(weapon.center.x - weapon.width/2,
@@ -349,7 +359,8 @@ void Player::render()
 				weapon.center.y + weapon.height/2);
 		glVertex2i(weapon.center.x + weapon.width/2,
 				weapon.center.y - weapon.height/2);
-		glEnd();
+		
+			glEnd();
 
 		//black circle
 		glPushMatrix();
@@ -464,18 +475,6 @@ void Player::render()
 			}
 		}
 	} 
-	/*else if (status.lifeState == DEAD) {
-	//DEATH ANIMATION
-	glColor3ub(0,255,0); 
-	glPushMatrix(); 
-	glBegin(GL_QUADS); 
-	glVertex2i(scrn->width/2,scrn->height/2);
-	glVertex2i(scrn->width/3, scrn->height);
-	glVertex2i(0,0);
-	glVertex2i(50,200);
-	glEnd(); 
-	}
-	 */
 }
 
 //Pill Constructor
@@ -485,22 +484,6 @@ Pill::Pill() {
 		body[i].height = 25;
 		end[i].radius = body[i].height - 0.5;
 	}
-}
-
-void makePoundParticle(Game *game, int x, int y)
-{
-	/*
-	   if (game->level2.partCount >= MAX_PARTICLE)
-	   return;
-
-	//initialize particle
-	Particle *p = &game->level2.particle[game->level2.partCount];
-	p->s.center.x = x;
-	p->s.center.y = y;
-	p->velocity.y = y_rnd();
-	p->velocity.x = x_rnd();
-	game->level2.partCount++;
-	 */
 }
 
 void Level::physics(Player *p) 
@@ -830,9 +813,9 @@ Disco_Level::Disco_Level()
 	fw = true;
 	erick_init();
 	//floor characteristics
-	platform[0].width = scrn->width-50;
+	platform[0].width = scrn->width;
 	platform[0].height = scrn->height/20; 
-	platform[0].center.x = scrn->width/2;
+	platform[0].center.x = scrn->width/2.2;
 	platform[0].center.y = platform[0].height/2 + 150; 
 	//void loadImages();
 
@@ -868,6 +851,7 @@ void Disco_Level::movingPlat(Shape *p) {
 	}
 }
 
+//player physics for platform
 void Disco_Level::movingPlatformPlayer(Player *p)
 {
 	if (p->onGround && p->currentContact == 1 && p->delta.x == 0.0) {
@@ -899,7 +883,7 @@ bool firstContact = false;
 bool forward = true;
 void disco(Game *game)
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f );
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (alterCoor == true) {
@@ -921,8 +905,8 @@ void disco(Game *game)
 		if (game->level4.player[i].status.lifeState == ALIVE) {
 			game->level4.player[i].render();
 		} else {
-		    game->level4.player[i].deathPhysics();
-		    game->level4.player[i].deathRender();
+			game->level4.player[i].deathPhysics();
+			game->level4.player[i].deathRender();
 		}
 		game->level4.statDisplay.render();
 
@@ -1073,12 +1057,12 @@ void Disco_Level::renderSky() {
 
 		if (processed == (16 + ct) && begining == true) {
 			processed = 0;
-			flag = false;
-			begining = false;
+			flag ^= 1;
+			begining ^= 1;
 			ct++;
 		} else if (processed == 16) {
 			processed = 0;
-			flag = false;
+			flag ^= 1;
 		}
 
 		x = coor[i].x;
@@ -1097,7 +1081,7 @@ void Disco_Level::renderSky() {
 		y3 = coor[i + 18].y;
 
 		if (flag) {
-		    	glEnable(GL_ALPHA_TEST);
+			glEnable(GL_ALPHA_TEST);
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glColor4ub(coor[i].color[0][0],coor[i].color[0][1],
@@ -1139,20 +1123,18 @@ void Disco_Level::renderSky() {
 		}
 	}	
 	if (opacity >= 255) {
-		forward = false;
+		forward ^= 1;
 	}
 	else if (opacity < 0) {
-		//randomize coordinates here
+		//randomize when this condition is true
 		alterCoor = true;
-		forward = true;
+		forward ^= 1;
 	}
 
 	if (forward) {
 		opacity += 0.75;
-		//opacity += 5;
 	} else {
 		opacity -= 0.75;
-		//opacity -= 5;
 	}
 }
 
@@ -1170,24 +1152,27 @@ void Disco_Level::randomizeCoor() {
 	int sample = 0;
 	Color colors;
 
-	//Define verticies
+	//Define first  vertex
 	coor[0].x = xStart;
 	coor[0].y = yStart;
 	sample = color_rnd();
 
+	//assign 3 colors per vertex
 	for (int j = 0; j < 3; j++) {
 		for (int k = 0; k < 3; k++) {
 			coor[0].color[j][k] = colors.neon[sample][k];
 		}	
 	}
 
+	//for every (x,y) on screen
 	int temp = change();
-	//every (x,y) on screen
 	for (int i = 1; i < (xPartition + 1) * (yPartition + 1); i++) {
 		//travse accross the screen
 		if (temp % 2 != 0) {
 			if(change() % 1 == 0) {
+				coor[i].x ^= 1;
 				coor[i].x = coor[i-1].x + xJump * coor();
+				coor[i].y ^= 1;
 				coor[i].y = yManip + yManip * coor();
 			}
 			else {
@@ -1244,14 +1229,12 @@ void Field_Level::erick_init()
 		player[i].collide = NONE;
 
 		if (i % 2 == 0) {
-			//void loadImages();
 			if (evenCount % 2 == 0) {
 				player[i].body.center.y = scrn->height/5;
 			} else {
 				player[i].body.center.y = 3 * scrn->height/5;
 			}
 			player[i].body.center.x = scrn->width/5;
-			//void loadImages();
 			player[i].direction = RIGHT;
 			evenCount++;
 		} else {
@@ -1356,10 +1339,10 @@ void Disco_Level::erick_init()
 	int oddCount = 0;
 	for (int i = 0; i < MAX_PLAYER; i++) {
 		player[i].index = i;
+		player[i].id = i;
 		player[i].multiplier = 0.0;
 		player[i].status.health = 0;
 		player[i].status.lifeCount = 5;
-		player[i].id = i;
 		player[i].collide = NONE;
 
 		if (i % 2 == 0) {

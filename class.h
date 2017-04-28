@@ -74,8 +74,8 @@ class Particle {
 class Level;
 class Player {
 	public:
-        int index;
-        float multiplier;
+		int index;
+		float multiplier;
 
 		int id;
 		CharCollision collide;
@@ -83,7 +83,7 @@ class Player {
 		Stat status;
 		Joystick *joystick = NULL;
 		Shape body;
-        Shape weapon;
+		Shape weapon;
 		int color[3];
 		Vec delta;
 		bool onGround;
@@ -93,44 +93,41 @@ class Player {
 		int currentContact;
 		int jumpCount;
 		int JUMP_MAX;
-		
+
 		void collision(Shape platform[]);
 		void collision(Player p);
 		bool onMovingPlat;
 		bool platFW;
-		
+
 		void check_controller(Player *player, Joystick *joystick);
 		void render();
 		struct timespec timeStart, timeCurrent;
 		double timeSpan;
 
-
 		Particle bloodStream[MAX_PARTICLE];
-
-
 
 		double timeDiff(struct timespec *start, struct timespec *end);
 		Player();
-        void attack();
-	void deathInit(int x, int y);
-	void deathPhysics();
-	void deathRender();
-        void boxRender(int centx, int centy, int width);
+		void attack();
+		void deathInit(int x, int y);
+		void deathPhysics();
+		void deathRender();
+		void boxRender(int centx, int centy, int width);
 };
 
 //inheritance test
 /*
-class Kerby:public Player {
-	public:
-		Shape outline;
-		Shape body;
-		Shape shade;
-		Shape eye;
-		int color[3];
-		float dashStrength;
-		void render() {Player::render();}
-};
-*/
+   class Kerby:public Player {
+   public:
+   Shape outline;
+   Shape body;
+   Shape shade;
+   Shape eye;
+   int color[3];
+   float dashStrength;
+   void render() {Player::render();}
+   };
+ */
 
 class StatDisplay {
 	public:
@@ -205,8 +202,8 @@ class Level {
 		void physics(Player *player);
 		void deathCheck(Player *player);
 		void respawn(Player *player);
-        void Lattack(int index);
-        //void attack(Player *player);
+		void Lattack(int index);
+		//void attack(Player *player);
 		Level();
 };
 
