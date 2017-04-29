@@ -88,12 +88,15 @@ void Player::check_controller(Player *player, Joystick *joystick)
 	{
 		printf("Attention: Game Pad is not connected\n");
 		printf("Multiplayer disabled\n");
-		bTemp = false;
+		bTemp ^= 1;
 	}
 
+				int h = 0;
 	if (joystick->sample(&event) && event.isButton() && event.value == 1) {
 		switch (event.number) {
+			//Attack
 			case 0:
+				player->atk ^= 1;
 				player->attack();
 				break;
 			case 1:
@@ -209,7 +212,6 @@ void Player::check_controller(Player *player, Joystick *joystick)
 					play_sound(3, 1.0f, false);
 				}
 #endif
-				//usleep(300000);
 				player->delta.y = -20.0f; 
 				break;
 			default: 
@@ -285,7 +287,7 @@ Player::Player()
 	JUMP_MAX = 4;
 	body.radius = 50; 
 	body.width = 100;
-	weapon.width = body.width; 
+	weapon.width = 1.5 * body.width; 
 	weapon.height = 20;
 	body.height = body.width;
 	body.center.y = 4*scrn->height/5;
@@ -338,29 +340,31 @@ void Player::render()
 		glPushMatrix();
 		glBegin(GL_QUADS);
 
-		//outline
-		glColor3f(0,0,0);
-		glVertex2i(weapon.center.x - weapon.width/2 - 5,
-				weapon.center.y - weapon.height/2 - 5);
-		glVertex2i(weapon.center.x - weapon.width/2 - 5,
-				weapon.center.y + weapon.height/2 + 5);
-		glVertex2i(weapon.center.x + weapon.width/2 + 5,
-				weapon.center.y + weapon.height/2 + 5);
-		glVertex2i(weapon.center.x + weapon.width/2 + 5,
-				weapon.center.y - weapon.height/2 - 5);
+		if (atk) {
+			//outline
+			glColor3f(0,0,0);
+			glVertex2i(weapon.center.x - weapon.width/2 - 5,
+					weapon.center.y - weapon.height/2 - 5);
+			glVertex2i(weapon.center.x - weapon.width/2 - 5,
+					weapon.center.y + weapon.height/2 + 5);
+			glVertex2i(weapon.center.x + weapon.width/2 + 5,
+					weapon.center.y + weapon.height/2 + 5);
+			glVertex2i(weapon.center.x + weapon.width/2 + 5,
+					weapon.center.y - weapon.height/2 - 5);
 
-		//arm
-		glColor3ub(color[0],color[1],color[2]);
-		glVertex2i(weapon.center.x - weapon.width/2,
-				weapon.center.y - weapon.height/2);
-		glVertex2i(weapon.center.x - weapon.width/2,
-				weapon.center.y + weapon.height/2);
-		glVertex2i(weapon.center.x + weapon.width/2,
-				weapon.center.y + weapon.height/2);
-		glVertex2i(weapon.center.x + weapon.width/2,
-				weapon.center.y - weapon.height/2);
-		
+			//arm
+			glColor3ub(color[0],color[1],color[2]);
+			glVertex2i(weapon.center.x - weapon.width/2,
+					weapon.center.y - weapon.height/2);
+			glVertex2i(weapon.center.x - weapon.width/2,
+					weapon.center.y + weapon.height/2);
+			glVertex2i(weapon.center.x + weapon.width/2,
+					weapon.center.y + weapon.height/2);
+			glVertex2i(weapon.center.x + weapon.width/2,
+					weapon.center.y - weapon.height/2);
+
 			glEnd();
+		}
 
 		//black circle
 		glPushMatrix();
@@ -878,11 +882,23 @@ void Disco_Level::movingPlatformPlayer(Player *p)
 	}
 }
 
+void ericksTimer(Player *p)
+{
+	if (p->atk) {
+		p->atkCounter++;
+		if (p->atkCounter == 1) {
+			p->atkCounter = 0;
+			p->atk ^= 1;
+		}
+	}
+}
+
 bool alterCoor = false;
 bool firstContact = false;
 bool forward = true;
 void disco(Game *game)
 {
+
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f );
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -897,6 +913,8 @@ void disco(Game *game)
 
 
 	for (int i = 0; i < MAX_PLAYER; i++) {
+		//counts frames - only allows for arm to display for one frame
+		ericksTimer(&game->level4.player[i]);
 		game->level4.movingPlatformPlayer(&game->level4.player[i]);
 		game->level4.physics(&game->level4.player[i]);
 		game->level4.player[i].check_controller(&game->level4.player[i], 
@@ -1344,6 +1362,7 @@ void Disco_Level::erick_init()
 		player[i].status.health = 0;
 		player[i].status.lifeCount = 5;
 		player[i].collide = NONE;
+		player[i].atk = false;
 
 		if (i % 2 == 0) {
 			if (evenCount % 2 == 0) {

@@ -76,6 +76,8 @@ class Player {
 	public:
 		int index;
 		float multiplier;
+		bool atk;
+		int atkCounter;
 
 		int id;
 		CharCollision collide;

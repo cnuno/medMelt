@@ -574,66 +574,61 @@ void Player::attack()
 
 void Level::Lattack(int index)
 {
-    for (int i=0; i<4; i++) {
-        if (player[index].index == i) {}
-        else {
-            if (player[index].direction == LEFT) {
-                //if (player[index].weapon.center.x - i
-                //player[index].weapon.width/2 
-                //        <= player[i].body.center.x + player[i].body.width) {
-                //    player[i].body.center.x -= 50;
-                //}
-                float distance = pow((player[index].weapon.center.x - 
-                            player[index].weapon.width/2) - 
-                        player[i].body.center.x, 2) + 
-                    pow((player[index].weapon.center.y - 
-                                player[index].weapon.height/2) - 
-                            player[i].body.center.y, 2);
+	for (int i=0; i<4; i++) {
+		//if (player[index].index == i) {}
+		// else {
 
-                distance = sqrt(distance);
-                if (distance < player[i].body.radius){
+		if (player[index].index != i) {
+			if (player[index].direction == LEFT) {
+				//if (player[index].weapon.center.x - i
+				//player[index].weapon.width/2 
+				//        <= player[i].body.center.x + player[i].body.width) {
+				//    player[i].body.center.x -= 50;
+				//}
+
+				float distance = pow((player[index].weapon.center.x - player[index].weapon.width/2) - player[i].body.center.x, 2) + 
+					pow((player[index].weapon.center.y - player[index].weapon.height/2) - player[i].body.center.y, 2);
+				distance = sqrt(distance);
+
+				if (distance < player[i].body.radius){
 #ifdef USE_OPENAL_SOUND
-		    play_sound(2, 1.0f, false);
+					play_sound(2, 1.0f, false);
 #endif
-                    //player[i].body.center.x -= player[i].multiplier * 50;
-                    player[i].delta.x -= player[i].multiplier*5;
-                    player[i].delta.y += player[i].multiplier*2;
-                    player[i].multiplier += 0.25;
-                } else {
+					//player[i].body.center.x -= player[i].multiplier * 50;
+					player[i].delta.x -= player[i].multiplier*5;
+					player[i].delta.y += player[i].multiplier*2;
+					player[i].multiplier += 0.25;
+				} else {
 #ifdef USE_OPENAL_SOUND
-		    play_sound(7, 1.0f, false);
+					play_sound(7, 1.0f, false);
 #endif
+				}
+			}
+			else if (player[index].direction == RIGHT) {
+				//if (player[index].weapon.center.x + 
+				//player[index].weapon.width/2
+				//	   >= player[i].body.center.x - player[i].body.width) {
+				//player[i].body.center.x += 50;
+				//}
+				float distance = pow((player[index].weapon.center.x + player[index].weapon.width/2) - player[i].body.center.x,2) +
+					pow((player[index].weapon.center.y + player[index].weapon.height/2) - player[i].body.center.y, 2);
+				distance = sqrt(distance);
+				if (distance < player[i].body.radius) {
+#ifdef USE_OPENAL_SOUND
+					play_sound(2, 1.0f, false);
+#endif
+					//player[i].body.center.x += player[i].multiplier * 50;
+					player[i].delta.x += player[i].multiplier*5;
+					player[i].delta.y += player[i].multiplier*2;
+					player[i].multiplier += 0.25;
+				} else {
+#ifdef USE_OPENAL_SOUND
+					play_sound(7, 1.0f, false);
+#endif
+				}
+			}
 		}
-            }
-            else if (player[index].direction == RIGHT) {
-                //if (player[index].weapon.center.x + 
-                //player[index].weapon.width/2
-                //	   >= player[i].body.center.x - player[i].body.width) {
-                //player[i].body.center.x += 50;
-                //}
-                float distance = pow((player[index].weapon.center.x + 
-                            player[index].weapon.width/2) - 
-                        player[i].body.center.x,2) +
-                    pow((player[index].weapon.center.y + 
-                                player[index].weapon.height/2) - 
-                            player[i].body.center.y, 2);
-                distance = sqrt(distance);
-                if (distance < player[i].body.radius) {
-#ifdef USE_OPENAL_SOUND
-		    play_sound(2, 1.0f, false);
-#endif
-                    //player[i].body.center.x += player[i].multiplier * 50;
-                    player[i].delta.x += player[i].multiplier*5;
-                    player[i].delta.y += player[i].multiplier*2;
-                    player[i].multiplier += 0.25;
-                } else {
-#ifdef USE_OPENAL_SOUND
-		   play_sound(7, 1.0f, false);
-#endif
-		}
-            }
-        }
-    }
+	}
 }
 
 void manual_launch() 
