@@ -102,7 +102,6 @@ class Player {
 		bool platFW;
 
 		void check_controller(Player *player, Joystick *joystick);
-		void render();
 		struct timespec timeStart, timeCurrent;
 		double timeSpan;
 
@@ -115,6 +114,10 @@ class Player {
 		void deathPhysics();
 		void deathRender();
 		void boxRender(int centx, int centy, int width);
+		void render();
+
+		bool troll;
+		void trollRender();
 };
 
 //inheritance test

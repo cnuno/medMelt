@@ -119,6 +119,8 @@ Game::~Game()
 	remove("images/numbers/9W.png");
 	remove("images/numbers/percentR.png");
 	remove("images/numbers/percentW.png");
+	remove("images/octopus.png");
+	remove("images/octopus.ppm");
 	remove("images/numbers");
 	remove("images");
 	remove("audio/death.wav");

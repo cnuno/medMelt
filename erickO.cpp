@@ -78,6 +78,10 @@ extern Screen* scrn;
 extern void resetMain(Game *game);
 extern Game game;
 
+//textures
+extern GLuint octTexture;
+extern Ppmimage *octIcon;
+
 bool bTemp = true;
 void Player::check_controller(Player *player, Joystick *joystick)
 {
@@ -91,7 +95,6 @@ void Player::check_controller(Player *player, Joystick *joystick)
 		bTemp ^= 1;
 	}
 
-				int h = 0;
 	if (joystick->sample(&event) && event.isButton() && event.value == 1) {
 		switch (event.number) {
 			//Attack
@@ -136,6 +139,10 @@ void Player::check_controller(Player *player, Joystick *joystick)
 			case 7:
 				//PAUSE
 				toggle_pause(joystick);
+				break;
+			case 8:
+				//TROLL
+				player->troll ^= 1;
 				break;
 			case 12:
 				//MOVE RIGHT
@@ -309,6 +316,47 @@ Player::Player()
 		}
 	}
 	status.initDeath = false;
+}
+
+//troll render
+void Player::trollRender()
+{
+	int A, B, C, D;
+
+	switch (id)
+	{
+		case 0:
+			A = body.center.x - body.width;
+			B = body.center.y - body.height;
+			C = body.center.y + body.height;
+			D = body.center.x + body.width;
+
+			glPushMatrix();
+			glBindTexture(GL_TEXTURE_2D,octTexture);
+			glEnable(GL_ALPHA_TEST);
+			glEnable(GL_TEXTURE_2D);
+			glAlphaFunc(GL_GREATER, 0.0f);
+			glColor4ub(255,255,255,255);
+			glBegin(GL_QUADS);
+			glTexCoord2f(0.0f, 1.0f); glVertex2i(A,B); 
+			glTexCoord2f(0.0f, 0.0f); glVertex2i(A,C); 
+			glTexCoord2f(1.0f, 0.0f); glVertex2i(D,C); 
+			glTexCoord2f(1.0f, 1.0f); glVertex2i(D,B); 
+			glEnd();
+			glPopMatrix();
+			glDisable(GL_ALPHA_TEST);
+			glDisable(GL_TEXTURE_2D);
+			break;
+		case 1:
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		default:
+			break;
+	}
+
 }
 
 //Game Pad constructor
@@ -921,7 +969,11 @@ void disco(Game *game)
 				game->level4.controller.joystick[i]);
 		game->level4.deathCheck(&game->level4.player[i]);
 		if (game->level4.player[i].status.lifeState == ALIVE) {
-			game->level4.player[i].render();
+			if (game->level4.player[i].troll) {
+				game->level4.player[i].trollRender();
+			} else if (game->level4.player[i].troll == false) {
+				game->level4.player[i].render();
+			}
 		} else {
 			game->level4.player[i].deathPhysics();
 			game->level4.player[i].deathRender();
@@ -1363,6 +1415,7 @@ void Disco_Level::erick_init()
 		player[i].status.lifeCount = 5;
 		player[i].collide = NONE;
 		player[i].atk = false;
+		player[i].troll = false;
 
 		if (i % 2 == 0) {
 			if (evenCount % 2 == 0) {

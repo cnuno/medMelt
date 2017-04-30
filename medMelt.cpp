@@ -41,6 +41,7 @@ Ppmimage *quitSelIcon = NULL;
 Ppmimage *fieldIcon = NULL;
 Ppmimage *staryIcon = NULL;
 Ppmimage *etIcon = NULL;
+Ppmimage *octIcon = NULL;
 GLuint silTitle;
 GLuint silPill;
 GLuint silPlay;
@@ -59,6 +60,7 @@ GLuint quitSelTexture;
 GLuint fieldTexture;
 GLuint staryTexture;
 GLuint etTexture;
+GLuint octTexture;
 
 #ifdef USE_OPENAL_SOUND
 //Sound variables
@@ -348,6 +350,7 @@ void loadImages()
 	system("convert ./images/starynight.png ./images/stary.ppm");
 	system("convert ./images/field.png ./images/field.ppm");
 	system("convert ./images/et.png ./images/et.ppm");
+	system("convert ./images/octopus.png ./images/octopus.ppm");
 	medMeltTitle = ppm6GetImage("./images/title.ppm");
 	pillIcon = ppm6GetImage("./images/pill.ppm");
 	playIcon = ppm6GetImage("./images/play.ppm");
@@ -360,6 +363,7 @@ void loadImages()
 	fieldIcon = ppm6GetImage("./images/field.ppm");
 	staryIcon = ppm6GetImage("./images/stary.ppm");
 	etIcon = ppm6GetImage("./images/et.ppm");
+	octIcon = ppm6GetImage("./images/octopus.ppm");
 
 	dyna = playIcon;
 	dyna1 = resumeIcon;
@@ -377,6 +381,7 @@ void loadImages()
 	glGenTextures(1, &fieldTexture);
 	glGenTextures(1, &staryTexture);
 	glGenTextures(1, &etTexture);
+	glGenTextures(1, &octTexture);
 
 	//Title=============================================================================
 	int w = medMeltTitle->width;
@@ -539,6 +544,20 @@ void loadImages()
 	unsigned char *etData = buildAlphaData(etIcon);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE,etData);
 	free(etData);
+
+	//Octopus Icon===========================================================
+	glBindTexture(GL_TEXTURE_2D, octTexture);
+
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+
+	w = octIcon->width; 
+	h = octIcon->height; 
+
+	unsigned char *octData = buildAlphaData(etIcon);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE,octData);
+	free(octData);
+
 
 }
 /*int check_keys(XEvent *e, Game *game)
