@@ -155,7 +155,7 @@ int main()
 		    check_keys(&e, &game);
 		}
 
-		if (game.render==MAINMENU && game.render==OVER) {
+		if (game.render==MAINMENU || game.render==OVER) {
 			menu_move(&joystick1, &game);
 		}
 		else if (game.render==LEVELSEL) {
