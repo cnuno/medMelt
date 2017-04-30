@@ -554,7 +554,7 @@ void loadImages()
 	w = octIcon->width; 
 	h = octIcon->height; 
 
-	unsigned char *octData = buildAlphaData(etIcon);
+	unsigned char *octData = buildAlphaData(octIcon);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE,octData);
 	free(octData);
 }

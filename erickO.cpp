@@ -323,29 +323,47 @@ void Player::trollRender()
 {
 	int A, B, C, D;
 
+	A = body.center.x - body.width;
+	B = body.center.y - body.height;
+	C = body.center.y + body.height;
+	D = body.center.x + body.width;
+
 	switch (id)
 	{
 		case 0:
-			A = body.center.x - body.width;
-			B = body.center.y - body.height;
-			C = body.center.y + body.height;
-			D = body.center.x + body.width;
-
-			glPushMatrix();
-			glBindTexture(GL_TEXTURE_2D,octTexture);
-			glEnable(GL_ALPHA_TEST);
-			glEnable(GL_TEXTURE_2D);
-			glAlphaFunc(GL_GREATER, 0.0f);
-			glColor4ub(255,255,255,255);
-			glBegin(GL_QUADS);
-			glTexCoord2f(0.0f, 1.0f); glVertex2i(A,B); 
-			glTexCoord2f(0.0f, 0.0f); glVertex2i(A,C); 
-			glTexCoord2f(1.0f, 0.0f); glVertex2i(D,C); 
-			glTexCoord2f(1.0f, 1.0f); glVertex2i(D,B); 
-			glEnd();
-			glPopMatrix();
-			glDisable(GL_ALPHA_TEST);
-			glDisable(GL_TEXTURE_2D);
+			if (direction == LEFT) {
+				glPushMatrix();
+				glBindTexture(GL_TEXTURE_2D,octTexture);
+				glEnable(GL_ALPHA_TEST);
+				glEnable(GL_TEXTURE_2D);
+				glAlphaFunc(GL_GREATER, 0.0f);
+				glColor4ub(255,255,255,255);
+				glBegin(GL_QUADS);
+				glTexCoord2f(0.0f, 1.0f); glVertex2i(A,B); 
+				glTexCoord2f(0.0f, 0.0f); glVertex2i(A,C); 
+				glTexCoord2f(1.0f, 0.0f); glVertex2i(D,C); 
+				glTexCoord2f(1.0f, 1.0f); glVertex2i(D,B); 
+				glEnd();
+				glPopMatrix();
+				glDisable(GL_ALPHA_TEST);
+				glDisable(GL_TEXTURE_2D);
+			} else {
+				glPushMatrix();
+				glBindTexture(GL_TEXTURE_2D,octTexture);
+				glEnable(GL_ALPHA_TEST);
+				glEnable(GL_TEXTURE_2D);
+				glAlphaFunc(GL_GREATER, 0.0f);
+				glColor4ub(255,255,255,255);
+				glBegin(GL_QUADS);
+				glTexCoord2f(1.0f, 1.0f); glVertex2i(A,B); 
+				glTexCoord2f(1.0f, 0.0f); glVertex2i(A,C); 
+				glTexCoord2f(0.0f, 0.0f); glVertex2i(D,C); 
+				glTexCoord2f(0.0f, 1.0f); glVertex2i(D,B); 
+				glEnd();
+				glPopMatrix();
+				glDisable(GL_ALPHA_TEST);
+				glDisable(GL_TEXTURE_2D);
+			}
 			break;
 		case 1:
 			break;
@@ -968,10 +986,9 @@ void disco(Game *game)
 				game->level4.controller.joystick[i]);
 		game->level4.deathCheck(&game->level4.player[i]);
 		if (game->level4.player[i].status.lifeState == ALIVE) {
+			game->level4.player[i].render();
 			if (game->level4.player[i].troll) {
 				game->level4.player[i].trollRender();
-			} else if (game->level4.player[i].troll == false) {
-				game->level4.player[i].render();
 			}
 		} else {
 			clock_gettime(CLOCK_REALTIME, &game->level4.player[i].timeStart);
