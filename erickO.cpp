@@ -356,7 +356,6 @@ void Player::trollRender()
 		default:
 			break;
 	}
-
 }
 
 //Game Pad constructor
@@ -959,10 +958,10 @@ void disco(Game *game)
 	game->level4.render();
 	game->level4.movingPlat(&game->level4.platform[1]);
 
-
 	for (int i = 0; i < MAX_PLAYER; i++) {
 		//counts frames - only allows for arm to display for one frame
 		ericksTimer(&game->level4.player[i]);
+
 		game->level4.movingPlatformPlayer(&game->level4.player[i]);
 		game->level4.physics(&game->level4.player[i]);
 		game->level4.player[i].check_controller(&game->level4.player[i], 
@@ -975,22 +974,14 @@ void disco(Game *game)
 				game->level4.player[i].render();
 			}
 		} else {
+			clock_gettime(CLOCK_REALTIME, &game->level4.player[i].timeStart);
+			game->level4.player[i].status.initDeath = true;
 			game->level4.player[i].deathPhysics();
 			game->level4.player[i].deathRender();
 		}
 		game->level4.statDisplay.render();
 
-		if (game->level4.player[i].status.lifeState == ALIVE) 
-		{
-			game->level4.player[i].render();
-		} 
-		else if (game->level4.player[i].status.lifeState == DEAD 
-				&& game->level4.player[i].status.initDeath == false) 
-		{
-			clock_gettime(CLOCK_REALTIME, &game->level4.player[i].timeStart);
-			game->level4.player[i].status.initDeath = true;
-		}
-		else if (game->level4.player[i].status.lifeState == DEAD 
+		if (game->level4.player[i].status.lifeState == DEAD 
 				&& game->level4.player[i].status.initDeath == true) 
 		{
 			clock_gettime(CLOCK_REALTIME, &game->level4.player[i].timeCurrent);

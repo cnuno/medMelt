@@ -557,8 +557,6 @@ void loadImages()
 	unsigned char *octData = buildAlphaData(etIcon);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE,octData);
 	free(octData);
-
-
 }
 /*int check_keys(XEvent *e, Game *game)
 {
