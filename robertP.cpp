@@ -121,6 +121,12 @@ Game::~Game()
 	remove("images/numbers/percentW.png");
 	remove("images/octopus.png");
 	remove("images/octopus.ppm");
+	remove("images/troll2.png");
+	remove("images/troll2.ppm");
+	remove("images/troll3.png");
+	remove("images/troll3.ppm");
+	remove("images/troll4.png");
+	remove("images/troll4.ppm");
 	remove("images/numbers");
 	remove("images");
 	remove("audio/death.wav");

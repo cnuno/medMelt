@@ -80,7 +80,9 @@ extern Game game;
 
 //textures
 extern GLuint octTexture;
-extern Ppmimage *octIcon;
+extern GLuint troll2Tex;
+extern GLuint troll3Tex;
+extern GLuint troll4Tex;
 
 bool bTemp = true;
 void Player::check_controller(Player *player, Joystick *joystick)
@@ -323,14 +325,31 @@ void Player::trollRender()
 {
 	int A, B, C, D;
 
-	A = body.center.x - body.width;
-	B = body.center.y - body.height;
-	C = body.center.y + body.height;
-	D = body.center.x + body.width;
+	A = body.center.x - body.width/1.3;
+	B = body.center.y - body.height/1.3;
+	C = body.center.y + body.height/1.3;
+	D = body.center.x + body.width/1.3;
 
 	switch (id)
 	{
 		case 0:
+			if (atk) {
+				//arm
+				glPushMatrix();
+				glBegin(GL_QUADS);
+				glColor3ub(color[0],color[1],color[2]);
+				glVertex2i(weapon.center.x - weapon.width/2,
+						weapon.center.y - weapon.height/2);
+				glVertex2i(weapon.center.x - weapon.width/2,
+						weapon.center.y + weapon.height/2);
+				glVertex2i(weapon.center.x + weapon.width/2,
+						weapon.center.y + weapon.height/2);
+				glVertex2i(weapon.center.x + weapon.width/2,
+						weapon.center.y - weapon.height/2);
+				glEnd();
+				glPopMatrix();
+			}
+
 			if (direction == LEFT) {
 				glPushMatrix();
 				glBindTexture(GL_TEXTURE_2D,octTexture);
@@ -366,10 +385,55 @@ void Player::trollRender()
 			}
 			break;
 		case 1:
+			glPushMatrix();
+			glBindTexture(GL_TEXTURE_2D,troll2Tex);
+			glEnable(GL_ALPHA_TEST);
+			glEnable(GL_TEXTURE_2D);
+			glAlphaFunc(GL_GREATER, 0.0f);
+			glColor4ub(255,255,255,255);
+			glBegin(GL_QUADS);
+			glTexCoord2f(0.0f, 1.0f); glVertex2i(A,B); 
+			glTexCoord2f(0.0f, 0.0f); glVertex2i(A,C); 
+			glTexCoord2f(1.0f, 0.0f); glVertex2i(D,C); 
+			glTexCoord2f(1.0f, 1.0f); glVertex2i(D,B); 
+			glEnd();
+			glPopMatrix();
+			glDisable(GL_ALPHA_TEST);
+			glDisable(GL_TEXTURE_2D);
 			break;
 		case 2:
+			glPushMatrix();
+			glBindTexture(GL_TEXTURE_2D,troll3Tex);
+			glEnable(GL_ALPHA_TEST);
+			glEnable(GL_TEXTURE_2D);
+			glAlphaFunc(GL_GREATER, 0.0f);
+			glColor4ub(255,255,255,255);
+			glBegin(GL_QUADS);
+			glTexCoord2f(0.0f, 1.0f); glVertex2i(A,B); 
+			glTexCoord2f(0.0f, 0.0f); glVertex2i(A,C); 
+			glTexCoord2f(1.0f, 0.0f); glVertex2i(D,C); 
+			glTexCoord2f(1.0f, 1.0f); glVertex2i(D,B); 
+			glEnd();
+			glPopMatrix();
+			glDisable(GL_ALPHA_TEST);
+			glDisable(GL_TEXTURE_2D);
 			break;
 		case 3:
+			glPushMatrix();
+			glBindTexture(GL_TEXTURE_2D,troll4Tex);
+			glEnable(GL_ALPHA_TEST);
+			glEnable(GL_TEXTURE_2D);
+			glAlphaFunc(GL_GREATER, 0.0f);
+			glColor4ub(255,255,255,255);
+			glBegin(GL_QUADS);
+			glTexCoord2f(0.0f, 1.0f); glVertex2i(A,B); 
+			glTexCoord2f(0.0f, 0.0f); glVertex2i(A,C); 
+			glTexCoord2f(1.0f, 0.0f); glVertex2i(D,C); 
+			glTexCoord2f(1.0f, 1.0f); glVertex2i(D,B); 
+			glEnd();
+			glPopMatrix();
+			glDisable(GL_ALPHA_TEST);
+			glDisable(GL_TEXTURE_2D);
 			break;
 		default:
 			break;
@@ -989,6 +1053,8 @@ void disco(Game *game)
 			game->level4.player[i].render();
 			if (game->level4.player[i].troll) {
 				game->level4.player[i].trollRender();
+			} else {
+				game->level4.player[i].render();
 			}
 		} else {
 			clock_gettime(CLOCK_REALTIME, &game->level4.player[i].timeStart);

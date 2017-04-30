@@ -42,6 +42,9 @@ Ppmimage *fieldIcon = NULL;
 Ppmimage *staryIcon = NULL;
 Ppmimage *etIcon = NULL;
 Ppmimage *octIcon = NULL;
+Ppmimage *troll2 = NULL;
+Ppmimage *troll3 = NULL;
+Ppmimage *troll4 = NULL;
 GLuint silTitle;
 GLuint silPill;
 GLuint silPlay;
@@ -61,6 +64,9 @@ GLuint fieldTexture;
 GLuint staryTexture;
 GLuint etTexture;
 GLuint octTexture;
+GLuint troll2Tex;
+GLuint troll3Tex;
+GLuint troll4Tex;
 
 #ifdef USE_OPENAL_SOUND
 //Sound variables
@@ -351,6 +357,9 @@ void loadImages()
 	system("convert ./images/field.png ./images/field.ppm");
 	system("convert ./images/et.png ./images/et.ppm");
 	system("convert ./images/octopus.png ./images/octopus.ppm");
+	system("convert ./images/troll2.png ./images/troll2.ppm");
+	system("convert ./images/troll3.png ./images/troll3.ppm");
+	system("convert ./images/troll4.png ./images/troll4.ppm");
 	medMeltTitle = ppm6GetImage("./images/title.ppm");
 	pillIcon = ppm6GetImage("./images/pill.ppm");
 	playIcon = ppm6GetImage("./images/play.ppm");
@@ -364,6 +373,9 @@ void loadImages()
 	staryIcon = ppm6GetImage("./images/stary.ppm");
 	etIcon = ppm6GetImage("./images/et.ppm");
 	octIcon = ppm6GetImage("./images/octopus.ppm");
+	troll2 = ppm6GetImage("./images/troll2.ppm");
+	troll3 = ppm6GetImage("./images/troll3.ppm");
+	troll4 = ppm6GetImage("./images/troll4.ppm");
 
 	dyna = playIcon;
 	dyna1 = resumeIcon;
@@ -382,6 +394,9 @@ void loadImages()
 	glGenTextures(1, &staryTexture);
 	glGenTextures(1, &etTexture);
 	glGenTextures(1, &octTexture);
+	glGenTextures(1, &troll2Tex);
+	glGenTextures(1, &troll3Tex);
+	glGenTextures(1, &troll4Tex);
 
 	//Title=============================================================================
 	int w = medMeltTitle->width;
