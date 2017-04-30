@@ -35,7 +35,11 @@ also edited the makefile to create an executable with the sound and one without
 the sound. I refactored the sound code that will load all sound files used in
 the game at one time for ease of access. I also added songs to the levels as well
 as sounds to the players.
- */
+
+4/29
+Per Gordon's request changes system commands to remove()
+commands
+*/
 
 #include "headers.h"
 #include "robertP.h"
@@ -69,8 +73,63 @@ extern Game game;
 char st[4][15] = {{"Player 1"},{"Player 2"},{"Player 3"}, {"Player 4"}}; 
 Game::~Game()
 {
-    system("rm -Rf images/");
-    system("rm -Rf audio/");
+	remove("images/et.png");
+	remove("images/et.ppm");
+	remove("images/exit.ppm");
+	remove("images/exit_icon.png");
+	remove("images/field.png");
+	remove("images/field.ppm");
+	remove("images/option_icon.png");
+	remove("images/options.ppm");
+	remove("images/pill.png");
+	remove("images/pill.ppm");
+	remove("images/play.ppm");
+	remove("images/play_icon.png");
+	remove("images/quit.png");
+	remove("images/quit.ppm");
+	remove("images/quit_select.png");
+	remove("images/quit_select.ppm");
+	remove("images/resume.png");
+	remove("images/resume.ppm");
+	remove("images/resume_select.png");
+	remove("images/resume_select.ppm");
+	remove("images/stary.ppm");
+	remove("images/starynight.png");
+	remove("images/title.png");
+	remove("images/title.ppm");
+	remove("images/numbers/0R.png");
+	remove("images/numbers/0W.png");
+	remove("images/numbers/1R.png");	
+	remove("images/numbers/1W.png");
+	remove("images/numbers/2R.png");
+	remove("images/numbers/2W.png");
+	remove("images/numbers/3R.png");
+	remove("images/numbers/3W.png");
+	remove("images/numbers/4R.png");
+	remove("images/numbers/4W.png");
+	remove("images/numbers/5R.png");
+	remove("images/numbers/5W.png");
+	remove("images/numbers/6R.png");
+	remove("images/numbers/6W.png");
+	remove("images/numbers/7R.png");
+	remove("images/numbers/7W.png");
+	remove("images/numbers/8R.png");
+	remove("images/numbers/8W.png");
+	remove("images/numbers/9R.png");
+	remove("images/numbers/9W.png");
+	remove("images/numbers/percentR.png");
+	remove("images/numbers/percentW.png");
+	remove("images/numbers");
+	remove("images");
+	remove("audio/death.wav");
+	remove("audio/disco.wav");
+	remove("audio/field.wav");
+	remove("audio/pound.wav");
+	remove("audio/starnight.wav");
+	remove("audio/swing.wav");
+	remove("audio/sword.wav");
+	remove("audio/test.wav");
+	remove("audio");
 }
 
 //Sound Code
