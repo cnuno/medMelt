@@ -227,6 +227,8 @@ void init_opengl(void)
 	//Set 2D mode (no perspective)
 	glOrtho(-game.WINDOW_WIDTH/2, 1.5 * game.WINDOW_WIDTH, 
 			-game.WINDOW_HEIGHT/2, 1.5*game.WINDOW_HEIGHT, -1, 1);
+	//glOrtho(-2*game.WINDOW_WIDTH, 2* game.WINDOW_WIDTH, 
+	//		-2*game.WINDOW_HEIGHT, 2*game.WINDOW_HEIGHT, -1, 1);
 	//glOrtho(0, game.WINDOW_WIDTH, 0, game.WINDOW_HEIGHT, -1, 1);
 	//Set the screen background color
 	glClearColor(0.1, 0.1, 0.1, 0.0);

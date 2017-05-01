@@ -187,10 +187,12 @@ void Player::check_controller(Player *player, Joystick *joystick)
 			case 11:
 				//MOVE LEFT
 				if (player->onMovingPlat) {
+					//if looking right
 					if (player->direction == RIGHT && player->onGround) {
 						player->direction = LEFT;
 						player->action = PASSIVE;
 					} else {
+						//else looking left
 						player->direction = LEFT;
 						player->action = MOVE;
 						player->delta.x = -10.0f; 
@@ -1111,72 +1113,72 @@ void Disco_Level::render()
 	glColor3ub(0,0,0); 
 	glPushMatrix(); 
 	glBegin(GL_QUADS); 
-	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
-			platform[0].center.y - platform[0].height/2 - 5);
-	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
-			platform[0].center.y + platform[0].height/2 + 5);
-	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
-			platform[0].center.y + platform[0].height/2 + 5);
-	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
-			platform[0].center.y - platform[0].height/2 - 5);
+	glVertex2i(platform[0].center.x - platform[0].width/2, 
+			platform[0].center.y - platform[0].height/2);
+	glVertex2i(platform[0].center.x - platform[0].width/2, 
+			platform[0].center.y + platform[0].height/2);
+	glVertex2i(platform[0].center.x + platform[0].width/2, 
+			platform[0].center.y + platform[0].height/2);
+	glVertex2i(platform[0].center.x + platform[0].width/2, 
+			platform[0].center.y - platform[0].height/2);
 	glEnd();
 
 	//floor outline
 	glColor3ub(colors.neon[1][0],colors.neon[1][1],colors.neon[1][2]); 
 	glPushMatrix(); 
 	glBegin(GL_LINES); 
-	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
-			platform[0].center.y - platform[0].height/2 - 5);
-	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
-			platform[0].center.y + platform[0].height/2 + 5);
-	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
-			platform[0].center.y + platform[0].height/2 + 5);
-	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
-			platform[0].center.y + platform[0].height/2 + 5);
-	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
-			platform[0].center.y + platform[0].height/2 + 5);
-	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
-			platform[0].center.y - platform[0].height/2 - 5);
-	glVertex2i(platform[0].center.x + platform[0].width/2 + 5, 
-			platform[0].center.y - platform[0].height/2 - 5);
-	glVertex2i(platform[0].center.x - platform[0].width/2 - 5, 
-			platform[0].center.y - platform[0].height/2 - 5);
+	glVertex2i(platform[0].center.x - platform[0].width/2, 
+			platform[0].center.y - platform[0].height/2);
+	glVertex2i(platform[0].center.x - platform[0].width/2, 
+			platform[0].center.y + platform[0].height/2);
+	glVertex2i(platform[0].center.x - platform[0].width/2, 
+			platform[0].center.y + platform[0].height/2);
+	glVertex2i(platform[0].center.x + platform[0].width/2, 
+			platform[0].center.y + platform[0].height/2);
+	glVertex2i(platform[0].center.x + platform[0].width/2, 
+			platform[0].center.y + platform[0].height/2);
+	glVertex2i(platform[0].center.x + platform[0].width/2, 
+			platform[0].center.y - platform[0].height/2);
+	glVertex2i(platform[0].center.x + platform[0].width/2, 
+			platform[0].center.y - platform[0].height/2);
+	glVertex2i(platform[0].center.x - platform[0].width/2, 
+			platform[0].center.y - platform[0].height/2);
 	glEnd();
 
 	//moving platform
 	glColor3ub(0,0,0); 
 	glPushMatrix(); 
 	glBegin(GL_QUADS); 
-	glVertex2i(platform[1].center.x - platform[1].width/2 - 5, 
-			platform[1].center.y - platform[1].height/2 - 5);
-	glVertex2i(platform[1].center.x - platform[1].width/2 - 5, 
-			platform[1].center.y + platform[1].height/2 + 5);
-	glVertex2i(platform[1].center.x + platform[1].width/2 + 5, 
-			platform[1].center.y + platform[1].height/2 + 5);
-	glVertex2i(platform[1].center.x + platform[1].width/2 + 5, 
-			platform[1].center.y - platform[1].height/2 - 5);
+	glVertex2i(platform[1].center.x - platform[1].width/2, 
+			platform[1].center.y - platform[1].height/2);
+	glVertex2i(platform[1].center.x - platform[1].width/2, 
+			platform[1].center.y + platform[1].height/2);
+	glVertex2i(platform[1].center.x + platform[1].width/2, 
+			platform[1].center.y + platform[1].height/2);
+	glVertex2i(platform[1].center.x + platform[1].width/2, 
+			platform[1].center.y - platform[1].height/2);
 	glEnd();
 
 	//floor outline
 	glColor3ub(colors.neon[1][0],colors.neon[1][1],colors.neon[1][2]); 
 	glPushMatrix(); 
 	glBegin(GL_LINES); 
-	glVertex2i(platform[1].center.x - platform[1].width/2 - 5, 
-			platform[1].center.y - platform[1].height/2 - 5);
-	glVertex2i(platform[1].center.x - platform[1].width/2 - 5, 
-			platform[1].center.y + platform[1].height/2 + 5);
-	glVertex2i(platform[1].center.x - platform[1].width/2 - 5, 
-			platform[1].center.y + platform[1].height/2 + 5);
-	glVertex2i(platform[1].center.x + platform[1].width/2 + 5, 
-			platform[1].center.y + platform[1].height/2 + 5);
-	glVertex2i(platform[1].center.x + platform[1].width/2 + 5, 
-			platform[1].center.y + platform[1].height/2 + 5);
-	glVertex2i(platform[1].center.x + platform[1].width/2 + 5, 
-			platform[1].center.y - platform[1].height/2 - 5);
-	glVertex2i(platform[1].center.x + platform[1].width/2 + 5, 
-			platform[1].center.y - platform[1].height/2 - 5);
-	glVertex2i(platform[1].center.x - platform[1].width/2 - 5, 
-			platform[1].center.y - platform[1].height/2 - 5);
+	glVertex2i(platform[1].center.x - platform[1].width/2, 
+			platform[1].center.y - platform[1].height/2);
+	glVertex2i(platform[1].center.x - platform[1].width/2, 
+			platform[1].center.y + platform[1].height/2);
+	glVertex2i(platform[1].center.x - platform[1].width/2, 
+			platform[1].center.y + platform[1].height/2);
+	glVertex2i(platform[1].center.x + platform[1].width/2, 
+			platform[1].center.y + platform[1].height/2);
+	glVertex2i(platform[1].center.x + platform[1].width/2, 
+			platform[1].center.y + platform[1].height/2);
+	glVertex2i(platform[1].center.x + platform[1].width/2, 
+			platform[1].center.y - platform[1].height/2);
+	glVertex2i(platform[1].center.x + platform[1].width/2, 
+			platform[1].center.y - platform[1].height/2);
+	glVertex2i(platform[1].center.x - platform[1].width/2, 
+			platform[1].center.y - platform[1].height/2);
 	glEnd();
 }
 

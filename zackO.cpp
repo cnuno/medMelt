@@ -60,6 +60,7 @@ extern float A,B,C,D;
 extern int done; 
 extern void resetMain(Game *game);
 extern Game game;
+extern void ericksTimer(Player * player);
 
 Level::Level()
 {
@@ -203,6 +204,7 @@ void Field_Level::render()
 
 Starynight_Level::Starynight_Level() 
 {
+	srand(time(NULL));
     Level();
 
     //floor
@@ -249,6 +251,7 @@ void starynight(Game *game)
     game->level3.render();
 
     for (int i = 0; i < MAX_PLAYER; i++) {
+		ericksTimer(&game->level3.player[i]);
         game->level3.physics(&game->level3.player[i]);
         game->level3.player[i].check_controller(&game->level3.player[i], 
                 game->level3.controller.joystick[i]);

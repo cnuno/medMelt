@@ -526,7 +526,7 @@ void Level::deathCheck(Player *player)
 	//Pass (x,y) to render particles at
 	if ((player->body.center.x < (-scrn->width/4 * 3)) 
 			&& player->status.lifeState == ALIVE) {
-		player->deathInit(-scrn->width/2, player->body.center.x);
+		player->deathInit(-scrn->width/2, player->body.center.y);
 		player->multiplier=0;
 		player->status.lifeState = DEAD;
 	}
@@ -563,13 +563,13 @@ void Player::deathInit(int x, int y) {
 			bloodStream[i].s.center.x = x;
 			bloodStream[i].s.center.y = y;
 			bloodStream[i].velocity.x = -delta.x + 5 * (((float) rand() / (float) RAND_MAX) - ((float) rand() / (float) RAND_MAX));
-			bloodStream[i].velocity.y = -delta.y + 20 * (((float) rand() / (float) RAND_MAX) - ((float) rand() / (float) RAND_MAX));
+			bloodStream[i].velocity.y = -delta.y + 40 * (((float) rand() / (float) RAND_MAX) - ((float) rand() / (float) RAND_MAX));
 		}
-		else if (x == -scrn->width/2 || x == scrn->width + scrn->width/2) {
+		else {
 			bloodStream[i].s.center.x = x;
 			bloodStream[i].s.center.y = y;
-			bloodStream[i].velocity.x = -(delta.x * 4) + 5 * ((float) rand() / (float) RAND_MAX);
-			bloodStream[i].velocity.y = -delta.y + 5 * (((float) rand() / (float) RAND_MAX) - ((float) rand() / (float) RAND_MAX));
+			bloodStream[i].velocity.x = -(delta.x) + 25 * ((float) rand() / (float) RAND_MAX - ((float) rand() / (float) RAND_MAX));
+			bloodStream[i].velocity.y = -delta.y + 10 * (((float) rand() / (float) RAND_MAX) - ((float) rand() / (float) RAND_MAX));
 		}
 	}
 #ifdef USE_OPENAL_SOUND
@@ -667,7 +667,8 @@ void Level::Lattack(int index)
 					pow((player[index].weapon.center.y - player[index].weapon.height/2) - player[i].body.center.y, 2);
 				distance = sqrt(distance);
 
-				if (distance < player[i].body.radius){
+				if (distance < player[i].body.radius
+						&& player[index].status.lifeState == ALIVE){
 #ifdef USE_OPENAL_SOUND
 					play_sound(2, 1.0f, false);
 #endif
@@ -676,9 +677,12 @@ void Level::Lattack(int index)
 					player[i].delta.y += player[i].multiplier*2;
 					player[i].multiplier += 0.25;
 				} else {
+						if (player[index].status.lifeState == ALIVE) {
+
 #ifdef USE_OPENAL_SOUND
 					play_sound(7, 1.0f, false);
 #endif
+						}
 				}
 			}
 			else if (player[index].direction == RIGHT) {
