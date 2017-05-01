@@ -220,6 +220,7 @@ class Starynight_Level:public Level {
 		Starynight_Level();
 		Shape moon; 	
 		Shape etBox;
+		void etMove();
 		void physics (Player *player) 
 		{
 			Level::physics(player);

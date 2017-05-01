@@ -240,6 +240,7 @@ Starynight_Level::Starynight_Level()
     moon.center.x = scrn->width; 
     moon.center.y = scrn->height; 
     moon.radius = scrn->height/2; 
+
     etBox.center.x = moon.center.x;
     etBox.center.y = moon.center.y;
     erick_init();	
@@ -249,6 +250,7 @@ void starynight(Game *game)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     game->level3.render();
+	game->level3.etMove();
 
     for (int i = 0; i < MAX_PLAYER; i++) {
 		ericksTimer(&game->level3.player[i]);
@@ -264,9 +266,6 @@ void starynight(Game *game)
 	    game->level3.player[i].deathPhysics();
 	    game->level3.player[i].deathRender();
 	}
-
-
-
 
 	if (game->level3.player[i].status.lifeState == ALIVE) 
 	{
@@ -886,4 +885,16 @@ bool endcheck()
     if (A && B && C) // last one is player 4
 	last4 = true;
     return(last1 || last2 || last3 || last4);
+}
+
+
+void Starynight_Level::etMove() 
+{
+	//etBox.center.x++;
+	etBox.center.x+= 3;
+	if (etBox.center.x > 1.75 * scrn->width) {
+		etBox.center.x = -scrn->width;
+	}
+
+    etBox.center.y = 9 * etBox.center.x / 16 + 100;
 }
