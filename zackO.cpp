@@ -303,8 +303,8 @@ void starynight(Game *game)
 void Starynight_Level::render()
 {
     //Render of background
-    glClear(GL_COLOR_BUFFER_BIT); 
-    glColor3ub(72,48,120); 
+	glClear(GL_COLOR_BUFFER_BIT); 
+	glColor3ub(72,48,120); 
     glPushMatrix(); 
     glBegin(GL_QUADS); 
     glVertex2i(-scrn->width/2,-scrn->height/2);

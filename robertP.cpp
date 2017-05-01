@@ -443,10 +443,7 @@ void Player::boxRender(int centx, int centy, int width)
     float OldMax, OldMin, OldValue;
     float NewMax, NewMin, offset;
 
-    //if character is in the middle of the level
     x1 = x;
-    //take the width resolution and scale the entire thing down to 7
-    //controls shading of round character
     OldValue = x;
     OldMin = 0;
     OldMax = scrn->width/2;
@@ -483,6 +480,19 @@ void Player::boxRender(int centx, int centy, int width)
     glEnd();
     glDisable(GL_BLEND);
 
+	if (status.lifeState == DEAD && status.lifeCount <= 0) {
+		glColor3ub(255,0,0);
+		glLineWidth(10);
+		glBegin(GL_LINES);
+		glVertex2f(centx - width/2, centy + width/2);
+		glVertex2f(centx + width/2, centy - width/2);
+		glEnd();
+
+		glBegin(GL_LINES);
+		glVertex2f(centx + width/2, centy + width/2);
+		glVertex2f(centx - width/2, centy - width/2);
+		glEnd();
+	}
 
 }
 
@@ -491,151 +501,151 @@ void Player::boxRender(int centx, int centy, int width)
 void resetMain(Game *game) 
 {
 #ifdef USE_OPENAL_SOUND
-    //    endSound();
-    //    loadSound("./audio/test.wav");
+	//    endSound();
+	//    loadSound("./audio/test.wav");
 #endif
-    game->mainMenu.titleVel.y = rnd() * 0.5 - 0.25;
-    game->mainMenu.titleBox.center.y = 
-        game->WINDOW_HEIGHT + game->WINDOW_HEIGHT/3;
-    game->mainMenu.titleBox.center.x = game->WINDOW_WIDTH/2;
+	game->mainMenu.titleVel.y = rnd() * 0.5 - 0.25;
+	game->mainMenu.titleBox.center.y = 
+		game->WINDOW_HEIGHT + game->WINDOW_HEIGHT/3;
+	game->mainMenu.titleBox.center.x = game->WINDOW_WIDTH/2;
 #ifdef USE_OPENAL_SOUND
-    for (int i = 0; i < TOTALSOUNDS; i++) {
-        alSourceStop(alSource[i]);
-    }
-    titledrop = 0;
-    pitch = 3.0f;
+	for (int i = 0; i < TOTALSOUNDS; i++) {
+		alSourceStop(alSource[i]);
+	}
+	titledrop = 0;
+	pitch = 3.0f;
 #endif
-    game->render = MAINMENU;
+	game->render = MAINMENU;
 }
 
 //incorporate this in zack's level handler functions
 void Level::deathCheck(Player *player)
 {
-    if ((player->body.center.x < (-scrn->width/4 * 3)) && player->status.lifeState == ALIVE) {
-        //call death animation on the left edge @ player->body.center.y
-        //if lives available, respawn
-        //Pass (x,y) to render particles at
-        player->deathInit(-scrn->width/2, player->body.center.x);
-        player->multiplier=0;
-        player->status.lifeState = DEAD;
-    }
-    else if (player->body.center.x 
-            > ((scrn->width + scrn->width/4 * 3)) && player->status.lifeState == ALIVE) {
-        //call death animation on the right edge @ player->body.center.y
-        //if lives available, respawn
-        //Pass (x,y) to render particles at
-        player->deathInit(scrn->width + scrn->width/2,
-        		player->body.center.y);
-        player->multiplier=0;
-        player->status.lifeState = DEAD;
-    }
-    else if ((player->body.center.y < (-scrn->height/4 * 3)) && player->status.lifeState == ALIVE) {
-        //call death animation on the Top edge @ player->body.center.x
-        //if lives available, respawn
-        //Pass (x,y) to render particles at
-        player->deathInit(player->body.center.x, 
-        		-scrn->height/2);
-        player->multiplier=0;
-        player->status.lifeState = DEAD;
-    }
-    else if ((player->body.center.y 
-            > (scrn->height + scrn->height/4 * 3)) && player->status.lifeState == ALIVE) {
-        //call death animation on the top edge @ player->body.center.x
-        //if lives available, respawn
-        //Pass (x,y) to render particles at
-        player->deathInit(player->body.center.x, 
-        		scrn->height + scrn->height/2);
-        player->multiplier=0;
-        player->status.lifeState = DEAD;
-    }
+	//call death animation on the left edge @ player->body.center.y
+	//if lives available, respawn
+	//Pass (x,y) to render particles at
+	if ((player->body.center.x < (-scrn->width/4 * 3)) 
+			&& player->status.lifeState == ALIVE) {
+		player->deathInit(-scrn->width/2, player->body.center.x);
+		player->multiplier=0;
+		player->status.lifeState = DEAD;
+	}
+	else if (player->body.center.x > ((scrn->width + scrn->width/4 * 3)) 
+			&& player->status.lifeState == ALIVE) {
+		player->deathInit(scrn->width + scrn->width/2,
+				player->body.center.y);
+		player->multiplier=0;
+		player->status.lifeState = DEAD;
+	}
+	else if ((player->body.center.y < (-scrn->height/4 * 3)) 
+			&& player->status.lifeState == ALIVE) {
+		player->deathInit(player->body.center.x, -scrn->height/2);
+		player->multiplier=0;
+		player->status.lifeState = DEAD;
+	}
+	else if ((player->body.center.y > (scrn->height + scrn->height/4 * 3)) 
+			&& player->status.lifeState == ALIVE) {
+		player->deathInit(player->body.center.x, scrn->height+scrn->height/2);
+		player->multiplier=0;
+		player->status.lifeState = DEAD;
+	}
 }
 
 //50 particles to work with
 void Player::deathInit(int x, int y) {
-    Color colors;
-    for (int i = 0; i < 50; i++) {
-	for (int j = 0; j < 3; j++) {
-		bloodStream[i].color[j] = colors.bloodred[j];
+	Color colors;
+	for (int i = 0; i < 50; i++) {
+		for (int j = 0; j < 3; j++) {
+			bloodStream[i].color[j] = colors.bloodred[j];
+		}
+
+		if (y == -scrn->height/2 || y == (scrn->height + scrn->height/2)) {
+			bloodStream[i].s.center.x = x;
+			bloodStream[i].s.center.y = y;
+			bloodStream[i].velocity.x = -delta.x + 5 * (((float) rand() / (float) RAND_MAX) - ((float) rand() / (float) RAND_MAX));
+			bloodStream[i].velocity.y = -delta.y + 20 * (((float) rand() / (float) RAND_MAX) - ((float) rand() / (float) RAND_MAX));
+		}
+		else if (x == -scrn->width/2 || x == scrn->width + scrn->width/2) {
+			bloodStream[i].s.center.x = x;
+			bloodStream[i].s.center.y = y;
+			bloodStream[i].velocity.x = -(delta.x * 4) + 5 * ((float) rand() / (float) RAND_MAX);
+			bloodStream[i].velocity.y = -delta.y + 5 * (((float) rand() / (float) RAND_MAX) - ((float) rand() / (float) RAND_MAX));
+		}
 	}
-	bloodStream[i].s.center.x = x;
-	bloodStream[i].s.center.y = y;
-	bloodStream[i].velocity.x = -delta.x + 20 * ((float)rand() / (float)RAND_MAX);
-	bloodStream[i].velocity.y = -delta.y + 20 * ((float)rand() / (float)RAND_MAX);; 
-    }
 #ifdef USE_OPENAL_SOUND
-    play_sound(6, 1.0f, false);
+	play_sound(6, 1.0f, false);
 #endif
 }
 
 void Player::deathPhysics() {
-    for (int i = 0; i < 50; i++) {
-	bloodStream[i].velocity.y -= GRAVITY * 3;
-	bloodStream[i].s.center.x += bloodStream[i].velocity.x;
-	bloodStream[i].s.center.y += bloodStream[i].velocity.y;
-    }
+	for (int i = 0; i < 50; i++) {
+		bloodStream[i].velocity.y -= GRAVITY * 3;
+		bloodStream[i].s.center.x += bloodStream[i].velocity.x;
+		bloodStream[i].s.center.y += bloodStream[i].velocity.y;
+	}
 }
 
 void Player::deathRender() {
-    for (int i = 0; i < 50; i++) {
-	glPushMatrix();
-	Vec *c = &bloodStream[i].s.center;
-	glTranslatef(bloodStream[i].s.center.x, bloodStream[i].s.center.y, bloodStream[i].s.center.z);
-	int w = 10;
-	int h = 10;
-	glBegin(GL_QUADS);
-	glColor3ub(0, 0, 0);
+	for (int i = 0; i < 50; i++) {
+		glPushMatrix();
+		Vec *c = &bloodStream[i].s.center;
+		//glTranslatef(bloodStream[i].s.center.x, bloodStream[i].s.center.y, bloodStream[i].s.center.z);
+		int w = 10;
+		int h = 10;
+		glBegin(GL_QUADS);
+		glColor3ub(0, 0, 0);
 		glVertex2i(c->x-w-3, c->y-h-3);
 		glVertex2i(c->x-w-3, c->y+h+3);
 		glVertex2i(c->x+w+3, c->y+h+3);
 		glVertex2i(c->x+w+3, c->y-h-3);
 
-	glColor3ub(bloodStream[i].color[0], bloodStream[i].color[1], bloodStream[i].color[2]);
+		glColor3ub(bloodStream[i].color[0], bloodStream[i].color[1], bloodStream[i].color[2]);
 		glVertex2i(c->x-w, c->y-h);
 		glVertex2i(c->x-w, c->y+h);
 		glVertex2i(c->x+w, c->y+h);
 		glVertex2i(c->x+w, c->y-h);
-	glEnd();
-	glPopMatrix();
-    }
+		glEnd();
+		glPopMatrix();
+	}
 }
 
 void Level::respawn(Player *player)
 {
-    //wait 5 seconds
+	//wait 5 seconds
 
-    player->status.lifeState = ALIVE;
-    player->action = PASSIVE;
-    --player->status.lifeCount;
-    player->body.center.x = scrn->width/2;
-    player->body.center.y = scrn->height;
-    player->delta.x = 0.0;
-    player->delta.y = 0.0;
-    player->jumpCount = 0;
-    player->status.health = 0;
+	player->status.lifeState = ALIVE;
+	player->action = PASSIVE;
+	--player->status.lifeCount;
+	player->body.center.x = scrn->width/2;
+	player->body.center.y = scrn->height;
+	player->delta.x = 0.0;
+	player->delta.y = 0.0;
+	player->jumpCount = 0;
+	player->status.health = 0;
 }
 
 double Player::timeDiff(struct timespec *start, struct timespec *end)
 {
-    double oobillion = 1.0/1e9;
-    return (double)(end->tv_sec - start->tv_sec ) +
-        (double)(end->tv_nsec - start->tv_nsec) * oobillion;
+	double oobillion = 1.0/1e9;
+	return (double)(end->tv_sec - start->tv_sec ) +
+		(double)(end->tv_nsec - start->tv_nsec) * oobillion;
 }
 
 void Player::attack()
 {
-    if (direction == LEFT) {
-        weapon.center.x -= weapon.width/2;
-    }
-    else if(direction == RIGHT) {
-        weapon.center.x += weapon.width/2;
-    }
-    if (game.render == FIELD) {
-        game.level2.Lattack(index);
-    } else if (game.render == STARYNIGHT) {
-        game.level3.Lattack(index);
-    } else if (game.render == DISCO) {
-        game.level4.Lattack(index);
-    }
+	if (direction == LEFT) {
+		weapon.center.x -= weapon.width/2;
+	}
+	else if(direction == RIGHT) {
+		weapon.center.x += weapon.width/2;
+	}
+	if (game.render == FIELD) {
+		game.level2.Lattack(index);
+	} else if (game.render == STARYNIGHT) {
+		game.level3.Lattack(index);
+	} else if (game.render == DISCO) {
+		game.level4.Lattack(index);
+	}
 
 }
 
@@ -696,10 +706,10 @@ void Level::Lattack(int index)
 			}
 		}
 	}
-}
+	}
 
-void manual_launch() 
-{
-	system("firefox www.google.com &");
-	return;
-}
+	void manual_launch() 
+	{
+		system("firefox www.google.com &");
+		return;
+	}

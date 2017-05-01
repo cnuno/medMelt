@@ -112,6 +112,7 @@ void Player::check_controller(Player *player, Joystick *joystick)
 				conditionC = player->action != DASH;
 				if (conditionA && conditionB && conditionC) {
 					player->delta.y = 7.0f;
+					//player->delta.y = 70.0f;
 					player->jumpCount++;
 				}
 				break;
@@ -465,12 +466,11 @@ void Player::render()
 		else if (jumpCount == 4) 
 			radius = body.radius - 15;
 
-		//render weapon
-		glPushMatrix();
-		glBegin(GL_QUADS);
 
 		if (atk) {
 			//outline
+			glPushMatrix();
+			glBegin(GL_QUADS);
 			glColor3f(0,0,0);
 			glVertex2i(weapon.center.x - weapon.width/2 - 5,
 					weapon.center.y - weapon.height/2 - 5);
@@ -491,7 +491,6 @@ void Player::render()
 					weapon.center.y + weapon.height/2);
 			glVertex2i(weapon.center.x + weapon.width/2,
 					weapon.center.y - weapon.height/2);
-
 			glEnd();
 		}
 
@@ -1027,7 +1026,6 @@ bool firstContact = false;
 bool forward = true;
 void disco(Game *game)
 {
-
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f );
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -1041,9 +1039,7 @@ void disco(Game *game)
 	game->level4.movingPlat(&game->level4.platform[1]);
 
 	for (int i = 0; i < MAX_PLAYER; i++) {
-		//counts frames - only allows for arm to display for one frame
 		ericksTimer(&game->level4.player[i]);
-
 		game->level4.movingPlatformPlayer(&game->level4.player[i]);
 		game->level4.physics(&game->level4.player[i]);
 		game->level4.player[i].check_controller(&game->level4.player[i], 
@@ -1056,35 +1052,30 @@ void disco(Game *game)
 			} else {
 				game->level4.player[i].render();
 			}
-		} else {
+		} else if (game->level4.player[i].status.lifeState == DEAD
+				&& game->level4.player[i].status.initDeath == false) {
 			clock_gettime(CLOCK_REALTIME, &game->level4.player[i].timeStart);
 			game->level4.player[i].status.initDeath = true;
+			game->level4.player[i].deathRender();
+		} else if (game->level4.player[i].status.lifeState == DEAD 
+				&& game->level4.player[i].status.initDeath == true) {
 			game->level4.player[i].deathPhysics();
 			game->level4.player[i].deathRender();
-		}
-		game->level4.statDisplay.render();
-
-		if (game->level4.player[i].status.lifeState == DEAD 
-				&& game->level4.player[i].status.initDeath == true) 
-		{
 			clock_gettime(CLOCK_REALTIME, &game->level4.player[i].timeCurrent);
-			game->level4.player[i].timeSpan = 
-				game->level4.player[i].timeDiff(&game->level4.player[i].timeStart, 
-						&game->level4.player[i].timeCurrent);
-			if (game->level4.player[i].timeSpan >= 5 
-					&& game->level4.player[i].status.lifeCount > 0)
-			{
+			game->level4.player[i].timeSpan = game->level4.player[i].timeDiff(
+					&game->level4.player[i].timeStart, 
+					&game->level4.player[i].timeCurrent);
+			if (game->level4.player[i].timeSpan >= 5 &&
+					game->level4.player[i].status.lifeCount > 0) {
 				game->level4.player[i].status.initDeath = false;
 				game->level4.respawn(&game->level4.player[i]);
-			}
-			else if (game->level4.player[i].status.lifeCount < 0) {
+			} else if (game->level4.player[i].status.lifeCount < 0) {
 				game->level4.player[i].delta.x = 0.0;
 				game->level4.player[i].delta.y = 0.0;
 			}
-		}	
+		}
+		game->level4.statDisplay.render();
 	}
-
-	game->level4.statDisplay.render();
 }
 
 int ct = 0;
@@ -1187,7 +1178,6 @@ void Disco_Level::render()
 	glVertex2i(platform[1].center.x - platform[1].width/2 - 5, 
 			platform[1].center.y - platform[1].height/2 - 5);
 	glEnd();
-
 }
 
 void Disco_Level::renderSky() {
