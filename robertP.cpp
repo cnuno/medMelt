@@ -192,7 +192,8 @@ void play_sound (int track, float pitch, bool loop)
     alSourcePlay(alSource[track]);
 }
 
-void cleanup_sounds () {
+void cleanup_sounds () 
+{
     for (int i = 0; i < TOTALSOUNDS; i++) {
         alDeleteSources(1, &alSource[i]);
     }
