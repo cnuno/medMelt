@@ -22,19 +22,19 @@ Today I figured out how to make the characters respawn. The death functions
 are called in each level handler.
 
 04/17/2017
-Added timeDiff function to handle player respawns. Next up will work on revamping 
-sound code and moving texture definitions out of my file.
+Added timeDiff function to handle player respawns. Next up will work on 
+revamping sound code and moving texture definitions out of my file.
 
 4/21/2017
 Today we rendered the weapon, character status boxes, and added the attack 
 collision detection. We worked for 7.75 hours.
 
 4/22-4/23/2017
-Tonight I isolated the sound and added ifdef statements around all sound stuff. I 
-also edited the makefile to create an executable with the sound and one without
-the sound. I refactored the sound code that will load all sound files used in
-the game at one time for ease of access. I also added songs to the levels as well
-as sounds to the players.
+Tonight I isolated the sound and added ifdef statements around all sound 
+stuff. I also edited the makefile to create an executable with the sound and 
+one without the sound. I refactored the sound code that will load all sound 
+files used in the game at one time for ease of access. I also added songs to 
+the levels as well as sounds to the players.
 
 4/29
 Per Gordon's request changes system commands to remove()
@@ -73,71 +73,71 @@ extern Game game;
 char st[4][15] = {{"Player 1"},{"Player 2"},{"Player 3"}, {"Player 4"}}; 
 Game::~Game()
 {
-	remove("images/et.png");
-	remove("images/et.ppm");
-	remove("images/exit.ppm");
-	remove("images/exit_icon.png");
-	remove("images/field.png");
-	remove("images/field.ppm");
-	remove("images/option_icon.png");
-	remove("images/options.ppm");
-	remove("images/pill.png");
-	remove("images/pill.ppm");
-	remove("images/play.ppm");
-	remove("images/play_icon.png");
-	remove("images/quit.png");
-	remove("images/quit.ppm");
-	remove("images/quit_select.png");
-	remove("images/quit_select.ppm");
-	remove("images/resume.png");
-	remove("images/resume.ppm");
-	remove("images/resume_select.png");
-	remove("images/resume_select.ppm");
-	remove("images/stary.ppm");
-	remove("images/starynight.png");
-	remove("images/title.png");
-	remove("images/title.ppm");
-	remove("images/numbers/0R.png");
-	remove("images/numbers/0W.png");
-	remove("images/numbers/1R.png");	
-	remove("images/numbers/1W.png");
-	remove("images/numbers/2R.png");
-	remove("images/numbers/2W.png");
-	remove("images/numbers/3R.png");
-	remove("images/numbers/3W.png");
-	remove("images/numbers/4R.png");
-	remove("images/numbers/4W.png");
-	remove("images/numbers/5R.png");
-	remove("images/numbers/5W.png");
-	remove("images/numbers/6R.png");
-	remove("images/numbers/6W.png");
-	remove("images/numbers/7R.png");
-	remove("images/numbers/7W.png");
-	remove("images/numbers/8R.png");
-	remove("images/numbers/8W.png");
-	remove("images/numbers/9R.png");
-	remove("images/numbers/9W.png");
-	remove("images/numbers/percentR.png");
-	remove("images/numbers/percentW.png");
-	remove("images/octopus.png");
-	remove("images/octopus.ppm");
-	remove("images/troll2.png");
-	remove("images/troll2.ppm");
-	remove("images/troll3.png");
-	remove("images/troll3.ppm");
-	remove("images/troll4.png");
-	remove("images/troll4.ppm");
-	remove("images/numbers");
-	remove("images");
-	remove("audio/death.wav");
-	remove("audio/disco.wav");
-	remove("audio/field.wav");
-	remove("audio/pound.wav");
-	remove("audio/starnight.wav");
-	remove("audio/swing.wav");
-	remove("audio/sword.wav");
-	remove("audio/test.wav");
-	remove("audio");
+    remove("images/et.png");
+    remove("images/et.ppm");
+    remove("images/exit.ppm");
+    remove("images/exit_icon.png");
+    remove("images/field.png");
+    remove("images/field.ppm");
+    remove("images/option_icon.png");
+    remove("images/options.ppm");
+    remove("images/pill.png");
+    remove("images/pill.ppm");
+    remove("images/play.ppm");
+    remove("images/play_icon.png");
+    remove("images/quit.png");
+    remove("images/quit.ppm");
+    remove("images/quit_select.png");
+    remove("images/quit_select.ppm");
+    remove("images/resume.png");
+    remove("images/resume.ppm");
+    remove("images/resume_select.png");
+    remove("images/resume_select.ppm");
+    remove("images/stary.ppm");
+    remove("images/starynight.png");
+    remove("images/title.png");
+    remove("images/title.ppm");
+    remove("images/numbers/0R.png");
+    remove("images/numbers/0W.png");
+    remove("images/numbers/1R.png");	
+    remove("images/numbers/1W.png");
+    remove("images/numbers/2R.png");
+    remove("images/numbers/2W.png");
+    remove("images/numbers/3R.png");
+    remove("images/numbers/3W.png");
+    remove("images/numbers/4R.png");
+    remove("images/numbers/4W.png");
+    remove("images/numbers/5R.png");
+    remove("images/numbers/5W.png");
+    remove("images/numbers/6R.png");
+    remove("images/numbers/6W.png");
+    remove("images/numbers/7R.png");
+    remove("images/numbers/7W.png");
+    remove("images/numbers/8R.png");
+    remove("images/numbers/8W.png");
+    remove("images/numbers/9R.png");
+    remove("images/numbers/9W.png");
+    remove("images/numbers/percentR.png");
+    remove("images/numbers/percentW.png");
+    remove("images/octopus.png");
+    remove("images/octopus.ppm");
+    remove("images/troll2.png");
+    remove("images/troll2.ppm");
+    remove("images/troll3.png");
+    remove("images/troll3.ppm");
+    remove("images/troll4.png");
+    remove("images/troll4.ppm");
+    remove("images/numbers");
+    remove("images");
+    remove("audio/death.wav");
+    remove("audio/disco.wav");
+    remove("audio/field.wav");
+    remove("audio/pound.wav");
+    remove("audio/starnight.wav");
+    remove("audio/swing.wav");
+    remove("audio/sword.wav");
+    remove("audio/test.wav");
+    remove("audio");
 }
 
 //Sound Code
@@ -480,19 +480,19 @@ void Player::boxRender(int centx, int centy, int width)
     glEnd();
     glDisable(GL_BLEND);
 
-	if (status.lifeState == DEAD && status.lifeCount <= 0) {
-		glColor3ub(255,0,0);
-		glLineWidth(10);
-		glBegin(GL_LINES);
-		glVertex2f(centx - width/2, centy + width/2);
-		glVertex2f(centx + width/2, centy - width/2);
-		glEnd();
+    if (status.lifeState == DEAD && status.lifeCount <= 0) {
+        glColor3ub(255,0,0);
+        glLineWidth(10);
+        glBegin(GL_LINES);
+        glVertex2f(centx - width/2, centy + width/2);
+        glVertex2f(centx + width/2, centy - width/2);
+        glEnd();
 
-		glBegin(GL_LINES);
-		glVertex2f(centx + width/2, centy + width/2);
-		glVertex2f(centx - width/2, centy - width/2);
-		glEnd();
-	}
+        glBegin(GL_LINES);
+        glVertex2f(centx + width/2, centy + width/2);
+        glVertex2f(centx - width/2, centy - width/2);
+        glEnd();
+    }
 
 }
 
@@ -501,219 +501,233 @@ void Player::boxRender(int centx, int centy, int width)
 void resetMain(Game *game) 
 {
 #ifdef USE_OPENAL_SOUND
-	//    endSound();
-	//    loadSound("./audio/test.wav");
+    //    endSound();
+    //    loadSound("./audio/test.wav");
 #endif
-	game->mainMenu.titleVel.y = rnd() * 0.5 - 0.25;
-	game->mainMenu.titleBox.center.y = 
-		game->WINDOW_HEIGHT + game->WINDOW_HEIGHT/3;
-	game->mainMenu.titleBox.center.x = game->WINDOW_WIDTH/2;
+    game->mainMenu.titleVel.y = rnd() * 0.5 - 0.25;
+    game->mainMenu.titleBox.center.y = 
+        game->WINDOW_HEIGHT + game->WINDOW_HEIGHT/3;
+    game->mainMenu.titleBox.center.x = game->WINDOW_WIDTH/2;
 #ifdef USE_OPENAL_SOUND
-	for (int i = 0; i < TOTALSOUNDS; i++) {
-		alSourceStop(alSource[i]);
-	}
-	titledrop = 0;
-	pitch = 3.0f;
+    for (int i = 0; i < TOTALSOUNDS; i++) {
+        alSourceStop(alSource[i]);
+    }
+    titledrop = 0;
+    pitch = 3.0f;
 #endif
-	game->render = MAINMENU;
+    game->render = MAINMENU;
 }
 
 //incorporate this in zack's level handler functions
 void Level::deathCheck(Player *player)
 {
-	//call death animation on the left edge @ player->body.center.y
-	//if lives available, respawn
-	//Pass (x,y) to render particles at
-	if ((player->body.center.x < (-scrn->width/4 * 3)) 
-			&& player->status.lifeState == ALIVE) {
-		player->deathInit(-scrn->width/2, player->body.center.y);
-		player->multiplier=0;
-		player->status.lifeState = DEAD;
-	}
-	else if (player->body.center.x > ((scrn->width + scrn->width/4 * 3)) 
-			&& player->status.lifeState == ALIVE) {
-		player->deathInit(scrn->width + scrn->width/2,
-				player->body.center.y);
-		player->multiplier=0;
-		player->status.lifeState = DEAD;
-	}
-	else if ((player->body.center.y < (-scrn->height/4 * 3)) 
-			&& player->status.lifeState == ALIVE) {
-		player->deathInit(player->body.center.x, -scrn->height/2);
-		player->multiplier=0;
-		player->status.lifeState = DEAD;
-	}
-	else if ((player->body.center.y > (scrn->height + scrn->height/4 * 3)) 
-			&& player->status.lifeState == ALIVE) {
-		player->deathInit(player->body.center.x, scrn->height+scrn->height/2);
-		player->multiplier=0;
-		player->status.lifeState = DEAD;
-	}
+    //call death animation on the left edge @ player->body.center.y
+    //if lives available, respawn
+    //Pass (x,y) to render particles at
+    if ((player->body.center.x < (-scrn->width/4 * 3)) 
+            && player->status.lifeState == ALIVE) {
+        player->deathInit(-scrn->width/2, player->body.center.y);
+        player->multiplier=0;
+        player->status.lifeState = DEAD;
+    } else if (player->body.center.x > ((scrn->width + scrn->width/4 * 3)) 
+            && player->status.lifeState == ALIVE) {
+        player->deathInit(scrn->width + scrn->width/2,
+                player->body.center.y);
+        player->multiplier=0;
+        player->status.lifeState = DEAD;
+    } else if ((player->body.center.y < (-scrn->height/4 * 3)) 
+            && player->status.lifeState == ALIVE) {
+        player->deathInit(player->body.center.x, -scrn->height/2);
+        player->multiplier=0;
+        player->status.lifeState = DEAD;
+    } else if ((player->body.center.y > (scrn->height + scrn->height/4 * 3)) 
+            && player->status.lifeState == ALIVE) {
+        player->deathInit(player->body.center.x, scrn->height+scrn->height/2);
+        player->multiplier=0;
+        player->status.lifeState = DEAD;
+    }
 }
 
 //50 particles to work with
-void Player::deathInit(int x, int y) {
-	Color colors;
-	for (int i = 0; i < 50; i++) {
-		for (int j = 0; j < 3; j++) {
-			bloodStream[i].color[j] = colors.bloodred[j];
-		}
+void Player::deathInit(int x, int y) 
+{
+    Color colors;
+    for (int i = 0; i < 50; i++) {
+        for (int j = 0; j < 3; j++) {
+            bloodStream[i].color[j] = colors.bloodred[j];
+        }
 
-		if (y == -scrn->height/2 || y == (scrn->height + scrn->height/2)) {
-			bloodStream[i].s.center.x = x;
-			bloodStream[i].s.center.y = y;
-			bloodStream[i].velocity.x = -delta.x + 5 * (((float) rand() / (float) RAND_MAX) - ((float) rand() / (float) RAND_MAX));
-			bloodStream[i].velocity.y = -delta.y + 40 * (((float) rand() / (float) RAND_MAX) - ((float) rand() / (float) RAND_MAX));
-		}
-		else {
-			bloodStream[i].s.center.x = x;
-			bloodStream[i].s.center.y = y;
-			bloodStream[i].velocity.x = -(delta.x) + 25 * ((float) rand() / (float) RAND_MAX - ((float) rand() / (float) RAND_MAX));
-			bloodStream[i].velocity.y = -delta.y + 10 * (((float) rand() / (float) RAND_MAX) - ((float) rand() / (float) RAND_MAX));
-		}
-	}
+        if (y == -scrn->height/2 || y == (scrn->height + scrn->height/2)) {
+            bloodStream[i].s.center.x = x;
+            bloodStream[i].s.center.y = y;
+            bloodStream[i].velocity.x = -delta.x + 5 * 
+                (((float) rand() / (float) RAND_MAX) - 
+                 ((float) rand() / (float) RAND_MAX));
+            bloodStream[i].velocity.y = -delta.y + 40 * 
+                (((float) rand() / (float) RAND_MAX) - 
+                 ((float) rand() / (float) RAND_MAX));
+        } else {
+            bloodStream[i].s.center.x = x;
+            bloodStream[i].s.center.y = y;
+            bloodStream[i].velocity.x = -(delta.x) + 25 * 
+                ((float) rand() / (float) RAND_MAX - 
+                 ((float) rand() / (float) RAND_MAX));
+            bloodStream[i].velocity.y = -delta.y + 10 * 
+                (((float) rand() / (float) RAND_MAX) - 
+                 ((float) rand() / (float) RAND_MAX));
+        }
+    }
 #ifdef USE_OPENAL_SOUND
-	play_sound(6, 1.0f, false);
+    play_sound(6, 1.0f, false);
 #endif
 }
 
-void Player::deathPhysics() {
-	for (int i = 0; i < 50; i++) {
-		bloodStream[i].velocity.y -= GRAVITY * 3;
-		bloodStream[i].s.center.x += bloodStream[i].velocity.x;
-		bloodStream[i].s.center.y += bloodStream[i].velocity.y;
-	}
+void Player::deathPhysics() 
+{
+    for (int i = 0; i < 50; i++) {
+        bloodStream[i].velocity.y -= GRAVITY * 3;
+        bloodStream[i].s.center.x += bloodStream[i].velocity.x;
+        bloodStream[i].s.center.y += bloodStream[i].velocity.y;
+    }
 }
 
-void Player::deathRender() {
-	for (int i = 0; i < 50; i++) {
-		glPushMatrix();
-		Vec *c = &bloodStream[i].s.center;
-		//glTranslatef(bloodStream[i].s.center.x, bloodStream[i].s.center.y, bloodStream[i].s.center.z);
-		int w = 10;
-		int h = 10;
-		glBegin(GL_QUADS);
-		glColor3ub(0, 0, 0);
-		glVertex2i(c->x-w-3, c->y-h-3);
-		glVertex2i(c->x-w-3, c->y+h+3);
-		glVertex2i(c->x+w+3, c->y+h+3);
-		glVertex2i(c->x+w+3, c->y-h-3);
+void Player::deathRender() 
+{
+    for (int i = 0; i < 50; i++) {
+        glPushMatrix();
+        Vec *c = &bloodStream[i].s.center;
+        //glTranslatef(bloodStream[i].s.center.x, 
+        //  bloodStream[i].s.center.y, bloodStream[i].s.center.z);
+        int w = 10;
+        int h = 10;
+        glBegin(GL_QUADS);
+        glColor3ub(0, 0, 0);
+        glVertex2i(c->x-w-3, c->y-h-3);
+        glVertex2i(c->x-w-3, c->y+h+3);
+        glVertex2i(c->x+w+3, c->y+h+3);
+        glVertex2i(c->x+w+3, c->y-h-3);
 
-		glColor3ub(bloodStream[i].color[0], bloodStream[i].color[1], bloodStream[i].color[2]);
-		glVertex2i(c->x-w, c->y-h);
-		glVertex2i(c->x-w, c->y+h);
-		glVertex2i(c->x+w, c->y+h);
-		glVertex2i(c->x+w, c->y-h);
-		glEnd();
-		glPopMatrix();
-	}
+        glColor3ub(bloodStream[i].color[0], 
+                bloodStream[i].color[1], bloodStream[i].color[2]);
+        glVertex2i(c->x-w, c->y-h);
+        glVertex2i(c->x-w, c->y+h);
+        glVertex2i(c->x+w, c->y+h);
+        glVertex2i(c->x+w, c->y-h);
+        glEnd();
+        glPopMatrix();
+    }
 }
 
 void Level::respawn(Player *player)
 {
-	//wait 5 seconds
+    //wait 5 seconds
 
-	player->status.lifeState = ALIVE;
-	player->action = PASSIVE;
-	--player->status.lifeCount;
-	player->body.center.x = scrn->width/2;
-	player->body.center.y = scrn->height;
-	player->delta.x = 0.0;
-	player->delta.y = 0.0;
-	player->jumpCount = 0;
-	player->status.health = 0;
+    player->status.lifeState = ALIVE;
+    player->action = PASSIVE;
+    --player->status.lifeCount;
+    player->body.center.x = scrn->width/2;
+    player->body.center.y = scrn->height;
+    player->delta.x = 0.0;
+    player->delta.y = 0.0;
+    player->jumpCount = 0;
+    player->status.health = 0;
 }
 
 double Player::timeDiff(struct timespec *start, struct timespec *end)
 {
-	double oobillion = 1.0/1e9;
-	return (double)(end->tv_sec - start->tv_sec ) +
-		(double)(end->tv_nsec - start->tv_nsec) * oobillion;
+    double oobillion = 1.0/1e9;
+    return (double)(end->tv_sec - start->tv_sec ) +
+        (double)(end->tv_nsec - start->tv_nsec) * oobillion;
 }
 
 void Player::attack()
 {
-	if (direction == LEFT) {
-		weapon.center.x -= weapon.width/2;
-	}
-	else if(direction == RIGHT) {
-		weapon.center.x += weapon.width/2;
-	}
-	if (game.render == FIELD) {
-		game.level2.Lattack(index);
-	} else if (game.render == STARYNIGHT) {
-		game.level3.Lattack(index);
-	} else if (game.render == DISCO) {
-		game.level4.Lattack(index);
-	}
+    if (direction == LEFT) {
+        weapon.center.x -= weapon.width/2;
+    } else if(direction == RIGHT) {
+        weapon.center.x += weapon.width/2;
+    }
+    if (game.render == FIELD) {
+        game.level2.Lattack(index);
+    } else if (game.render == STARYNIGHT) {
+        game.level3.Lattack(index);
+    } else if (game.render == DISCO) {
+        game.level4.Lattack(index);
+    }
 
 }
 
 void Level::Lattack(int index)
 {
-	for (int i=0; i<4; i++) {
-		//if (player[index].index == i) {}
-		// else {
+    for (int i=0; i<4; i++) {
+        //if (player[index].index == i) {}
+        // else {
 
-		if (player[index].index != i) {
-			if (player[index].direction == LEFT) {
-				//if (player[index].weapon.center.x - i
-				//player[index].weapon.width/2 
-				//        <= player[i].body.center.x + player[i].body.width) {
-				//    player[i].body.center.x -= 50;
-				//}
+        if (player[index].index != i) {
+            if (player[index].direction == LEFT) {
+                //if (player[index].weapon.center.x - i
+                //player[index].weapon.width/2 
+                //        <= player[i].body.center.x + player[i].body.width) {
+                //    player[i].body.center.x -= 50;
+                //}
 
-				float distance = pow((player[index].weapon.center.x - player[index].weapon.width/2) - player[i].body.center.x, 2) + 
-					pow((player[index].weapon.center.y - player[index].weapon.height/2) - player[i].body.center.y, 2);
-				distance = sqrt(distance);
+                float distance = pow((player[index].weapon.center.x - 
+                            player[index].weapon.width/2) - 
+                        player[i].body.center.x, 2) + 
+                    pow((player[index].weapon.center.y - 
+                                player[index].weapon.height/2) - 
+                            player[i].body.center.y, 2);
+                distance = sqrt(distance);
 
-				if (distance < player[i].body.radius
-						&& player[index].status.lifeState == ALIVE){
+                if (distance < player[i].body.radius
+                        && player[index].status.lifeState == ALIVE) {
 #ifdef USE_OPENAL_SOUND
-					play_sound(2, 1.0f, false);
+                    play_sound(2, 1.0f, false);
 #endif
-					//player[i].body.center.x -= player[i].multiplier * 50;
-					player[i].delta.x -= player[i].multiplier*5;
-					player[i].delta.y += player[i].multiplier*2;
-					player[i].multiplier += 0.25;
-				} else {
-						if (player[index].status.lifeState == ALIVE) {
+                    //player[i].body.center.x -= player[i].multiplier * 50;
+                    player[i].delta.x -= player[i].multiplier*5;
+                    player[i].delta.y += player[i].multiplier*2;
+                    player[i].multiplier += 0.25;
+                } else {
+                    if (player[index].status.lifeState == ALIVE) {
 
 #ifdef USE_OPENAL_SOUND
-					play_sound(7, 1.0f, false);
+                        play_sound(7, 1.0f, false);
 #endif
-						}
-				}
-			}
-			else if (player[index].direction == RIGHT) {
-				//if (player[index].weapon.center.x + 
-				//player[index].weapon.width/2
-				//	   >= player[i].body.center.x - player[i].body.width) {
-				//player[i].body.center.x += 50;
-				//}
-				float distance = pow((player[index].weapon.center.x + player[index].weapon.width/2) - player[i].body.center.x,2) +
-					pow((player[index].weapon.center.y + player[index].weapon.height/2) - player[i].body.center.y, 2);
-				distance = sqrt(distance);
-				if (distance < player[i].body.radius) {
+                    }
+                }
+            } else if (player[index].direction == RIGHT) {
+                //if (player[index].weapon.center.x + 
+                //player[index].weapon.width/2
+                //	   >= player[i].body.center.x - player[i].body.width) {
+                //player[i].body.center.x += 50;
+                //}
+                float distance = pow((player[index].weapon.center.x + 
+                            player[index].weapon.width/2) - 
+                        player[i].body.center.x,2) +
+                    pow((player[index].weapon.center.y + 
+                                player[index].weapon.height/2) - 
+                            player[i].body.center.y, 2);
+                distance = sqrt(distance);
+                if (distance < player[i].body.radius) {
 #ifdef USE_OPENAL_SOUND
-					play_sound(2, 1.0f, false);
+                    play_sound(2, 1.0f, false);
 #endif
-					//player[i].body.center.x += player[i].multiplier * 50;
-					player[i].delta.x += player[i].multiplier*5;
-					player[i].delta.y += player[i].multiplier*2;
-					player[i].multiplier += 0.25;
-				} else {
+                    //player[i].body.center.x += player[i].multiplier * 50;
+                    player[i].delta.x += player[i].multiplier*5;
+                    player[i].delta.y += player[i].multiplier*2;
+                    player[i].multiplier += 0.25;
+                } else {
 #ifdef USE_OPENAL_SOUND
-					play_sound(7, 1.0f, false);
+                    play_sound(7, 1.0f, false);
 #endif
-				}
-			}
-		}
-	}
-	}
-
-	void manual_launch() 
-	{
-		system("firefox www.google.com &");
-		return;
-	}
+                }
+            }
+        }
+    }
+    }
+void manual_launch() 
+{
+    system("firefox www.google.com &");
+    return;
+}

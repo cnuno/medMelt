@@ -19,8 +19,8 @@ I worked at total of 5 hours.
 Added timer to my starynight level.Also Cesar, Robert, and I helped with 
 creating the methodology of the physics for attacking. We aided robert in 
 looking back at how to understand the collision from our own waterfall levels
-and built that into our attacks.  Also we tested the functinality of the attacks
-and the game by playing 3-way- multiplayer.  
+and built that into our attacks.  Also we tested the functinality of the 
+attacks and the game by playing 3-way- multiplayer.  
 
 worked a total of around 7-8 hours
 
@@ -111,19 +111,14 @@ void field(Game *game)
                 game->level2.controller.joystick[i]);
         game->level2.deathCheck(&game->level2.player[i]);
 
-        if (game->level2.player[i].status.lifeState == ALIVE) 
-        {
+        if (game->level2.player[i].status.lifeState == ALIVE) {
             game->level2.player[i].render();
-        } 
-        else if (game->level2.player[i].status.lifeState == DEAD && 
-                game->level2.player[i].status.initDeath == false) 
-        {
+        } else if (game->level2.player[i].status.lifeState == DEAD && 
+                game->level2.player[i].status.initDeath == false) {
             clock_gettime(CLOCK_REALTIME, &game->level2.player[i].timeStart);
             game->level2.player[i].status.initDeath = true;
-        }
-        else if (game->level2.player[i].status.lifeState == 
-                DEAD && game->level2.player[i].status.initDeath == true) 
-        {
+        } else if (game->level2.player[i].status.lifeState == 
+                DEAD && game->level2.player[i].status.initDeath == true) {
             clock_gettime(CLOCK_REALTIME, &game->level2.player[i].timeCurrent);
             //game->level2.player[i].deathRender();
             game->level2.player[i].timeSpan = 
@@ -131,12 +126,10 @@ void field(Game *game)
                         &game->level2.player[i].timeStart, 
                         &game->level2.player[i].timeCurrent);
             if (game->level2.player[i].timeSpan >= 5 && 
-                    game->level2.player[i].status.lifeCount > 0)
-            {
+                    game->level2.player[i].status.lifeCount > 0) {
                 game->level2.player[i].status.initDeath = false;
                 game->level2.respawn(&game->level2.player[i]);
-            }
-            else if (game->level2.player[i].status.lifeCount < 0) {
+            } else if (game->level2.player[i].status.lifeCount < 0) {
                 game->level2.player[i].delta.x = 0.0;
                 game->level2.player[i].delta.y = 0.0;
                 //No lives left
@@ -204,7 +197,7 @@ void Field_Level::render()
 
 Starynight_Level::Starynight_Level() 
 {
-	srand(time(NULL));
+    srand(time(NULL));
     Level();
 
     //floor
@@ -250,54 +243,47 @@ void starynight(Game *game)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     game->level3.render();
-	game->level3.etMove();
+    game->level3.etMove();
 
     for (int i = 0; i < MAX_PLAYER; i++) {
-		ericksTimer(&game->level3.player[i]);
+        ericksTimer(&game->level3.player[i]);
         game->level3.physics(&game->level3.player[i]);
         game->level3.player[i].check_controller(&game->level3.player[i], 
                 game->level3.controller.joystick[i]);
-	game->level3.deathCheck(&game->level3.player[i]);
+        game->level3.deathCheck(&game->level3.player[i]);
 
 
-	if (game->level3.player[i].status.lifeState == ALIVE) {
-	    game->level3.player[i].render();
-	} else {
-	    game->level3.player[i].deathPhysics();
-	    game->level3.player[i].deathRender();
-	}
+        if (game->level3.player[i].status.lifeState == ALIVE) {
+            game->level3.player[i].render();
+        } else {
+            game->level3.player[i].deathPhysics();
+            game->level3.player[i].deathRender();
+        }
 
-	if (game->level3.player[i].status.lifeState == ALIVE) 
-	{
-	    game->level3.player[i].render();
-	} 
-	else if (game->level3.player[i].status.lifeState == DEAD && 
-		game->level3.player[i].status.initDeath == false) 
-	{
-	    clock_gettime(CLOCK_REALTIME, &game->level3.player[i].timeStart);
-	    game->level3.player[i].status.initDeath = true;
-	}
-	else if (game->level3.player[i].status.lifeState == DEAD && 
-		game->level3.player[i].status.initDeath == true) 
-	{
-	    clock_gettime(CLOCK_REALTIME, &game->level3.player[i].timeCurrent);
-	    game->level3.player[i].timeSpan = 
-		game->level3.player[i].timeDiff(
-			&game->level3.player[i].timeStart, 
-			&game->level3.player[i].timeCurrent);
-	    if (game->level3.player[i].timeSpan >= 5 && 
-		    game->level3.player[i].status.lifeCount > 0)
-	    {
-		game->level3.player[i].status.initDeath = false;
-		game->level3.respawn(&game->level3.player[i]);
-	    }
-	    else if (game->level3.player[i].status.lifeCount < 0) {
-		game->level3.player[i].delta.x = 0.0;
-		game->level3.player[i].delta.y = 0.0;
-		//No lives left
-		//Draw a red 'X' over status box
-	    }
-	}	
+        if (game->level3.player[i].status.lifeState == ALIVE) {
+            game->level3.player[i].render();
+        } else if (game->level3.player[i].status.lifeState == DEAD && 
+                game->level3.player[i].status.initDeath == false) {
+            clock_gettime(CLOCK_REALTIME, &game->level3.player[i].timeStart);
+            game->level3.player[i].status.initDeath = true;
+        } else if (game->level3.player[i].status.lifeState == DEAD && 
+                game->level3.player[i].status.initDeath == true) {
+            clock_gettime(CLOCK_REALTIME, &game->level3.player[i].timeCurrent);
+            game->level3.player[i].timeSpan = 
+                game->level3.player[i].timeDiff(
+                        &game->level3.player[i].timeStart, 
+                        &game->level3.player[i].timeCurrent);
+            if (game->level3.player[i].timeSpan >= 5 && 
+                    game->level3.player[i].status.lifeCount > 0) {
+                game->level3.player[i].status.initDeath = false;
+                game->level3.respawn(&game->level3.player[i]);
+            } else if (game->level3.player[i].status.lifeCount < 0) {
+                game->level3.player[i].delta.x = 0.0;
+                game->level3.player[i].delta.y = 0.0;
+                //No lives left
+                //Draw a red 'X' over status box
+            }
+        }	
     }
     game->level3.statDisplay.render();
 }
@@ -305,8 +291,8 @@ void starynight(Game *game)
 void Starynight_Level::render()
 {
     //Render of background
-	glClear(GL_COLOR_BUFFER_BIT); 
-	glColor3ub(72,48,120); 
+    glClear(GL_COLOR_BUFFER_BIT); 
+    glColor3ub(72,48,120); 
     glPushMatrix(); 
     glBegin(GL_QUADS); 
     glVertex2i(-scrn->width/2,-scrn->height/2);
@@ -323,21 +309,21 @@ void Starynight_Level::render()
     int horizontal=0; 
     int sideL=5;
     for (int i=0; i<7; i++) {
-	for (int j=0; j<7; j++) {
-	    vertical=((int)2*scrn->height/7)*(i+starP[(i+1)*(j+1)]); 
-	    horizontal=((int)2*scrn->width/7)*(j+starP[(i+1)*(j+1)]);
-	    vertical -= scrn->height/2;
-	    horizontal -= scrn->width/2;
-	    glPushMatrix();
-	    glColor3ub(254,0+rand()%(255-0),215);
-	    glBegin(GL_QUADS);
-	    glVertex2i(horizontal,vertical);
-	    glVertex2i(horizontal+sideL,vertical);
-	    glVertex2i(horizontal+sideL,vertical+sideL);
-	    glVertex2i(horizontal,vertical+sideL);
-	} 
-	glEnd(); 
-	glPopMatrix();
+        for (int j=0; j<7; j++) {
+            vertical=((int)2*scrn->height/7)*(i+starP[(i+1)*(j+1)]); 
+            horizontal=((int)2*scrn->width/7)*(j+starP[(i+1)*(j+1)]);
+            vertical -= scrn->height/2;
+            horizontal -= scrn->width/2;
+            glPushMatrix();
+            glColor3ub(254,0+rand()%(255-0),215);
+            glBegin(GL_QUADS);
+            glVertex2i(horizontal,vertical);
+            glVertex2i(horizontal+sideL,vertical);
+            glVertex2i(horizontal+sideL,vertical+sideL);
+            glVertex2i(horizontal,vertical+sideL);
+        } 
+        glEnd(); 
+        glPopMatrix();
     }
     //End of Stars
 
@@ -354,10 +340,10 @@ void Starynight_Level::render()
     glBegin(GL_TRIANGLE_FAN);
     glVertex2f(x, y); // center of circle
     for (int i = 0; i <= triangleAmount;i++) { 
-	glVertex2f(
-		x + (radius * cos(i *  twicePi / triangleAmount)), 
-		y + (radius * sin(i * twicePi / triangleAmount))
-		);
+        glVertex2f(
+                x + (radius * cos(i *  twicePi / triangleAmount)), 
+                y + (radius * sin(i * twicePi / triangleAmount))
+                );
     }
     glEnd();
     glPopMatrix();
@@ -392,48 +378,48 @@ void Starynight_Level::render()
     glPushMatrix(); 
     glBegin(GL_QUADS); 
     glVertex2i(platform[0].center.x - platform[0].width/2 - 2, 
-	    platform[0].center.y - platform[0].height/2 - 2);
+            platform[0].center.y - platform[0].height/2 - 2);
     glVertex2i(platform[0].center.x - platform[0].width/2 - 2, 
-	    platform[0].center.y + platform[0].height/2 + 2);
+            platform[0].center.y + platform[0].height/2 + 2);
     glVertex2i(platform[0].center.x + platform[0].width/2 + 2, 
-	    platform[0].center.y + platform[0].height/2 + 2);
+            platform[0].center.y + platform[0].height/2 + 2);
     glVertex2i(platform[0].center.x + platform[0].width/2 + 2, 
-	    platform[0].center.y - platform[0].height/2 - 2);
+            platform[0].center.y - platform[0].height/2 - 2);
     glEnd(); 
     // End of blfloor
 
     for (int i = 1; i < MAX_PLAT; i++ ) {
-	// black line for platforms
+        // black line for platforms
 
-	glColor3ub(0,0,0); 
-	glPushMatrix(); 
-	glBegin(GL_QUADS); 
-	glVertex2i(platform[i].center.x - platform[i].width/2 - 2, 
-		platform[i].center.y - platform[i].height/2 -2);
-	glVertex2i(platform[i].center.x - platform[i].width/2 -2, 
-		platform[i].center.y + platform[i].height/2 +2);
-	glVertex2i(platform[i].center.x + platform[i].width/2 + 2, 
-		platform[i].center.y + platform[i].height/2 + 2);
-	glVertex2i(platform[i].center.x + platform[i].width/2 + 2, 
-		platform[i].center.y - platform[i].height/2 - 2);
-	glEnd(); 
-	// end of black line 
+        glColor3ub(0,0,0); 
+        glPushMatrix(); 
+        glBegin(GL_QUADS); 
+        glVertex2i(platform[i].center.x - platform[i].width/2 - 2, 
+                platform[i].center.y - platform[i].height/2 -2);
+        glVertex2i(platform[i].center.x - platform[i].width/2 -2, 
+                platform[i].center.y + platform[i].height/2 +2);
+        glVertex2i(platform[i].center.x + platform[i].width/2 + 2, 
+                platform[i].center.y + platform[i].height/2 + 2);
+        glVertex2i(platform[i].center.x + platform[i].width/2 + 2, 
+                platform[i].center.y - platform[i].height/2 - 2);
+        glEnd(); 
+        // end of black line 
 
-	//Render Platforms 
-	glColor3ub(125,160,255); 
-	glPushMatrix(); 
-	glBegin(GL_QUADS); 
-	glVertex2i(platform[i].center.x - platform[i].width/2, 
-		platform[i].center.y - platform[i].height/2);
-	glVertex2i(platform[i].center.x - platform[i].width/2, 
-		platform[i].center.y + platform[i].height/2);
-	glColor3ub(120,210,0); 
-	glVertex2i(platform[i].center.x + platform[i].width/2, 
-		platform[i].center.y + platform[i].height/2);
-	glVertex2i(platform[i].center.x + platform[i].width/2, 
-		platform[i].center.y - platform[i].height/2);
-	glEnd(); 
-	// End of Platforms 
+        //Render Platforms 
+        glColor3ub(125,160,255); 
+        glPushMatrix(); 
+        glBegin(GL_QUADS); 
+        glVertex2i(platform[i].center.x - platform[i].width/2, 
+                platform[i].center.y - platform[i].height/2);
+        glVertex2i(platform[i].center.x - platform[i].width/2, 
+                platform[i].center.y + platform[i].height/2);
+        glColor3ub(120,210,0); 
+        glVertex2i(platform[i].center.x + platform[i].width/2, 
+                platform[i].center.y + platform[i].height/2);
+        glVertex2i(platform[i].center.x + platform[i].width/2, 
+                platform[i].center.y - platform[i].height/2);
+        glEnd(); 
+        // End of Platforms 
     }
 
     //Render of floor
@@ -441,14 +427,14 @@ void Starynight_Level::render()
     glPushMatrix(); 
     glBegin(GL_QUADS); 
     glVertex2i(platform[0].center.x - platform[0].width/2, 
-	    platform[0].center.y - platform[0].height/2);
+            platform[0].center.y - platform[0].height/2);
     glVertex2i(platform[0].center.x - platform[0].width/2, 
-	    platform[0].center.y + platform[0].height/2);
+            platform[0].center.y + platform[0].height/2);
     glColor3ub(120,210,0); 
     glVertex2i(platform[0].center.x + platform[0].width/2, 
-	    platform[0].center.y + platform[0].height/2);
+            platform[0].center.y + platform[0].height/2);
     glVertex2i(platform[0].center.x + platform[0].width/2, 
-	    platform[0].center.y - platform[0].height/2);
+            platform[0].center.y - platform[0].height/2);
     glEnd(); 
     // End of floor
 }
@@ -457,365 +443,350 @@ void check_keys(XEvent *e, Game *game)
 {
     bool conditionA, conditionB, conditionC;
     if (e->type == KeyPress) {
-	int key = XLookupKeysym(&e->xkey,0);
+        int key = XLookupKeysym(&e->xkey,0);
 
-	switch (key) {
-	    default:
-		break;
-	    case XK_Escape:
-		done = 1; 
-		break;
-	    case XK_m:
-		manual_launch();
-		break;
-	    case XK_w:
-		switch (game->render) {
-		    case MAINMENU:
-			if (dyna == playIcon) {
-			    dyna = exitIcon;
-			    game->mainMenu.selector.center.x = 
-				game->mainMenu.exitBox.center.x;
-			    game->mainMenu.selector.center.y = 
-				game->mainMenu.exitBox.center.y;
-			}
-			else if (dyna == optionsIcon) {
-			    dyna = playIcon;
-			    game->mainMenu.selector.center.x = 
-				game->mainMenu.playBox.center.x;
-			    game->mainMenu.selector.center.y = 
-				game->mainMenu.playBox.center.y;
-			}
-			else if (dyna == exitIcon) {
-			    dyna = optionsIcon;
-			    game->mainMenu.selector.center.x = 
-				game->mainMenu.optionBox.center.x;
-			    game->mainMenu.selector.center.y = 
-				game->mainMenu.optionBox.center.y;
-			}
-			break;
-		    case PAUSE:
-			if (dyna1 == resumeIcon) {
-			    dyna1 = quitIcon;
-			    game->pauseMenu.selector.center.x = 
-				game->pauseMenu.qbox.center.x;
-			    game->pauseMenu.selector.center.y = 
-				game->pauseMenu.qbox.center.y;
-			}
-			else if (dyna1 == optionsIcon) {
-			    dyna1 = resumeIcon;
-			    game->pauseMenu.selector.center.x = 
-				game->pauseMenu.rbox.center.x;
-			    game->pauseMenu.selector.center.y = 
-				game->pauseMenu.rbox.center.y;
-			}
-			else if (dyna1 == quitIcon) {
-			    dyna1 = optionsIcon;
-			    game->pauseMenu.selector.center.x = 
-				game->pauseMenu.obox.center.x;
-			    game->pauseMenu.selector.center.y = 
-				game->pauseMenu.obox.center.y;
-			}
-			break;
-		    case STARYNIGHT:
-			conditionA= game->level3.player[0].jumpCount < 
-			    game->level3.player[0].JUMP_MAX;
-			conditionB= game->level3.player[0].action != 
-			    GROUNDPOUND;
-			conditionC= game->level3.player[0].action != DASH;
-			if (conditionA && conditionB && conditionC) {
-			    game->level3.player[0].delta.y = 7.0f; 
-			    game->level3.player[0].jumpCount++; 
-			}
-			//void loadImages();
-			break;
-		    case FIELD:
-			conditionA= game->level2.player[0].jumpCount < 
-			    game->level2.player[0].JUMP_MAX;
-			conditionB= game->level2.player[0].action != 
-			    GROUNDPOUND;
-			conditionC= game->level2.player[0].action != DASH;
-			if (conditionA && conditionB && conditionC) {
-			    game->level2.player[0].delta.y = 7.0f; 
-			    game->level2.player[0].jumpCount++; 
-			}
-			break;
-		    case DISCO:
-			conditionA= game->level4.player[0].jumpCount < 
-			    game->level4.player[0].JUMP_MAX;
-			conditionB= game->level4.player[0].action != 
-			    GROUNDPOUND;
-			conditionC= game->level4.player[0].action != DASH;
-			if (conditionA && conditionB && conditionC) {
-			    game->level4.player[0].delta.y = 7.0f; 
-			    game->level4.player[0].jumpCount++; 
-			}
-			break;
-		    default : 
-			break;
+        switch (key) {
+            default:
+                break;
+            case XK_Escape:
+                done = 1; 
+                break;
+            case XK_m:
+                manual_launch();
+                break;
+            case XK_w:
+                switch (game->render) {
+                    case MAINMENU:
+                        if (dyna == playIcon) {
+                            dyna = exitIcon;
+                            game->mainMenu.selector.center.x = 
+                                game->mainMenu.exitBox.center.x;
+                            game->mainMenu.selector.center.y = 
+                                game->mainMenu.exitBox.center.y;
+                        } else if (dyna == optionsIcon) {
+                            dyna = playIcon;
+                            game->mainMenu.selector.center.x = 
+                                game->mainMenu.playBox.center.x;
+                            game->mainMenu.selector.center.y = 
+                                game->mainMenu.playBox.center.y;
+                        } else if (dyna == exitIcon) {
+                            dyna = optionsIcon;
+                            game->mainMenu.selector.center.x = 
+                                game->mainMenu.optionBox.center.x;
+                            game->mainMenu.selector.center.y = 
+                                game->mainMenu.optionBox.center.y;
+                        }
+                        break;
+                    case PAUSE:
+                        if (dyna1 == resumeIcon) {
+                            dyna1 = quitIcon;
+                            game->pauseMenu.selector.center.x = 
+                                game->pauseMenu.qbox.center.x;
+                            game->pauseMenu.selector.center.y = 
+                                game->pauseMenu.qbox.center.y;
+                        } else if (dyna1 == optionsIcon) {
+                            dyna1 = resumeIcon;
+                            game->pauseMenu.selector.center.x = 
+                                game->pauseMenu.rbox.center.x;
+                            game->pauseMenu.selector.center.y = 
+                                game->pauseMenu.rbox.center.y;
+                        } else if (dyna1 == quitIcon) {
+                            dyna1 = optionsIcon;
+                            game->pauseMenu.selector.center.x = 
+                                game->pauseMenu.obox.center.x;
+                            game->pauseMenu.selector.center.y = 
+                                game->pauseMenu.obox.center.y;
+                        }
+                        break;
+                    case STARYNIGHT:
+                        conditionA= game->level3.player[0].jumpCount < 
+                            game->level3.player[0].JUMP_MAX;
+                        conditionB= game->level3.player[0].action != 
+                            GROUNDPOUND;
+                        conditionC= game->level3.player[0].action != DASH;
+                        if (conditionA && conditionB && conditionC) {
+                            game->level3.player[0].delta.y = 7.0f; 
+                            game->level3.player[0].jumpCount++; 
+                        }
+                        //void loadImages();
+                        break;
+                    case FIELD:
+                        conditionA= game->level2.player[0].jumpCount < 
+                            game->level2.player[0].JUMP_MAX;
+                        conditionB= game->level2.player[0].action != 
+                            GROUNDPOUND;
+                        conditionC= game->level2.player[0].action != DASH;
+                        if (conditionA && conditionB && conditionC) {
+                            game->level2.player[0].delta.y = 7.0f; 
+                            game->level2.player[0].jumpCount++; 
+                        }
+                        break;
+                    case DISCO:
+                        conditionA= game->level4.player[0].jumpCount < 
+                            game->level4.player[0].JUMP_MAX;
+                        conditionB= game->level4.player[0].action != 
+                            GROUNDPOUND;
+                        conditionC= game->level4.player[0].action != DASH;
+                        if (conditionA && conditionB && conditionC) {
+                            game->level4.player[0].delta.y = 7.0f; 
+                            game->level4.player[0].jumpCount++; 
+                        }
+                        break;
+                    default : 
+                        break;
 
-		}
-		break;
-	    case XK_r: 
-		if (game->render == OVER) {
-		    resetMain(game);
-		    if (game->prevState == FIELD)
-			game->level2.erick_init();
-		    if (game->prevState == STARYNIGHT)
-			game->level3.erick_init();
-		    if (game->prevState == DISCO)
-			game->level4.erick_init();
-		    game->render = MAINMENU;
-		}
-		break;	
-	    case XK_s:
-		switch (game->render) {
-		    case MAINMENU:
-			if (dyna == playIcon) {
-			    dyna = optionsIcon;
-			    game->mainMenu.selector.center.x = 
-				game->mainMenu.optionBox.center.x;
-			    game->mainMenu.selector.center.y = 
-				game->mainMenu.optionBox.center.y;
-			}
-			else if (dyna == optionsIcon) {
-			    dyna = exitIcon;
-			    game->mainMenu.selector.center.x = 
-				game->mainMenu.exitBox.center.x;
-			    game->mainMenu.selector.center.y = 
-				game->mainMenu.exitBox.center.y;
-			}
-			else if (dyna == exitIcon) {
-			    dyna = playIcon;
-			    game->mainMenu.selector.center.x = 
-				game->mainMenu.playBox.center.x;
-			    game->mainMenu.selector.center.y = 
-				game->mainMenu.playBox.center.y;
-			}
-			break;
-		    case PAUSE:
-			if (dyna1 == resumeIcon) {
-			    dyna1 = optionsIcon;
-			    game->pauseMenu.selector.center.x = 
-				game->pauseMenu.obox.center.x;
-			    game->pauseMenu.selector.center.y = 
-				game->pauseMenu.obox.center.y;
-			}
-			else if (dyna1 == optionsIcon) {
-			    dyna1 = quitIcon;
-			    game->pauseMenu.selector.center.x = 
-				game->pauseMenu.qbox.center.x;
-			    game->pauseMenu.selector.center.y = 
-				game->pauseMenu.qbox.center.y;
-			}
-			else if (dyna1 == quitIcon) {
-			    dyna1 = resumeIcon;
-			    game->pauseMenu.selector.center.x = 
-				game->pauseMenu.rbox.center.x;
-			    game->pauseMenu.selector.center.y = 
-				game->pauseMenu.rbox.center.y;
-			}
-			break;
-		    case STARYNIGHT:
-			game->level3.player[0].action = GROUNDPOUND;
-			game->level3.player[0].delta.x = 0.0f;
+                }
+                break;
+            case XK_r: 
+                if (game->render == OVER) {
+                    resetMain(game);
+                    if (game->prevState == FIELD)
+                        game->level2.erick_init();
+                    if (game->prevState == STARYNIGHT)
+                        game->level3.erick_init();
+                    if (game->prevState == DISCO)
+                        game->level4.erick_init();
+                    game->render = MAINMENU;
+                }
+                break;	
+            case XK_s:
+                switch (game->render) {
+                    case MAINMENU:
+                        if (dyna == playIcon) {
+                            dyna = optionsIcon;
+                            game->mainMenu.selector.center.x = 
+                                game->mainMenu.optionBox.center.x;
+                            game->mainMenu.selector.center.y = 
+                                game->mainMenu.optionBox.center.y;
+                        } else if (dyna == optionsIcon) {
+                            dyna = exitIcon;
+                            game->mainMenu.selector.center.x = 
+                                game->mainMenu.exitBox.center.x;
+                            game->mainMenu.selector.center.y = 
+                                game->mainMenu.exitBox.center.y;
+                        } else if (dyna == exitIcon) {
+                            dyna = playIcon;
+                            game->mainMenu.selector.center.x = 
+                                game->mainMenu.playBox.center.x;
+                            game->mainMenu.selector.center.y = 
+                                game->mainMenu.playBox.center.y;
+                        }
+                        break;
+                    case PAUSE:
+                        if (dyna1 == resumeIcon) {
+                            dyna1 = optionsIcon;
+                            game->pauseMenu.selector.center.x = 
+                                game->pauseMenu.obox.center.x;
+                            game->pauseMenu.selector.center.y = 
+                                game->pauseMenu.obox.center.y;
+                        } else if (dyna1 == optionsIcon) {
+                            dyna1 = quitIcon;
+                            game->pauseMenu.selector.center.x = 
+                                game->pauseMenu.qbox.center.x;
+                            game->pauseMenu.selector.center.y = 
+                                game->pauseMenu.qbox.center.y;
+                        } else if (dyna1 == quitIcon) {
+                            dyna1 = resumeIcon;
+                            game->pauseMenu.selector.center.x = 
+                                game->pauseMenu.rbox.center.x;
+                            game->pauseMenu.selector.center.y = 
+                                game->pauseMenu.rbox.center.y;
+                        }
+                        break;
+                    case STARYNIGHT:
+                        game->level3.player[0].action = GROUNDPOUND;
+                        game->level3.player[0].delta.x = 0.0f;
 #ifdef USE_OPENAL_SOUND
-			if (game->level3.player[0].status.lifeState == ALIVE) {
-			    play_sound(3, 1.0f, false);
-			}
+                        if (game->level3.player[0].status.lifeState == ALIVE) {
+                            play_sound(3, 1.0f, false);
+                        }
 #endif
-			//usleep(300000);
-			game->level3.player[0].delta.y = -20.0f;
-			break;
-		    case FIELD:
-			game->level2.player[0].action = GROUNDPOUND;
-			game->level2.player[0].delta.x = 0.0f;
+                        //usleep(300000);
+                        game->level3.player[0].delta.y = -20.0f;
+                        break;
+                    case FIELD:
+                        game->level2.player[0].action = GROUNDPOUND;
+                        game->level2.player[0].delta.x = 0.0f;
 #ifdef USE_OPENAL_SOUND
-			if (game->level2.player[0].status.lifeState == ALIVE) {
-			    play_sound(3, 1.0f, false);
-			}
+                        if (game->level2.player[0].status.lifeState == ALIVE) {
+                            play_sound(3, 1.0f, false);
+                        }
 #endif
-			//usleep(300000);
-			game->level2.player[0].delta.y = -20.0f;
-			break;
-		    case DISCO:
-			game->level4.player[0].action = GROUNDPOUND;
-			game->level4.player[0].delta.x = 0.0f;
+                        //usleep(300000);
+                        game->level2.player[0].delta.y = -20.0f;
+                        break;
+                    case DISCO:
+                        game->level4.player[0].action = GROUNDPOUND;
+                        game->level4.player[0].delta.x = 0.0f;
 #ifdef USE_OPENAL_SOUND
-			if (game->level4.player[0].status.lifeState == ALIVE) {
-			    play_sound(3, 1.0f, false);
-			}
+                        if (game->level4.player[0].status.lifeState == ALIVE) {
+                            play_sound(3, 1.0f, false);
+                        }
 #endif
-			//usleep(300000);
-			game->level4.player[0].delta.y = -20.0f;
-			break;
-		    default : 
-			break;
-		}
-		break;
-	    case XK_j:
-		switch (game->render) {
-		    case STARYNIGHT:
-			game->level3.player[0].attack(); 
-			break;
-		    case FIELD:
-			game->level2.player[0].attack(); 
-			break;
-		    case DISCO:
-			game->level4.player[0].attack(); 
-			break;
-		    default:
-			break;
-		};
-		break;
-	    case XK_Return:
-		switch (game->render) {
-		    case MAINMENU:
-			if (dyna == playIcon) { 
-			    game->render = LEVELSEL;
-			}
-			else if (dyna == optionsIcon) {
-			}
-			else if (dyna == exitIcon) {
-			    done = 1;
-			    return;
-			}
-			break;
-		    case PAUSE:
-			if (dyna1 == resumeIcon) {
-			    game->render = game->prevState;
-			}
-			else if (dyna1 == optionsIcon) {
-			}
-			else if (dyna1 == quitIcon) {
-			    resetMain(game);
-			}
-		    case LEVELSEL:
-			if (dyna2 == fieldIcon) {
+                        //usleep(300000);
+                        game->level4.player[0].delta.y = -20.0f;
+                        break;
+                    default : 
+                        break;
+                }
+                break;
+            case XK_j:
+                switch (game->render) {
+                    case STARYNIGHT:
+                        game->level3.player[0].attack(); 
+                        break;
+                    case FIELD:
+                        game->level2.player[0].attack(); 
+                        break;
+                    case DISCO:
+                        game->level4.player[0].attack(); 
+                        break;
+                    default:
+                        break;
+                };
+                break;
+            case XK_Return:
+                switch (game->render) {
+                    case MAINMENU:
+                        if (dyna == playIcon) { 
+                            game->render = LEVELSEL;
+                        } else if (dyna == optionsIcon) {
+                        } else if (dyna == exitIcon) {
+                            done = 1;
+                            return;
+                        }
+                        break;
+                    case PAUSE:
+                        if (dyna1 == resumeIcon) {
+                            game->render = game->prevState;
+                        } else if (dyna1 == optionsIcon) {
+                        } else if (dyna1 == quitIcon) {
+                            resetMain(game);
+                        }
+                    case LEVELSEL:
+                        if (dyna2 == fieldIcon) {
 #ifdef USE_OPENAL_SOUND
-			    play_sound(4, 1.0f, true);
+                            play_sound(4, 1.0f, true);
 #endif
-			    game->render = DISCO;
-			}
-			else if (dyna2 == staryIcon) {
+                            game->render = DISCO;
+                        } else if (dyna2 == staryIcon) {
 #ifdef USE_OPENAL_SOUND
-			    play_sound(5, 1.0f, true);
+                            play_sound(5, 1.0f, true);
 #endif
-			    game->render = STARYNIGHT;
-			}
-			break;
-		    default:
-			break;
-		}
-		break;
-	    case XK_a:
-		switch (game->render) {
-		    case LEVELSEL:
-			if (dyna2 == fieldIcon) {
-			    dyna2 = staryIcon;
-			    game->levelMenu.selector.center.x = 
-				game->levelMenu.level2.center.x;
-			    game->levelMenu.selector.center.y = 
-				game->levelMenu.level2.center.y;
-			}
-			else if (dyna2 == staryIcon) {
-			    dyna2 = fieldIcon;
-			    game->levelMenu.selector.center.x = 
-				game->levelMenu.level1.center.x;
-			    game->levelMenu.selector.center.y = 
-				game->levelMenu.level1.center.y;
-			}
-			break;
-		    case STARYNIGHT:
-			if (game->level3.player[0].action != DASH) {
-			    game->level3.player[0].direction = LEFT;
-			    game->level3.player[0].action = MOVE;
-			    game->level3.player[0].delta.x = -5.0f;
-			}
-			if (game->level3.player[0].onGround)
-			    game->level3.player[0].delta.y = 1.25f;
-			break;
-		    case FIELD:
-			if (game->level2.player[0].action != DASH) {
-			    game->level2.player[0].direction = LEFT;
-			    game->level2.player[0].action = MOVE;
-			    game->level2.player[0].delta.x = -5.0f;
-			}
-			if (game->level2.player[0].onGround)
-			    game->level2.player[0].delta.y = 1.25f;
-			break;
-		    case DISCO:
-			if (game->level4.player[0].action != DASH) {
-			    game->level4.player[0].direction = LEFT;
-			    game->level4.player[0].action = MOVE;
-			    game->level4.player[0].delta.x = -5.0f;
-			}
-			if (game->level4.player[0].onGround)
-			    game->level4.player[0].delta.y = 1.25f;
-			break;
-		    default:
-			break;
-		}
-		break;
-	    case XK_d:
-		switch (game->render) {
-		    case LEVELSEL:
-			if (dyna2 == fieldIcon) {
-			    dyna2 = staryIcon;
-			    game->levelMenu.selector.center.x = 
-				game->levelMenu.level2.center.x;
-			    game->levelMenu.selector.center.y = 
-				game->levelMenu.level2.center.y;
-			}
-			else if (dyna2 == staryIcon) {
-			    dyna2 = fieldIcon;
-			    game->levelMenu.selector.center.x = 
-				game->levelMenu.level1.center.x;
-			    game->levelMenu.selector.center.y = 
-				game->levelMenu.level1.center.y;
-			}
-			break;
-		    case STARYNIGHT:
-			if (game->level3.player[0].action != DASH) {
-			    game->level3.player[0].direction = RIGHT;
-			    game->level3.player[0].action = MOVE;
-			    game->level3.player[0].delta.x = 5.0f;
-			}
-			if (game->level3.player[0].onGround)
-			    game->level3.player[0].delta.y = 1.25f;
-			break;
-		    case FIELD:
-			if (game->level2.player[0].action != DASH) {
-			    game->level2.player[0].direction = RIGHT;
-			    game->level2.player[0].action = MOVE;
-			    game->level2.player[0].delta.x = 5.0f;
-			}
-			if (game->level2.player[0].onGround)
-			    game->level2.player[0].delta.y = 1.25f;
-			break;
-		    case DISCO:
-			if (game->level4.player[0].action != DASH) {
-			    game->level4.player[0].direction = RIGHT;
-			    game->level4.player[0].action = MOVE;
-			    game->level4.player[0].delta.x = 5.0f;
-			}
-			if (game->level4.player[0].onGround)
-			    game->level4.player[0].delta.y = 1.25f;
-			break;
-		    default:
-			break;
-		};
-		break;
-	    case XK_p:
-		break;
-	    case XK_v:
+                            game->render = STARYNIGHT;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case XK_a:
+                switch (game->render) {
+                    case LEVELSEL:
+                        if (dyna2 == fieldIcon) {
+                            dyna2 = staryIcon;
+                            game->levelMenu.selector.center.x = 
+                                game->levelMenu.level2.center.x;
+                            game->levelMenu.selector.center.y = 
+                                game->levelMenu.level2.center.y;
+                        } else if (dyna2 == staryIcon) {
+                            dyna2 = fieldIcon;
+                            game->levelMenu.selector.center.x = 
+                                game->levelMenu.level1.center.x;
+                            game->levelMenu.selector.center.y = 
+                                game->levelMenu.level1.center.y;
+                        }
+                        break;
+                    case STARYNIGHT:
+                        if (game->level3.player[0].action != DASH) {
+                            game->level3.player[0].direction = LEFT;
+                            game->level3.player[0].action = MOVE;
+                            game->level3.player[0].delta.x = -5.0f;
+                        }
+                        if (game->level3.player[0].onGround)
+                            game->level3.player[0].delta.y = 1.25f;
+                        break;
+                    case FIELD:
+                        if (game->level2.player[0].action != DASH) {
+                            game->level2.player[0].direction = LEFT;
+                            game->level2.player[0].action = MOVE;
+                            game->level2.player[0].delta.x = -5.0f;
+                        }
+                        if (game->level2.player[0].onGround)
+                            game->level2.player[0].delta.y = 1.25f;
+                        break;
+                    case DISCO:
+                        if (game->level4.player[0].action != DASH) {
+                            game->level4.player[0].direction = LEFT;
+                            game->level4.player[0].action = MOVE;
+                            game->level4.player[0].delta.x = -5.0f;
+                        }
+                        if (game->level4.player[0].onGround)
+                            game->level4.player[0].delta.y = 1.25f;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case XK_d:
+                switch (game->render) {
+                    case LEVELSEL:
+                        if (dyna2 == fieldIcon) {
+                            dyna2 = staryIcon;
+                            game->levelMenu.selector.center.x = 
+                                game->levelMenu.level2.center.x;
+                            game->levelMenu.selector.center.y = 
+                                game->levelMenu.level2.center.y;
+                        } else if (dyna2 == staryIcon) {
+                            dyna2 = fieldIcon;
+                            game->levelMenu.selector.center.x = 
+                                game->levelMenu.level1.center.x;
+                            game->levelMenu.selector.center.y = 
+                                game->levelMenu.level1.center.y;
+                        }
+                        break;
+                    case STARYNIGHT:
+                        if (game->level3.player[0].action != DASH) {
+                            game->level3.player[0].direction = RIGHT;
+                            game->level3.player[0].action = MOVE;
+                            game->level3.player[0].delta.x = 5.0f;
+                        }
+                        if (game->level3.player[0].onGround)
+                            game->level3.player[0].delta.y = 1.25f;
+                        break;
+                    case FIELD:
+                        if (game->level2.player[0].action != DASH) {
+                            game->level2.player[0].direction = RIGHT;
+                            game->level2.player[0].action = MOVE;
+                            game->level2.player[0].delta.x = 5.0f;
+                        }
+                        if (game->level2.player[0].onGround)
+                            game->level2.player[0].delta.y = 1.25f;
+                        break;
+                    case DISCO:
+                        if (game->level4.player[0].action != DASH) {
+                            game->level4.player[0].direction = RIGHT;
+                            game->level4.player[0].action = MOVE;
+                            game->level4.player[0].delta.x = 5.0f;
+                        }
+                        if (game->level4.player[0].onGround)
+                            game->level4.player[0].delta.y = 1.25f;
+                        break;
+                    default:
+                        break;
+                };
+                break;
+            case XK_p:
+                break;
+            case XK_v:
 #ifdef USE_OPENAL_SOUND
-		play_sound (1, 1.0f, true);
+                play_sound (1, 1.0f, true);
 #endif
-		game->render = DISCO; 
-		break;
+                game->render = DISCO; 
+                break;
 
-		break;
-	}
+                break;
+        }
     }
 }
 void end_game()
@@ -839,62 +810,74 @@ bool endcheck()
     bool C = false;
     bool D = false;
     switch (game.render) {
-	case STARYNIGHT :
-	    if (game.level3.player[0].status.lifeCount == 0 && game.level3.player[0].status.lifeState == DEAD)
-		A = true;
-	    if (game.level3.player[1].status.lifeCount == 0 && game.level3.player[1].status.lifeState == DEAD)
-		B = true;
-	    if (game.level3.player[2].status.lifeCount == 0 && game.level3.player[2].status.lifeState == DEAD)
-		C = true;
-	    if (game.level3.player[3].status.lifeCount == 0 && game.level3.player[3].status.lifeState == DEAD)
-		D = true;
-	    break;
-	case FIELD :
-	    if (game.level2.player[0].status.lifeCount == 0 && game.level2.player[0].status.lifeState == DEAD)
-		A = true;
-	    if (game.level2.player[1].status.lifeCount == 0 && game.level2.player[1].status.lifeState == DEAD)
-		B = true;
-	    if (game.level2.player[2].status.lifeCount == 0 && game.level2.player[2].status.lifeState == DEAD)
-		C = true;
-	    if (game.level2.player[3].status.lifeCount == 0 && game.level2.player[3].status.lifeState == DEAD)
-		D = true;
-	    break;
-	case DISCO:
-	    if (game.level4.player[0].status.lifeCount == 0 && game.level4.player[0].status.lifeState == DEAD)
-		A = true;
-	    if (game.level4.player[1].status.lifeCount == 0 && game.level4.player[1].status.lifeState == DEAD)
-		B = true;
-	    if (game.level4.player[2].status.lifeCount == 0 && game.level4.player[2].status.lifeState == DEAD)
-		C = true;
-	    if (game.level4.player[3].status.lifeCount == 0 && game.level4.player[3].status.lifeState == DEAD)
-		D = true;
-	    break;
-	default: 
-	    break;
+        case STARYNIGHT :
+            if (game.level3.player[0].status.lifeCount == 0 
+                    && game.level3.player[0].status.lifeState == DEAD)
+                A = true;
+            if (game.level3.player[1].status.lifeCount == 0 
+                    && game.level3.player[1].status.lifeState == DEAD)
+                B = true;
+            if (game.level3.player[2].status.lifeCount == 0 
+                    && game.level3.player[2].status.lifeState == DEAD)
+                C = true;
+            if (game.level3.player[3].status.lifeCount == 0 
+                    && game.level3.player[3].status.lifeState == DEAD)
+                D = true;
+            break;
+        case FIELD :
+            if (game.level2.player[0].status.lifeCount == 0 
+                    && game.level2.player[0].status.lifeState == DEAD)
+                A = true;
+            if (game.level2.player[1].status.lifeCount == 0 
+                    && game.level2.player[1].status.lifeState == DEAD)
+                B = true;
+            if (game.level2.player[2].status.lifeCount == 0 
+                    && game.level2.player[2].status.lifeState == DEAD)
+                C = true;
+            if (game.level2.player[3].status.lifeCount == 0 
+                    && game.level2.player[3].status.lifeState == DEAD)
+                D = true;
+            break;
+        case DISCO:
+            if (game.level4.player[0].status.lifeCount == 0 
+                    && game.level4.player[0].status.lifeState == DEAD)
+                A = true;
+            if (game.level4.player[1].status.lifeCount == 0 
+                    && game.level4.player[1].status.lifeState == DEAD)
+                B = true;
+            if (game.level4.player[2].status.lifeCount == 0 
+                    && game.level4.player[2].status.lifeState == DEAD)
+                C = true;
+            if (game.level4.player[3].status.lifeCount == 0 
+                    && game.level4.player[3].status.lifeState == DEAD)
+                D = true;
+            break;
+        default: 
+            break;
     }
     bool last1 = false;
     bool last2 = false;
     bool last3 = false;
     bool last4 = false;
     if (B && C && D) // last 1 alive is player 1
-	last1 = true;
+        last1 = true;
     if (A && C && D) // last 1 alive is player 2
-	last2 = true;
+        last2 = true;
     if (A && B && D) // last 1 alive is player 3
-	last3 = true;
+        last3 = true;
     if (A && B && C) // last one is player 4
-	last4 = true;
-    return(last1 || last2 || last3 || last4);
+        last4 = true;
+    return (last1 || last2 || last3 || last4);
 }
 
 
 void Starynight_Level::etMove() 
 {
-	//etBox.center.x++;
-	etBox.center.x+= 3;
-	if (etBox.center.x > 1.75 * scrn->width) {
-		etBox.center.x = -scrn->width;
-	}
+    //etBox.center.x++;
+    etBox.center.x+= 3;
+    if (etBox.center.x > 1.75 * scrn->width) {
+        etBox.center.x = -scrn->width;
+    }
 
     etBox.center.y = 9 * etBox.center.x / 16 + 100;
 }
