@@ -619,6 +619,8 @@ void Player::deathRender()
     }
 }
 
+extern int countvar;
+
 void Level::respawn(Player *player)
 {
     //wait 5 seconds
@@ -632,6 +634,8 @@ void Level::respawn(Player *player)
     player->delta.y = 0.0;
     player->jumpCount = 0;
     player->status.health = 0;
+    countvar = 1;
+    player->ispressed = false;
 }
 
 double Player::timeDiff(struct timespec *start, struct timespec *end)

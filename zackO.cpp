@@ -454,6 +454,18 @@ void check_keys(XEvent *e, Game *game)
             case XK_m:
                 manual_launch();
                 break;
+            case XK_c:
+                switch (game->render) {
+                    case STARYNIGHT:
+                        game->level3.player[0].ispressed = !game->level3.player[0].ispressed;
+                        break;
+                    case DISCO:
+                        game->level4.player[0].ispressed = !game->level4.player[0].ispressed;
+                        break;
+                    default : 
+                        break;
+                }
+                break;
             case XK_w:
                 switch (game->render) {
                     case MAINMENU:

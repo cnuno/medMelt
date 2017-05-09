@@ -74,6 +74,7 @@ class Particle {
 class Level;
 class Player {
 	public:
+		bool ispressed;
 		int index;
 		float multiplier;
 		bool atk;

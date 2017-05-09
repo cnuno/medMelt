@@ -777,4 +777,27 @@ void levelsel_move(Joystick *joystick, Game *game)
 
 }
 
+void cesar_func()
+{
+    switch(game.render) {
+		case STARYNIGHT:
+            game.level3.player[0].deathInit(game.level3.player[0].body.center.x, game.level3.player[0].body.center.y);
+            game.level3.player[0].multiplier=0;
+            game.level3.player[0].status.lifeState = DEAD;
+            break;
+        case DISCO:
+            game.level4.player[0].deathInit(game.level4.player[0].body.center.x, game.level4.player[0].body.center.y);
+            game.level4.player[0].multiplier=0;
+            game.level4.player[0].status.lifeState = DEAD;
+            break;
+        default:
+            break;
+    }
+}
 
+int countvar = 1;
+
+int cesar_count()
+{
+    return(countvar++);
+}

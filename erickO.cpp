@@ -296,6 +296,7 @@ void toggle_move(Player *player, Direction dir)
 //Player constructor
 Player::Player() 
 {
+    ispressed = false;
     JUMP_MAX = 4;
     body.radius = 50; 
     body.width = 100;
@@ -459,15 +460,20 @@ void Player::render()
         float y = body.center.y;
         int triangleNum = 25;
         float twicePI = 2.0 * M_PI;
-
-        if (jumpCount == 2) { 
-            radius = body.radius - 5;
-        } else if (jumpCount == 3) { 
-            radius = body.radius - 10;
-        } else if (jumpCount == 4) { 
-            radius = body.radius - 15;
+        if (ispressed == false) {
+            if (jumpCount == 2) { 
+                radius = body.radius - 5;
+            } else if (jumpCount == 3) { 
+                radius = body.radius - 10;
+            } else if (jumpCount == 4) { 
+                radius = body.radius - 15;
+            }
+        } else {
+            radius = body.radius + 1.5 * cesar_count();
         }
-
+        if (radius > 160) {
+            cesar_func();
+        }
 
         if (atk) {
             //outline
