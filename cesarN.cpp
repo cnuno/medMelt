@@ -779,8 +779,8 @@ void levelsel_move(Joystick *joystick, Game *game)
 
 void cesar_func()
 {
-    switch(game.render) {
-		case STARYNIGHT:
+    switch (game.render) {
+        case STARYNIGHT:
             game.level3.player[0].deathInit(game.level3.player[0].body.center.x, game.level3.player[0].body.center.y);
             game.level3.player[0].multiplier=0;
             game.level3.player[0].status.lifeState = DEAD;
